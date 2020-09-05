@@ -5,3 +5,5 @@ logs
 *.js
 *.d.ts
 front/.bitmap
+.idea/
+front/.babelrc

@@ -1,2 +1,2 @@
-# External front
+# Authentication
 Express / ReactJS in Typescript

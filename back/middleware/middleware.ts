@@ -1,8 +1,9 @@
 import express, {NextFunction} from "express"
 import {logger} from "../util/logger";
 import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser';
+import cors from "cors";
 
-const cors = require("cors");
 export const middlewares: any[] = [];
 
 let logRequest = (req: express.Request, res: express.Response, next: Function) => {
@@ -76,6 +77,7 @@ middlewares.push(logRequest, logResponseBody)
 middlewares.push(
     express.json(),
     bodyParser.urlencoded({extended: true}),
+    cookieParser(),
     cors()
 )
 

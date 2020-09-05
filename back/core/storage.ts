@@ -21,6 +21,12 @@ export namespace Storage {
         return writeFile(path.resolve(name), data);
     }
 
+    export async function addUser(name: string, salt: string) {
+        const current =  await read(files.account).then(x => JSON.parse(x));
+        current[name] = {}
+    }
+
+
     export async function read(name: string) {
         return (await readFile(name)).toString()
     }

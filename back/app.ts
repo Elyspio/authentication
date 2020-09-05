@@ -1,19 +1,18 @@
 import E, {Express} from "express"
-import {router} from "./routes/example";
 import {handleError, middlewares} from "./middleware/middleware";
 import {ArgumentParser} from 'argparse'
 import path from "path";
 import {logger} from "./util/logger";
+import {router} from "./routes/account";
 
 const express = require('express');
 export const app: Express = express();
-
 app.use(...middlewares);
-app.use('/core', router);
 
 let frontPath = path.resolve(__dirname, "..", "front", "build");
 logger.info("frontPath", {frontPath});
 app.use("/", E.static(frontPath))
+app.use('/core', router);
 
 
 if (require.main === module) {

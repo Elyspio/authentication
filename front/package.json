@@ -2,32 +2,38 @@
 	"name": "front",
 	"version": "0.1.0",
 	"private": true,
-	"homepage": "/external-server",
+	"homepage": "/authentication/",
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject",
-		"docker": "cd ../back && yarn docker",
-		"push": "cd ../back && yarn push"
+		"start": "react-app-rewired start",
+		"build": "react-app-rewired build",
+		"test": "react-app-rewired test",
+		"eject": "react-app-rewired eject",
+		"docker": "cd ../../command-runner/back && yarn docker",
+		"push": "cd ../../command-runner/back && yarn push"
 	},
 	"dependencies": {
 		"@bit/elyspio.test.drawer": "^0.0.2",
 		"@material-ui/core": "4.11.0",
 		"@material-ui/icons": "4.9.1",
+		"@material-ui/lab": "latest",
 		"@reduxjs/toolkit": "1.4.0",
 		"react-redux": "7.2.1",
 		"redux": "4.0.5",
 		"react": "^16.13.1",
-		"react-dom": "^16.13.1"
+		"react-dom": "^16.13.1",
+		"md5": "^2.3.0"
 	},
 	"peerDependencies": {
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1"
 	},
 	"devDependencies": {
-		"@types/node": "^14.6.4",
-		"@types/react": "^16.9.49",
+		"@babel/plugin-transform-typescript": "^7.11.0",
+		"react-app-rewired": "^2.1.6",
+		"customize-cra": "^1.0.0",
+		"@types/md5": "^2.2.0",
+		"@types/node": "^12",
+		"@types/react": "^16.9.48",
 		"@types/react-dom": "^16.9.8",
 		"@types/react-redux": "^7.1.9",
 		"node-sass": "4.14.1",
