@@ -7,7 +7,7 @@ services:
     environment:
       LOG_FOLDER: /var/logs
     volumes:
-      - /apps/authentication/logs:/var/logs
       - /apps/authentication/accounts.json:/app/accounts.json
+      - /apps/authentication/logs:/var/logs
     restart: always
     container_name: authentication
