@@ -1,27 +1,22 @@
 import {Router} from "express";
-import {Runner} from "../../../command-runner/back/core/runner/runner";
 import {DeleteToken, IsValid, Login} from "./types/request";
-import {Account} from "../../../command-runner/back/core/account/account";
-import {} from "robot3"
 import {Core} from "../core/account/account";
-import {files, Storage} from "../core/storage";
+
 export const router = Router();
 
 
-router.post("/login", async(req: Login, res) => {
-    if(req.body.hash) {
+router.post("/login", async (req: Login, res) => {
+    if (req.body.hash) {
 
-        const { token, authorized } = await  Core.Account.verify({name: req.body.username, hash: req.body.hash}, )
+        const {token, authorized} = await Core.Account.verify({name: req.body.username, hash: req.body.hash},)
 
-        if(authorized && token) {
+        if (authorized && token) {
             res.cookie("authorisation_token", token, {httpOnly: true, expires: new Date(Date.now() + 900000)}).json({token})
-        }
-        else {
+        } else {
             res.sendStatus(403)
         }
 
-    }
-    else {
+    } else {
 
         const salt = await Core.Account.init(req.body.username)
 

@@ -11,7 +11,7 @@ export class AccountApi extends Interactor {
     }
 
 
-    public async isAuthorized({name, password}: {name: string, password: string}) : Promise<{
+    public async isAuthorized({name, password}: { name: string, password: string }): Promise<{
         success: boolean,
         token?: string
     }> {
@@ -21,7 +21,7 @@ export class AccountApi extends Interactor {
             const salt = (await super.post("/login", undefined, {username: name}).then(x => x.json())).salt
             const hash = md5(ownHash + salt);
             const res = await super.post("/login", undefined, {username: name, hash});
-            if (res.status === 200) return {success: true, token : (await res.json()).token}
+            if (res.status === 200) return {success: true, token: (await res.json()).token}
         } catch (e) {
             console.error("ERROR in isAuthorized", e);
         }

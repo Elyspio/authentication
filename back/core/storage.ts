@@ -22,7 +22,7 @@ export namespace Storage {
     }
 
     export async function addUser(name: string, salt: string) {
-        const current =  await read(files.account).then(x => JSON.parse(x));
+        const current = await read(files.account).then(x => JSON.parse(x));
         current[name] = {}
     }
 

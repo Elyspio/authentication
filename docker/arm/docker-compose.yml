@@ -1,14 +1,13 @@
 version: "3"
 services:
   server:
-    image: elyspio/haproxy-virtualizer:arm64
+    image: elyspio/authentication:arm64
     ports:
-      - "4001:4000"
+      - "4002:4000"
     environment:
       LOG_FOLDER: /var/logs
     volumes:
-      - /etc/haproxy/haproxy.cfg/:/etc/haproxy/haproxy.cfg
-      - /apps/haproxy-virtualizer/logs:/var/logs
-      - /apps/haproxy-virtualizer/accounts.json:/app/accounts.json
+      - /apps/authentication/logs:/var/logs
+      - /apps/authentication/accounts.json:/app/accounts.json
     restart: always
-    container_name: haproxy-visualizer
+    container_name: authentication

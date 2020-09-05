@@ -19,9 +19,11 @@ else
 fi
 
 echo "Building for amd64"
-"$DIR/amd/amd64.sh"
+"$DIR/amd/amd64.sh" &
 
 echo "Building for arm64"
-"$DIR/arm/arm64.sh"
+"$DIR/arm/arm64.sh" &
+
+wait
 
 cd $origin

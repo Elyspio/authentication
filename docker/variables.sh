@@ -1,1 +1,1 @@
-export app="express-react-typescript"
+export app="authentication"

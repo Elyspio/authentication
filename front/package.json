@@ -8,8 +8,9 @@
 		"build": "react-app-rewired build",
 		"test": "react-app-rewired test",
 		"eject": "react-app-rewired eject",
-		"docker": "cd ../../command-runner/back && yarn docker",
-		"push": "cd ../../command-runner/back && yarn push"
+		"docker": "cd ../back && yarn docker",
+		"push": "wsl ../docker/arm/compose.sh"
+
 	},
 	"dependencies": {
 		"@bit/elyspio.test.drawer": "^0.0.2",

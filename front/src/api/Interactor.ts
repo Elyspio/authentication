@@ -22,6 +22,7 @@ export class Interactor {
     protected async put(url: string, urlParameters?: object, bodyParameters?: object) {
         return this.call(url, "PUT", urlParameters, bodyParameters);
     }
+
     protected async delete(url: string, urlParameters?: object, bodyParameters?: object) {
         return this.call(url, "DELETE", urlParameters, bodyParameters);
     }

@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import './Login.scss'
-import {Button, Modal, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
+import {Button, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {AccountApi} from "../../api/account";
 

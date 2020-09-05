@@ -16,7 +16,7 @@ export type Login = Uri<{}, User & {
     hash?: string
 }>
 
-export type IsValid = Uri<{}, User &  {
+export type IsValid = Uri<{}, User & {
     username: string
     token: string
 }>
