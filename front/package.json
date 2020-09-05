@@ -10,7 +10,6 @@
 		"eject": "react-app-rewired eject",
 		"docker": "cd ../back && yarn docker",
 		"push": "wsl ../docker/arm/compose.sh"
-
 	},
 	"dependencies": {
 		"@bit/elyspio.test.drawer": "^0.0.2",

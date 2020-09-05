@@ -1,11 +1,9 @@
 #!/bin/bash
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 . "$DIR/variables.sh"
 
-
 cd $DIR
-
 
 ssh $sshConnection "rm -rdf ~/docker-building"
 
