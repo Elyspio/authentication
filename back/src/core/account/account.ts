@@ -1,12 +1,14 @@
 import {files, Storage} from "../storage";
-import md5 from "md5";
+import * as md5 from "md5";
 import {logger} from "../../util/logger";
+import {UserNotFound} from "./errors";
+import {token_expiration} from "../../config/accounts";
+import {Login} from "../../controllers/types/request";
 
-const users: { [p: string]: { salt: string, token?: string } } = {};
-
-const ttl = 10 // in seconds
 
 export namespace Core.Account {
+
+    export const users: { [p: string]: { salt: string, token?: string } } = {};
 
     export async function init(username: string): Promise<string> {
 
@@ -24,11 +26,18 @@ export namespace Core.Account {
     }
 
 
-    export async function verify(user: { name: string, hash: string }) {
+    export async function verify(user: Login["body"]) {
         const salt = users[user.name].salt;
-        logger.debug("Salts", {stored: salt})
-        const userStoredHash = JSON.parse(await Storage.read(files.account))[user.name]
-        logger.debug("userStoredHash", {userStoredHash})
+
+
+        logger.debug("verify", {user, users})
+
+        let account = JSON.parse(await Storage.read(files.account));
+        const userStoredHash = account[user.name]
+        logger.debug("infos", {user, account})
+        if (userStoredHash === undefined) {
+            throw UserNotFound(user.name)
+        }
         const isAuthorized = user.hash === md5(userStoredHash + salt);
         if (isAuthorized) {
             users[user.name] = {
@@ -38,7 +47,7 @@ export namespace Core.Account {
 
             setTimeout(() => {
                 Token.del(user.name)
-            }, ttl * 1000)
+            }, token_expiration)
 
 
         }
@@ -47,9 +56,7 @@ export namespace Core.Account {
 
 
     export namespace Token {
-        export function validate(user: { name: string, token }) {
-            return users[user.name].token === user.token
-        }
+        export let validate = (token: string) => Object.values(users).some(v => token === v.token);
 
         export function generate(repeat = 10) {
             const rand = () => Math.random().toString(36).slice(2);

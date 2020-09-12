@@ -1,13 +1,15 @@
 import express, {NextFunction} from "express"
 import {logger} from "../util/logger";
-import bodyParser from "body-parser";
-import cookieParser from 'cookie-parser';
-import cors from "cors";
+import * as  bodyParser from "body-parser";
+import * as cookieParser from 'cookie-parser';
+import * as cors from "cors";
+import * as compress from "compression";
+import * as methodOverride from "method-override";
 
 export const middlewares: any[] = [];
 
 let logRequest = (req: express.Request, res: express.Response, next: Function) => {
-    logger?.log("request", undefined, {
+    logger?.log("request", "", {
         method: req.method,
         url: req.originalUrl,
         from: req.hostname,
@@ -23,12 +25,12 @@ function logResponseBody(req: express.Request, res: express.Response, next?: Nex
     const [oldWrite, oldEnd] = [res.write, res.end];
     const chunks: Buffer[] = [];
 
-    (res.write as unknown) = function (chunk) {
+    (res.write as unknown) = function (chunk: Buffer) {
         chunks.push(Buffer.from(chunk));
         (oldWrite as Function).apply(res, arguments);
     };
 
-    res.end = function (chunk) {
+    res.end = function (chunk?: any) {
         if (chunk) {
             chunks.push(Buffer.from(chunk));
         }
@@ -65,19 +67,21 @@ export function handleError(err: Err, req: express.Request, res: express.Respons
         code: err.statusCode,
         message: err.message,
         name: err.name,
-        stack: err.stack.split("\n"),
+        stack: err.stack?.split("\n"),
     });
-    console.error(err);
 }
 
 
-middlewares.push(logRequest, logResponseBody)
-
-
 middlewares.push(
-    express.json(),
-    bodyParser.urlencoded({extended: true}),
+    logRequest,
+    logResponseBody,
+    cors(),
     cookieParser(),
-    cors()
+    compress({}),
+    methodOverride(),
+    bodyParser.json(),
+    bodyParser.urlencoded({
+        extended: true
+    }),
 )
 

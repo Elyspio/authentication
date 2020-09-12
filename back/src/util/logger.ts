@@ -1,14 +1,14 @@
 import * as path from "path";
 import * as fs from "fs"
 import {createLogger, transport} from "winston";
-import dayjs from "dayjs";
+import * as  dayjs from "dayjs";
 import {platform} from "os";
 
 Error.stackTraceLimit = 40;
 
 const winston = require('winston');
 
-export const logFolder = process.env.LOG_FOLDER ?? path.resolve(__dirname, "..", "..", "logs");
+export const logFolder = process.env.LOG_FOLDER ?? path.resolve(__dirname, "..", "..", "..", "logs");
 
 const dateFormat = () => dayjs().format("DD/MM/YY -- HH:mm:ss")
 
@@ -66,7 +66,7 @@ const getFormat = () => {
         winston.format.metadata({fillExcept: ['message', 'level']}),
         winston.format.printf((info) => {
 
-            let callInfos = ""
+            let callInfos
             if (!["send", "request"].includes(info.level)) {
                 callInfos = getFileNameAndLineNumber()
             }
@@ -92,7 +92,7 @@ const getFormat = () => {
                 end += `${objsStr}`
             }
 
-            return `${timestamp} | ${info.level.toLocaleUpperCase()} | ${end} ${callInfos ? ` | ${callInfos}` : ""}`
+            return `${timestamp} | ${info.level.toLocaleUpperCase().padEnd(7, " ")} | ${end} ${callInfos ? ` | ${callInfos}` : ""}`
         }))
 };
 
@@ -115,6 +115,12 @@ function getTransports(service: string): transport[] {
         new winston.transports.File({
             filename: getLogFile(service, day, 'error.log'),
             level: "error",
+            format,
+        }),
+
+        new winston.transports.File({
+            filename: getLogFile(service, day, 'request.log'),
+            level: "request",
             format,
         }),
     )

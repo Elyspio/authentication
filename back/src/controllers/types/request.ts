@@ -8,7 +8,7 @@ interface Uri<Query, Body> extends Request {
 }
 
 type User = {
-    username: string
+    name: string
 }
 
 
@@ -16,10 +16,11 @@ export type Login = Uri<{}, User & {
     hash?: string
 }>
 
-export type IsValid = Uri<{}, User & {
-    username: string
+type Token = {
     token: string
-}>
+}
+
+export type IsValid = Uri<{}, Token>
 
 export type DeleteToken = Uri<{}, User>
 

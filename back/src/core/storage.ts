@@ -5,7 +5,6 @@ import * as os from "os";
 const {writeFile, readFile} = promises
 
 export const files = {
-    haproxy: process.env.HAPROXY_PATH ?? "/etc/haproxy/haproxy.cfg",
     account: process.env.ACCOUNT_PATH ?? "/app/accounts.json"
 }
 
@@ -20,12 +19,6 @@ export namespace Storage {
 
         return writeFile(path.resolve(name), data);
     }
-
-    export async function addUser(name: string, salt: string) {
-        const current = await read(files.account).then(x => JSON.parse(x));
-        current[name] = {}
-    }
-
 
     export async function read(name: string) {
         return (await readFile(name)).toString()

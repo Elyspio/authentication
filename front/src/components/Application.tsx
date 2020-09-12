@@ -27,12 +27,22 @@ class Application extends React.Component<Props & ReduxTypes, State> {
 
     render() {
 
+        const forward = () => {
+            const url = new URL(window.location.href);
+            const params = new URLSearchParams(url.search);
+            const target = params.get("target");
+            if (target) {
+                window.location.href = target;
+            }
+        }
+
+
         return (
             <Paper square={true} className={"Application"}>
                 <Drawer position={"right"} actions={[{onClick: this.props.toggleTheme, text: "Switch lights", icon: <Brightness5Icon/>}]}>
                     <div className="content">
                         <Appbar appName={"Login page"}/>
-                        <Login/>
+                        <Login onAuthorized={forward}/>
                     </div>
                 </Drawer>
             </Paper>

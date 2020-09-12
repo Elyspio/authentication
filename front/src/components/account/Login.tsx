@@ -14,6 +14,7 @@ interface Props {
 function Login(props: Props) {
 
     const [open, setOpen] = React.useState(false);
+    const [token, setToken] = React.useState("");
     const [password, setMdp] = React.useState("")
     const [name, setName] = React.useState("")
     const [snack, setSnack] = React.useState({
@@ -37,6 +38,8 @@ function Login(props: Props) {
                 message: `OK, token ${authorisation.token}`,
                 severity: "success"
             })
+
+            setToken(authorisation.token as string);
         } else {
             setSnack({
                 ...snack,
@@ -53,9 +56,33 @@ function Login(props: Props) {
         setOpen(false);
         setMdp("")
         // setName("")
+    }
+
+    const isValid = async () => {
+
+        let authorisation = await AccountApi.instance.isValid(token);
+        if (authorisation.success) {
+            setSnack({
+                ...snack,
+                open: true,
+                message: `OK, token ${authorisation.token}`,
+                severity: "success"
+            })
+        } else {
+            setSnack({
+                ...snack,
+                open: true,
+                message: "Vous n'êtes pas autorisé à faire cette action",
+                severity: "error"
+            })
+
+        }
 
 
     }
+
+
+
 
 
     const body = (
@@ -90,6 +117,10 @@ function Login(props: Props) {
                     {snack.message}
                 </Alert>
             </Snackbar>
+
+
+            <Button onClick={isValid}>IsValid</Button>
+
         </div>
     );
 }
