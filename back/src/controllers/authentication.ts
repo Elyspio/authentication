@@ -1,10 +1,10 @@
-import {BodyParams, Controller, Cookies, Delete, Get, Post, Res} from "@tsed/common";
-import {Login} from "./types/request";
-import {logger} from "../util/logger";
-import {Core} from "../core/account/account";
-import {Forbidden} from "@tsed/exceptions"
-import {authorization_cookie_name, token_expiration} from '../config/accounts';
+import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Res} from "@tsed/common";
+import {Core} from "../core/authentication/authentication";
+import {Unauthorized,} from "@tsed/exceptions"
+import {authorization_cookie_name, token_expiration} from '../config/authentication';
 import * as Express from "express";
+import {Returns} from "@tsed/schema";
+import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
 
 @Controller("/authentication")
 export class Authentication {
@@ -16,50 +16,73 @@ export class Authentication {
 
 
     @Post("/login")
-    async login(@Cookies() cookies: any, @BodyParams() {name, hash}: Login["body"], @Res() res: Express.Response) {
+    @Returns(200, PostLoginModel)
+    @Returns(Unauthorized.STATUS, Unauthorized)
+    async login(@Cookies() cookies: any, @BodyParams() {
+        hash,
+        name
+    }: PostLoginRequest, @Res() res: Express.Response) {
+
+
+        $log.info("cookies", cookies);
 
 
         if (cookies[authorization_cookie_name]) {
-            logger.info("cookies", {cookies: cookies})
+            $log.info("cookies", {cookies: cookies})
 
             return {token: cookies[authorization_cookie_name], comment: "already logged in"};
         } else {
-            if (hash) {
+            const {token, authorized} = await Core.Account.verify({name: name, hash: hash})
 
-                const {token, authorized} = await Core.Account.verify({name: name, hash: hash})
-
-                if (authorized && token) {
-                    // httpOnly = false pour pouvoir les utiliser dans le JS
-                    res.cookie(authorization_cookie_name, token, {httpOnly: false, expires: new Date(Date.now() + token_expiration)}).json({token})
-                } else {
-                    throw new Forbidden("Token required")
-                }
-
+            if (authorized && token) {
+                // httpOnly = false pour pouvoir les utiliser dans le JS
+                res.cookie(authorization_cookie_name, token, {expires: new Date(Date.now() + token_expiration)})
+                    .json({token})
             } else {
-
-                const salt = await Core.Account.init(name)
-
-                return ({salt})
+                throw new Unauthorized("Token required")
             }
         }
 
     }
 
+    @Post("/login/init")
+    @Returns(200, PostLoginModelWithSalt)
+    @Returns(Unauthorized.STATUS, Unauthorized)
+    async loginInit(@Cookies() cookies: any, @BodyParams() {name}: PostLoginInitRequest) {
+
+        $log.info("cookies", cookies);
+
+        if (cookies[authorization_cookie_name]) {
+            $log.info("cookies", {cookies: cookies})
+
+            return {token: cookies[authorization_cookie_name], comment: "already logged in"};
+        } else {
+            const ret = new PostLoginModelWithSalt();
+            ret.salt = await Core.Account.init(name)
+            return ret
+        }
+    }
+
 
     @Post("/valid")
+    @Returns(204)
+    @Returns(Unauthorized.STATUS, Unauthorized)
     async validToken(@BodyParams("token") token: string, @Cookies(authorization_cookie_name) token_cookie) {
+
+        $log.info("cookies", token_cookie);
 
         if (!token && token_cookie) {
             token = token_cookie;
         }
 
         if (!await Core.Account.Token.validate(token)) {
-            throw new Forbidden("Invalid token");
+            throw new Unauthorized("Invalid token");
         }
 
     }
 
     @Delete("/valid")
+    @Returns(204)
     async deleteToken(@BodyParams("user") user: string) {
         await Core.Account.Token.del(user);
     }

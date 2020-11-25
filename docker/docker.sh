@@ -16,12 +16,10 @@ else
   cd "$DIR/../back" && npm run build
 fi
 
-echo "Building for amd64"
-"$DIR/amd/amd64.sh" &
+cp "$DIR/DockerFile" "$DIR/../DockerFile"
 
-echo "Building for arm64"
-"$DIR/arm/arm64.sh" &
+cd "$DIR/.." && docker buildx build --platform linux/arm64,linux/amd64  -f ./DockerFile  -t elyspio/authentication --push .
 
-wait
+rm "$DIR/../DockerFile"
 
 cd $origin

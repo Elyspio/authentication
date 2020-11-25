@@ -1,44 +1,18 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
+		"outDir": "./build",
+		"target": "ES2020",
+		"lib": ["es2016", "dom", "ESNext"],
+		"typeRoots": ["./node_modules/@types"],
 		"module": "commonjs",
-		"target": "es2016",
-		"sourceMap": false,
-		"declaration": false,
+		"moduleResolution": "node",
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"moduleResolution": "node",
-		"isolatedModules": false,
-		"suppressImplicitAnyIndexErrors": false,
-		"noImplicitAny": false,
-		"strictNullChecks": true,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"allowSyntheticDefaultImports": true,
-		"importHelpers": true,
-		"newLine": "LF",
-		"noEmit": false,
-		"outDir": "build",
-		"resolveJsonModule": true,
-		"lib": [
-			"es7",
-			"dom",
-			"ESNext",
-			"esnext.asynciterable"
-		],
-		"typeRoots": [
-			"./node_modules/@types"
-		]
+		"sourceMap": false,
+		"declaration": false,
+		"allowSyntheticDefaultImports": true
 	},
-	"include": [
-		"./src/**/*.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"./public",
-		"dist",
-		"test"
-	],
-	"linterOptions": {
-		"exclude": []
-	}
+	"include": ["./src/**/*.ts"],
+	"exclude": ["node_modules", "./public", "dist", "test"]
 }

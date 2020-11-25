@@ -5,9 +5,9 @@ import {connect, ConnectedProps} from "react-redux";
 import {Dispatch} from "redux";
 import {RootState} from "../store/reducer";
 import {toggleTheme} from "../store/module/theme/action";
-import Appbar from "./Appbar/Appbar";
+import Appbar from "./appbar/Appbar";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
-import Drawer from "@bit/elyspio.test.drawer";
+import {Drawer} from "./utils/drawer/Drawer";
 import Login from "./account/Login";
 
 const mapStateToProps = (state: RootState) => ({theme: state.theme.current})

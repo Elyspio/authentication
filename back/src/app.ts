@@ -4,12 +4,7 @@ import {PlatformExpress} from "@tsed/platform-express";
 import {Server} from "./server";
 
 if (require.main === module) {
-    main();
-}
-
-
-async function main() {
-    return bootstrap()
+    bootstrap()
 }
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 import './Login.scss'
 import {Button, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
-import {AccountApi} from "../../api/account";
+import {AccountApi} from "../../services/authentication";
 
 
 interface Props {
