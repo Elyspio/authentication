@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "cross-env ACCOUNT_PATH=./accounts.json nodemon  src/app.ts",
+		"start": "cross-env ACCOUNT_PATH=./accounts.json nodemon src/app.ts",
 		"build": "tsc",
 		"docker": "wsl ../docker/docker.sh"
 	},
@@ -11,23 +11,25 @@
 		"@tsed/common": "^6.11.2",
 		"@tsed/core": "^6.11.2",
 		"@tsed/di": "^6.11.2",
-		"@tsed/schema": "^6.11.2",
 		"@tsed/platform-express": "^6.11.2",
+		"@tsed/schema": "^6.11.2",
 		"@tsed/swagger": "^6.11.2",
+		"axios": "^0.21.0",
 		"body-parser": "^1.19.0",
 		"compression": "^1.7.4",
 		"cookie-parser": "^1.4.5",
 		"cors": "^2.8.5",
-		"method-override": "^3.0.0",
-		"axios": "^0.21.0",
-		"tslib": "^2.0.3",
+		"dayjs": "^1.9.6",
 		"md5": "^2.3.0",
-		"cross-env": "^7.0.2"
+		"method-override": "^3.0.0",
+		"tslib": "^2.0.3"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.8",
 		"@types/md5": "^2.2.1",
 		"@types/node": "^14.14.9",
+		"@types/multer": "^1.4.4",
+		"cross-env": "^7.0.2",
 		"nodemon": "latest",
 		"ts-node": "latest",
 		"typescript": "latest"

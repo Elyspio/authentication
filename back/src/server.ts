@@ -1,11 +1,12 @@
 import {Configuration, Inject} from "@tsed/di";
-import {PlatformApplication} from "@tsed/common";
+import {$log, PlatformApplication} from "@tsed/common";
 import {middlewares} from "./middleware/common/raw";
 import * as path from "path";
 import "@tsed/swagger";
 
 export const rootDir = __dirname;
-let frontPath = path.resolve(rootDir, "..", "..", "front", "build");
+let frontPath = path.resolve(...process.env.NODE_ENV === "production" ? [rootDir, "..", "front", "build"] : [rootDir, "..", "..", "front", "build"]);
+$log.info("frontPath", frontPath)
 
 @Configuration({
     rootDir,
@@ -21,6 +22,9 @@ let frontPath = path.resolve(rootDir, "..", "..", "front", "build");
     ],
     statics: {
         "/": [
+            {root: frontPath}
+        ],
+        "/authentication": [
             {root: frontPath}
         ]
     },

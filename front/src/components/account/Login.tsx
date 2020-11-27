@@ -2,7 +2,7 @@ import React from 'react';
 import './Login.scss'
 import {Button, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
-import {AccountApi} from "../../services/authentication";
+import {Services} from "../../services";
 
 
 interface Props {
@@ -13,9 +13,7 @@ interface Props {
 
 function Login(props: Props) {
 
-    const [open, setOpen] = React.useState(false);
-    const [token, setToken] = React.useState("");
-    const [password, setMdp] = React.useState("")
+    const [password, setPassword] = React.useState("")
     const [name, setName] = React.useState("")
     const [snack, setSnack] = React.useState({
         open: false,
@@ -25,12 +23,13 @@ function Login(props: Props) {
 
     const submit = async () => {
 
-        let authorisation = await AccountApi.instance.isAuthorized({name, password});
-        if (authorisation.success) {
+        let authorisation = await Services.authentication.isAuthorized({name, password});
+        if (authorisation.success && authorisation.token) {
 
             if (props.onAuthorized) {
                 props.onAuthorized();
             }
+
 
             setSnack({
                 ...snack,
@@ -38,8 +37,6 @@ function Login(props: Props) {
                 message: `OK, token ${authorisation.token}`,
                 severity: "success"
             })
-
-            setToken(authorisation.token as string);
         } else {
             setSnack({
                 ...snack,
@@ -53,19 +50,18 @@ function Login(props: Props) {
             }
         }
 
-        setOpen(false);
-        setMdp("")
+        setPassword("")
         // setName("")
     }
 
     const isValid = async () => {
 
-        let authorisation = await AccountApi.instance.isValid(token);
-        if (authorisation.success) {
+        let {success} = await Services.authentication.isValid();
+        if (success) {
             setSnack({
                 ...snack,
                 open: true,
-                message: `OK, token ${authorisation.token}`,
+                message: `OK`,
                 severity: "success"
             })
         } else {
@@ -80,9 +76,6 @@ function Login(props: Props) {
 
 
     }
-
-
-
 
 
     const body = (
@@ -101,7 +94,7 @@ function Login(props: Props) {
                 label="Password"
                 value={password}
                 type={"password"}
-                onChange={e => setMdp(e.target.value)}/>
+                onChange={e => setPassword(e.target.value)}/>
 
             <Button color={"primary"} type={"submit"} onClick={submit}>Submit</Button>
 

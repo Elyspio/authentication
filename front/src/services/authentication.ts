@@ -1,16 +1,7 @@
-import {Interactor} from "../api/Interactor";
-import {getApiPath} from "../config/api";
 import md5 from "md5"
 import {Apis} from "../api";
 
-export class AccountApi extends Interactor {
-
-    private static _instance: AccountApi = new AccountApi(getApiPath("core/authentication"));
-
-    public static get instance() {
-        return this._instance;
-    }
-
+export class AuthenticationService {
 
     public async isAuthorized({name, password}: { name: string, password: string }): Promise<{
         success: boolean,
@@ -30,13 +21,14 @@ export class AccountApi extends Interactor {
         return {success: false};
     }
 
-    public async isValid(token?: string) {
+    public async isValid() {
+        let success = false
         try {
-            const res = await super.post("/valid", undefined, {token});
-            return res.status === 200 ? {success: true, token} : {success: false};
+            const res = await Apis.authentication.authenticationValidToken();
+            success = res.status >= 200 && res.status < 300
         } catch (e) {
-            return {success: false}
         }
+        return {success};
     }
 
 }

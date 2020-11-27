@@ -8,7 +8,14 @@ export const middlewares: any[] = [];
 
 
 middlewares.push(
-    cors(),
+    cors({
+        origin: [
+            "http://localhost:3000",
+            "http://elyspio.fr",
+        ],
+        credentials: true,
+        exposedHeaders: ["set-cookie"],
+    }),
     cookieParser(),
     compress({}),
     methodOverride(),

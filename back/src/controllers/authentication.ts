@@ -1,11 +1,11 @@
-import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Res} from "@tsed/common";
+import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Res} from "@tsed/common";
 import {Core} from "../core/authentication/authentication";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_name, token_expiration} from '../config/authentication';
 import * as Express from "express";
 import {Returns} from "@tsed/schema";
 import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
-
+import * as dayjs from "dayjs"
 @Controller("/authentication")
 export class Authentication {
 
@@ -29,15 +29,15 @@ export class Authentication {
 
         if (cookies[authorization_cookie_name]) {
             $log.info("cookies", {cookies: cookies})
-
             return {token: cookies[authorization_cookie_name], comment: "already logged in"};
         } else {
             const {token, authorized} = await Core.Account.verify({name: name, hash: hash})
 
             if (authorized && token) {
                 // httpOnly = false pour pouvoir les utiliser dans le JS
-                res.cookie(authorization_cookie_name, token, {expires: new Date(Date.now() + token_expiration)})
+                res.cookie(authorization_cookie_name, token, {expires: dayjs().add(15, "day").toDate()})
                     .json({token})
+
             } else {
                 throw new Unauthorized("Token required")
             }
