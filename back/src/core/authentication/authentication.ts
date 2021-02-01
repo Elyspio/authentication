@@ -2,8 +2,8 @@ import {files, Storage} from "../storage";
 import * as md5 from "md5";
 import {UserNotFound} from "./errors";
 import {token_expiration} from "../../config/authentication";
-import {Login} from "../../controllers/types/request";
 import {$log} from "@tsed/common";
+import {PostLoginRequest} from "../../web/controllers/authentication/models";
 
 
 export namespace Core.Account {
@@ -26,7 +26,7 @@ export namespace Core.Account {
     }
 
 
-    export async function verify(user: Login["body"]) {
+    export async function verify(user: PostLoginRequest) {
         const salt = users[user.name].salt;
 
 

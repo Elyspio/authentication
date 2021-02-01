@@ -11,9 +11,8 @@ export function getApiPath(api?: string) {
 
     }
 
-    if(base.slice(-1)[0] === "/")
-    {
-        base = base.slice(0, base.length -1)
+    if (base.slice(-1)[0] === "/") {
+        base = base.slice(0, base.length - 1)
     }
 
     return base;

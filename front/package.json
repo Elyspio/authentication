@@ -12,26 +12,22 @@
 		"generate-back-api": "python ./scripts/generate-api.py -i http://localhost:4000/swagger/swagger.json -o src/api/core"
 	},
 	"dependencies": {
-		"@material-ui/core": "4.11.0",
-		"@material-ui/icons": "4.9.1",
-		"@material-ui/lab": "^4.0.0-alpha.56",
-		"@reduxjs/toolkit": "1.4.0",
-		"axios": "^0.21.0",
+		"@material-ui/core": "4.11.3",
+		"@material-ui/icons": "4.11.2",
+		"@material-ui/lab": "4.0.0-alpha.57",
+		"@reduxjs/toolkit": "1.5.0",
+		"axios": "^0.21.1",
 		"md5": "^2.3.0",
 		"react": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"react-redux": "7.2.2",
 		"redux": "4.0.5"
 	},
-	"peerDependencies": {
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1"
-	},
 	"devDependencies": {
-		"@types/node": "^14.14.9",
+		"@types/node": "^14.14.22",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
-		"@types/react-redux": "^7.1.11",
+		"@types/react-redux": "^7.1.16",
 		"node-sass": "^4",
 		"react-scripts": "^4.0.1",
 		"typescript": "latest",
