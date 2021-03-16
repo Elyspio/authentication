@@ -1,10 +1,10 @@
-import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Res} from "@tsed/common";
+import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Request, Res} from "@tsed/common";
 import {Core} from "../../../core/authentication/authentication";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_name, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
 import {Returns} from "@tsed/schema";
-import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
+import { PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
 
 @Controller("/authentication")
 export class Authentication {
@@ -18,7 +18,7 @@ export class Authentication {
     @Post("/login")
     @Returns(200, PostLoginModel)
     @Returns(Unauthorized.STATUS, Unauthorized)
-    async login(@Cookies() cookies: any, @BodyParams() {
+    async login(@Req() {cookies}: Express.Request, @BodyParams() {
         hash,
         name
     }: PostLoginRequest, @Res() res: Express.Response) {
@@ -52,7 +52,7 @@ export class Authentication {
     @Post("/login/init")
     @Returns(200, PostLoginModelWithSalt)
     @Returns(Unauthorized.STATUS, Unauthorized)
-    async loginInit(@Cookies() cookies: any, @BodyParams() {name}: PostLoginInitRequest) {
+    async loginInit(@Req() {cookies}: Express.Request, @BodyParams(PostLoginInitRequest) {name}: PostLoginInitRequest) {
 
         $log.info("cookies", cookies);
 
@@ -70,7 +70,9 @@ export class Authentication {
     @Post("/valid")
     @Returns(204)
     @Returns(Unauthorized.STATUS, Unauthorized)
-    async validToken(@BodyParams("token") token: string, @Cookies(authorization_cookie_name) auth_cookie, @Res() res: Express.Response) {
+    async validToken(@BodyParams("token") token: string, @Req() {cookies}: Express.Request) {
+
+        const auth_cookie = cookies[authorization_cookie_name]
 
         $log.info({token, auth_cookie});
 
@@ -78,7 +80,6 @@ export class Authentication {
 
         if (token === undefined || !await Core.Account.Token.validate(token)) {
             throw new Unauthorized("Invalid token");
-
         }
 
     }

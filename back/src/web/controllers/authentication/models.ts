@@ -28,3 +28,5 @@ export class PostLoginModelWithSalt {
     @Property()
     salt: string
 }
+
+
