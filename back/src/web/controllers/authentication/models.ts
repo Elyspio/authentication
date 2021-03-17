@@ -1,4 +1,4 @@
-import {Property} from "@tsed/schema";
+import {Property, Required} from "@tsed/schema";
 
 export class PostLoginModel {
     @Property()
@@ -26,7 +26,7 @@ export class PostLoginInitRequest {
 
 export class PostLoginModelWithSalt {
     @Property()
+    @Required()
     salt: string
 }
-
 

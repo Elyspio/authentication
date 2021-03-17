@@ -4,11 +4,17 @@ import {UserNotFound} from "./errors";
 import {token_expiration} from "../../config/authentication";
 import {$log} from "@tsed/common";
 import {PostLoginRequest} from "../../web/controllers/authentication/models";
+import {Accounts} from "./types";
+import {Unauthorized} from "@tsed/exceptions";
 
 
 export namespace Core.Account {
 
     export const users: { [p: string]: { salt: string, token?: string } } = {};
+
+    async function getStoredAccounts() {
+        return JSON.parse(await Storage.read(files.account)) as Accounts
+    }
 
     export async function init(username: string): Promise<string> {
 
@@ -32,9 +38,9 @@ export namespace Core.Account {
 
         $log.debug("verify", {user, users})
 
-        let account = JSON.parse(await Storage.read(files.account));
-        const userStoredHash = account[user.name]
-        $log.debug("infos", {user, account})
+        let accounts = await getStoredAccounts()
+        const userStoredHash = accounts[user.name].hash
+        $log.debug("infos", {user, accounts})
         if (userStoredHash === undefined) {
             throw UserNotFound(user.name)
         }
@@ -54,6 +60,16 @@ export namespace Core.Account {
         return {authorized: isAuthorized, token: users[user.name].token};
     }
 
+
+    export async function getAccountData(username: string) {
+        if(users[username]?.token != undefined) {
+            const accounts = await getStoredAccounts()
+            return accounts[username].keys;
+        }
+        else {
+            throw new Unauthorized("Your not connected, please connect and try again")
+        }
+    }
 
     export namespace Token {
         export let validate = (token: string) => Object.values(users).some(v => token === v.token);

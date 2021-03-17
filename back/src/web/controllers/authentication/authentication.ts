@@ -1,10 +1,10 @@
-import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Request, Res} from "@tsed/common";
+import {$log, BodyParams, Controller, Delete, Get, Post, Req, Res} from "@tsed/common";
 import {Core} from "../../../core/authentication/authentication";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_name, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
 import {Returns} from "@tsed/schema";
-import { PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
+import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
 
 @Controller("/authentication")
 export class Authentication {
@@ -14,6 +14,7 @@ export class Authentication {
         return {users: Core.Account.users}
     }
 
+    // region login
 
     @Post("/login")
     @Returns(200, PostLoginModel)
@@ -89,5 +90,6 @@ export class Authentication {
     async deleteToken(@BodyParams("user") user: string) {
         await Core.Account.Token.del(user);
     }
+
 
 }
