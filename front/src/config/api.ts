@@ -2,7 +2,7 @@ const isDev = process.env.NODE_ENV === "development"
 
 
 export function getApiPath(api?: string) {
-    let base = `http://localhost:4000${api ?? ""}`
+    let base = `http://localhost:4004${api ?? ""}`
 
     if (!isDev) {
 

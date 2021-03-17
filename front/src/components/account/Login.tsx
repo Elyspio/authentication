@@ -3,7 +3,7 @@ import './Login.scss'
 import {Button, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {Services} from "../../services";
-
+import {toast} from "react-toastify";
 
 interface Props {
     onAuthorized?: Function,
@@ -15,11 +15,6 @@ function Login(props: Props) {
 
     const [password, setPassword] = React.useState("")
     const [name, setName] = React.useState("")
-    const [snack, setSnack] = React.useState({
-        open: false,
-        message: "",
-        severity: ""
-    });
 
     const submit = async () => {
 
@@ -30,20 +25,10 @@ function Login(props: Props) {
                 props.onAuthorized();
             }
 
+            toast.success("Ok")
 
-            setSnack({
-                ...snack,
-                open: true,
-                message: `OK, token ${authorisation.token}`,
-                severity: "success"
-            })
         } else {
-            setSnack({
-                ...snack,
-                open: true,
-                message: "Vous n'êtes pas autorisé à faire cette action",
-                severity: "error"
-            })
+            toast.error("Vous n'êtes pas autorisé à faire cette action")
 
             if (props.onForbidden) {
                 props.onForbidden();
@@ -58,20 +43,10 @@ function Login(props: Props) {
 
         let {success} = await Services.authentication.isValid();
         if (success) {
-            setSnack({
-                ...snack,
-                open: true,
-                message: `OK`,
-                severity: "success"
-            })
-        } else {
-            setSnack({
-                ...snack,
-                open: true,
-                message: "Vous n'êtes pas autorisé à faire cette action",
-                severity: "error"
-            })
+            toast.success("OK")
 
+        } else {
+            toast.error("Vous n'êtes pas autorisé à faire cette action")
         }
 
 
@@ -104,13 +79,6 @@ function Login(props: Props) {
     return (
         <div className={"login"}>
             {body}
-
-            <Snackbar open={snack.open} autoHideDuration={6000} onClose={() => setSnack({...snack, open: false})} anchorOrigin={{horizontal: "center", vertical: "bottom"}}>
-                <Alert onClose={() => setSnack({...snack, open: false})} severity={snack.severity as any}>
-                    {snack.message}
-                </Alert>
-            </Snackbar>
-
 
             <Button onClick={isValid}>IsValid</Button>
 

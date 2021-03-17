@@ -7,21 +7,30 @@ import Application from "./components/Application";
 import {ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
 import {RootState} from "./store/reducer";
+import {ToastContainer} from "react-toastify";
+import {updateToastTheme} from "./components/utils/toast";
+import 'react-toastify/dist/ReactToastify.css';
 
 
-const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
+const mapStateToProps = (state: RootState) => ({theme: state.theme.current === "dark" ? themes.dark : themes.light})
 
 
 const connector = connect(mapStateToProps);
 type ReduxTypes = ConnectedProps<typeof connector>;
 
 class Wrapper extends Component<ReduxTypes> {
-    render() {
-        const theme = this.props.theme === "dark" ? themes.dark : themes.light;
 
+    componentDidUpdate(prevProps: Readonly<ReduxTypes>, prevState: Readonly<{}>, snapshot?: any) {
+        if(prevProps.theme !== this.props.theme) {
+            updateToastTheme()
+        }
+    }
+
+    render() {
         return (
-            <ThemeProvider theme={theme}>
+            <ThemeProvider theme={this.props.theme}>
                 <Application/>
+                <ToastContainer position={"bottom-center"}/>
             </ThemeProvider>
         );
     }

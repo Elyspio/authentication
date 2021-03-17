@@ -8,10 +8,10 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"docker": "cd ../back && yarn docker",
-		"generate-back-api": "python ./scripts/generate-api.py -i http://localhost:4000/swagger/swagger.json -o src/api/core"
+		"docker": "cd ../back && yarn docker"
 	},
 	"dependencies": {
+		"react-toastify": "^7.0.3",
 		"@material-ui/core": "4.11.3",
 		"@material-ui/icons": "4.11.2",
 		"@material-ui/lab": "4.0.0-alpha.57",
