@@ -22,12 +22,12 @@ RUN cd /front && npm run build
 # Running
 FROM node:14-alpine
 
-COPY --from=builder-front /front/build /front
-COPY --from=builder-back /back/package.json /back/package.json
-RUN cd /back && npm i --only=production
-COPY --from=builder-back /back/build /back/build
+COPY --from=builder-front /front/build /app/front/build
+COPY --from=builder-back /back/package.json /app/back/package.json
+RUN cd /app/back && npm i --only=production
+COPY --from=builder-back /back/build /app/back/build
 
-WORKDIR /back
+WORKDIR /app/back
 ENV LOG_FOLDER /logs
 ENV NODE_ENV production
 CMD ["node", "build/app.js"]

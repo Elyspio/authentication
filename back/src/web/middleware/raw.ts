@@ -7,15 +7,26 @@ import * as methodOverride from "method-override";
 export const middlewares: any[] = [];
 
 
-middlewares.push(
-    cors({
+if (process.env.NODE_ENV === "production") {
+    middlewares.push(cors({
         origin: [
-            "http://localhost:3000",
             "http://elyspio.fr",
         ],
         credentials: true,
         exposedHeaders: ["set-cookie"],
-    }),
+    }),)
+} else {
+    middlewares.push(cors({
+        origin: [
+            "http://localhost:3000",
+            "http://localhost:3001",
+        ],
+        credentials: true,
+        exposedHeaders: ["set-cookie"],
+    }))
+}
+
+middlewares.push(
     cookieParser(),
     compress({}),
     methodOverride(),

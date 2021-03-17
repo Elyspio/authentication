@@ -7,7 +7,7 @@ export const rootDir = path.resolve(__dirname, "..",);
 
 let frontPath = Helper.isDev()
     ? path.resolve(rootDir, '..', '..', 'front', 'build')
-    : path.resolve(rootDir, '..', 'front', 'build');
+    : "/app/front/build";
 $log.info({frontPath, rootDir});
 
 export const webConfig: Partial<TsED.Configuration> = {
