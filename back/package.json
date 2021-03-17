@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"start": "cross-env ACCOUNT_PATH=./accounts.json cross-env HTTP_PORT=4001 nodemon src/app.ts",
+		"start": "cross-env ACCOUNT_PATH=./accounts.json cross-env HTTP_PORT=4004 nodemon src/app.ts",
 		"build": "tsc",
 		"docker": "docker buildx build --platform \"linux/amd64,linux/arm64\"  -f ../Dockerfile -t elyspio/authentication --push .."
 	},

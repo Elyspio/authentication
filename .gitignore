@@ -8,3 +8,4 @@ front/.bitmap
 .idea/
 front/.babelrc
 front/src/api/core
+back/accounts.json
