@@ -6,5 +6,5 @@ const instance = axios.create({withCredentials: true,})
 
 
 export const Apis = {
-    authentication: new AuthenticationApi({basePath: getApiPath(), baseOptions: {}}, getApiPath(), instance)
+    authentication: new AuthenticationApi(undefined, getApiPath(), instance)
 }
