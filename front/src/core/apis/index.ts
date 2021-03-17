@@ -1,5 +1,5 @@
 import {AuthenticationApi} from "./core";
-import {getApiPath} from "../config/api";
+import {getApiPath} from "../../config/api";
 import {default as axios,} from "axios"
 
 const instance = axios.create({withCredentials: true,})

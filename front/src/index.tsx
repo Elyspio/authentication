@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import {connect, ConnectedProps, Provider} from "react-redux";
-import store from "./store";
-import Application from "./components/Application";
+import store from "./view/store";
+import Application from "./view/components/Application";
 import {ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
-import {RootState} from "./store/reducer";
+import {RootState} from "./view/store/reducer";
 import {ToastContainer} from "react-toastify";
-import {updateToastTheme} from "./components/utils/toast";
+import {updateToastTheme} from "./view/components/utils/toast";
 import 'react-toastify/dist/ReactToastify.css';
 
 

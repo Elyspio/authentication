@@ -1,5 +1,5 @@
 import md5 from "md5"
-import {Apis} from "../api";
+import {Apis} from "../apis";
 
 export class AuthenticationService {
 

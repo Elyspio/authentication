@@ -1,4 +1,4 @@
-import {getCurrentTheme} from "../../config/theme";
+import {getCurrentTheme} from "../../../config/theme";
 import store from "../../store";
 
 export function updateToastTheme() {
