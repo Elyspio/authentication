@@ -21,7 +21,7 @@ type ReduxTypes = ConnectedProps<typeof connector>;
 class Wrapper extends Component<ReduxTypes> {
 
     componentDidUpdate(prevProps: Readonly<ReduxTypes>, prevState: Readonly<{}>, snapshot?: any) {
-        if(prevProps.theme !== this.props.theme) {
+        if (prevProps.theme !== this.props.theme) {
             updateToastTheme()
         }
     }

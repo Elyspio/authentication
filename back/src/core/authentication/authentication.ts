@@ -62,11 +62,10 @@ export namespace Core.Account {
 
 
     export async function getAccountData(username: string) {
-        if(users[username]?.token != undefined) {
+        if (users[username]?.token != undefined) {
             const accounts = await getStoredAccounts()
             return accounts[username].keys;
-        }
-        else {
+        } else {
             throw new Unauthorized("Your not connected, please connect and try again")
         }
     }

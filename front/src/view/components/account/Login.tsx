@@ -1,9 +1,9 @@
 import React from 'react';
 import './Login.scss'
-import {Button, Paper, Snackbar, TextField, Typography} from "@material-ui/core";
-import {Alert} from "@material-ui/lab";
+import {Button, Paper, TextField, Typography} from "@material-ui/core";
 import {Services} from "../../../core/services";
 import {toast} from "react-toastify";
+import Debug from "./Debug";
 
 interface Props {
     onAuthorized?: Function,
@@ -15,6 +15,14 @@ function Login(props: Props) {
 
     const [password, setPassword] = React.useState("")
     const [name, setName] = React.useState("")
+    const [debug, setDebug] = React.useState(false)
+
+    React.useEffect(() => {
+        const url = new URLSearchParams(window.location.search.slice(1));
+        const param = url.get("debug");
+        setDebug(process.env.NODE_ENV === "development" || param === "true")
+    }, [])
+
 
     const submit = async () => {
 
@@ -37,19 +45,6 @@ function Login(props: Props) {
 
         setPassword("")
         // setName("")
-    }
-
-    const isValid = async () => {
-
-        let {success} = await Services.authentication.isValid();
-        if (success) {
-            toast.success("OK")
-
-        } else {
-            toast.error("Vous n'êtes pas autorisé à faire cette action")
-        }
-
-
     }
 
 
@@ -80,8 +75,7 @@ function Login(props: Props) {
         <div className={"login"}>
             {body}
 
-            <Button onClick={isValid}>IsValid</Button>
-
+            {debug && <Debug/>}
         </div>
     );
 }

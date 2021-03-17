@@ -1,5 +1,4 @@
 import {exec as _exec, ExecException} from "child_process";
-import {$log} from "@tsed/common";
 
 
 export namespace Helper {
