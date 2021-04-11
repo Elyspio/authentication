@@ -1,7 +1,7 @@
 import {$log, BodyParams, Controller, Delete, Get, Post, Req, Res} from "@tsed/common";
 import {Core} from "../../../core/authentication/authentication";
 import {Unauthorized,} from "@tsed/exceptions"
-import {authorization_cookie_name, token_expiration} from '../../../config/authentication';
+import {authorization_cookie_login, authorization_cookie_token, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
 import {Returns} from "@tsed/schema";
 import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./models";
@@ -25,12 +25,12 @@ export class Authentication {
     }: PostLoginRequest, @Res() res: Express.Response) {
 
 
-        let token = cookies[authorization_cookie_name];
+        let token = cookies[authorization_cookie_token];
 
 
         if (token) {
             if (!await Core.Account.Token.validate(token)) {
-                res.clearCookie(authorization_cookie_name)
+                res.clearCookie(authorization_cookie_token)
                 throw new Unauthorized("Invalid token")
             } else {
                 return {token: token, comment: "Already logged in"};
@@ -40,7 +40,8 @@ export class Authentication {
             const {token, authorized} = await Core.Account.verify({name: name, hash: hash})
 
             if (authorized && token) {
-                res.cookie(authorization_cookie_name, token, {maxAge: token_expiration, secure: true, httpOnly: true})
+                res.cookie(authorization_cookie_login, name, {maxAge: token_expiration, secure: true, httpOnly: true})
+                res.cookie(authorization_cookie_token, token, {maxAge: token_expiration, secure: true, httpOnly: true})
                     .json({token})
 
             } else {
@@ -57,9 +58,9 @@ export class Authentication {
 
         $log.info("cookies", cookies);
 
-        if (cookies[authorization_cookie_name]) {
+        if (cookies[authorization_cookie_token]) {
 
-            return {token: cookies[authorization_cookie_name], comment: "already logged in"};
+            return {token: cookies[authorization_cookie_token], comment: "already logged in"};
         } else {
             const ret = new PostLoginModelWithSalt();
             ret.salt = await Core.Account.init(name)
@@ -71,13 +72,15 @@ export class Authentication {
     @Post("/valid")
     @Returns(204)
     @Returns(Unauthorized.STATUS, Unauthorized)
-    async validToken(@BodyParams("token") token: string, @Req() {cookies}: Express.Request) {
+    async validToken(@BodyParams("token") token: string, @Req() {cookies, headers}: Express.Request) {
 
-        const auth_cookie = cookies[authorization_cookie_name]
+        const cookieAuth = cookies[authorization_cookie_token]
+        const headerToken = headers[authorization_cookie_token];
 
-        $log.info({token, auth_cookie});
+        $log.info("validToken", {cookie: cookieAuth, header: headerToken, token})
 
-        token = token ?? auth_cookie
+        token = token ?? cookieAuth;
+        token = token ?? headerToken as string
 
         if (token === undefined || !await Core.Account.Token.validate(token)) {
             throw new Unauthorized("Invalid token");
