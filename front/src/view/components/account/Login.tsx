@@ -1,83 +1,73 @@
 import React from 'react';
 import './Login.scss'
-import {Button, Paper, TextField, Typography} from "@material-ui/core";
+import {Button, CircularProgress, Paper, TextField, Typography} from "@material-ui/core";
 import {Services} from "../../../core/services";
 import {toast} from "react-toastify";
-import Debug from "./Debug";
+import {useAsyncCallback} from "../../hooks/useAsyncCallback";
 
 interface Props {
-    onAuthorized?: Function,
-    onForbidden?: Function,
+	onAuthorized?: Function,
+	onForbidden?: Function,
 }
 
 
 function Login(props: Props) {
 
-    const [password, setPassword] = React.useState("")
-    const [name, setName] = React.useState("")
-    const [debug, setDebug] = React.useState(false)
+	const [password, setPassword] = React.useState("")
+	const [name, setName] = React.useState("")
 
-    React.useEffect(() => {
-        const url = new URLSearchParams(window.location.search.slice(1));
-        const param = url.get("debug");
-        setDebug(process.env.NODE_ENV === "development" || param === "true")
-    }, [])
+	const [submit, {isExecuting}] = useAsyncCallback(async () => {
 
+		let authorisation = await Services.authentication.isAuthorized({name, password});
+		if (authorisation.success && authorisation.token) {
 
-    const submit = async () => {
+			if (props.onAuthorized) {
+				props.onAuthorized();
+			}
 
-        let authorisation = await Services.authentication.isAuthorized({name, password});
-        if (authorisation.success && authorisation.token) {
+			toast.success("Ok")
 
-            if (props.onAuthorized) {
-                props.onAuthorized();
-            }
+		} else {
+			toast.error("Vous n'êtes pas autorisé à faire cette action")
 
-            toast.success("Ok")
+			if (props.onForbidden) {
+				props.onForbidden();
+			}
+		}
 
-        } else {
-            toast.error("Vous n'êtes pas autorisé à faire cette action")
-
-            if (props.onForbidden) {
-                props.onForbidden();
-            }
-        }
-
-        setPassword("")
-        // setName("")
-    }
+		setPassword("")
+		// setName("")
+	}, [props.onForbidden, props.onAuthorized, name, password])
 
 
-    const body = (
-        <Paper className={"login-body"} onKeyDown={e => e.keyCode === 13 && submit()}>
+	return (
+		<Paper elevation={2} className={"Login"} onKeyDown={e => e.key === "Enter" && submit()}>
 
-            <Typography variant={"h6"}>Login</Typography>
+			<Typography variant={"h6"}>Login</Typography>
 
-            <TextField
-                id={"login-name"}
-                label="Name"
-                value={name}
-                onChange={e => setName(e.target.value)}/>
+			<TextField
+				id={"login-name"}
+				label="Name"
+				value={name}
+				onChange={e => setName(e.target.value)}/>
 
-            <TextField
-                id={"login-password"}
-                label="Password"
-                value={password}
-                type={"password"}
-                onChange={e => setPassword(e.target.value)}/>
+			<TextField
+				id={"login-password"}
+				label="Password"
+				value={password}
+				type={"password"}
+				onChange={e => setPassword(e.target.value)}/>
 
-            <Button color={"primary"} type={"submit"} onClick={submit}>Submit</Button>
+			<Button
+				disabled={name.length === 0 || password.length === 0}
+				color={"primary"}
+				type={"submit"}
+				onClick={submit}>
+				{isExecuting ? <CircularProgress/> : "Submit"}
+			</Button>
 
-        </Paper>
-    );
-
-    return (
-        <div className={"login"}>
-            {body}
-
-            {debug && <Debug/>}
-        </div>
-    );
+		</Paper>
+	);
 }
 
 export default Login;

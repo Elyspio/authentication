@@ -1,10 +1,9 @@
 import {getCurrentTheme} from "../../../config/theme";
-import store from "../../store";
+import {ThemeState} from "../../../store/module/theme/reducer";
 
-export function updateToastTheme() {
-    const theme = store.getState().theme.current;
-    const {palette} = getCurrentTheme(theme);
-    const css = `
+export function updateToastTheme(theme: ThemeState["current"]) {
+	const {palette} = getCurrentTheme(theme);
+	const css = `
     .Toastify__toast--default {
         background-color: ${palette.background.default}
     }
@@ -21,13 +20,14 @@ export function updateToastTheme() {
         background-color: ${palette.error[theme]}
     }
     `
-    const id = "style-toastify";
-    let el = window.document.querySelector(`#${id}`)
-    if (el === null) {
-        el = window.document.createElement("style")
-        el.id = id
-    }
-    el.innerHTML = css;
-    window.document.head.appendChild(el);
+	console.log("switch theme", theme);
+	const id = "style-toastify";
+	let el = window.document.querySelector(`#${id}`)
+	if (el === null) {
+		el = window.document.createElement("style")
+		el.id = id
+		window.document.head.appendChild(el);
+	}
+	el.innerHTML = css;
 }
 

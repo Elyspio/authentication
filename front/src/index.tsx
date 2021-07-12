@@ -1,48 +1,44 @@
-import React, {Component} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
-import {connect, ConnectedProps, Provider} from "react-redux";
-import store from "./view/store";
+import {Provider} from "react-redux";
+import store, {useAppSelector} from "./store";
 import Application from "./view/components/Application";
 import {ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
-import {RootState} from "./view/store/reducer";
-import {ToastContainer} from "react-toastify";
-import {updateToastTheme} from "./view/components/utils/toast";
-import 'react-toastify/dist/ReactToastify.css';
+import {Config} from "./config/window";
+import "react-toastify/dist/ReactToastify.css";
 
-
-const mapStateToProps = (state: RootState) => ({theme: state.theme.current === "dark" ? themes.dark : themes.light})
-
-
-const connector = connect(mapStateToProps);
-type ReduxTypes = ConnectedProps<typeof connector>;
-
-class Wrapper extends Component<ReduxTypes> {
-
-    componentDidUpdate(prevProps: Readonly<ReduxTypes>, prevState: Readonly<{}>, snapshot?: any) {
-        if (prevProps.theme !== this.props.theme) {
-            updateToastTheme()
-        }
-    }
-
-    render() {
-        return (
-            <ThemeProvider theme={this.props.theme}>
-                <Application/>
-                <ToastContainer position={"bottom-center"}/>
-            </ThemeProvider>
-        );
-    }
+declare global {
+	interface Window {
+		config: Config;
+	}
 }
 
-const ConnectedWrapper = connector(Wrapper) as any;
+
+function Wrapper() {
+	const theme = useAppSelector(state => state.theme.current === "dark" ? themes.dark : themes.light)
+
+	return (
+		<ThemeProvider theme={theme}>
+			<Application/>
+		</ThemeProvider>
+	);
+}
+
+function App() {
+
+	return (
+		<Provider store={store}>
+			<Wrapper/>
+		</Provider>
+	);
+}
+
 
 ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedWrapper/>
-    </Provider>,
-    document.getElementById('root')
+	<App/>,
+	document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

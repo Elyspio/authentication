@@ -11,12 +11,17 @@
 	.content {
 		height: 100%;
 		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 
 	.Drawer {
-		height: 100%;
+		height: calc(100% - 4rem);
 	}
+
+
 }
 
 

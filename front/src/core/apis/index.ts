@@ -1,10 +1,10 @@
-import {AuthenticationApi} from "./core";
-import {getApiPath} from "../../config/api";
-import {default as axios,} from "axios"
-
-const instance = axios.create({withCredentials: true,})
+import {AuthenticationApi} from "./backend"
 
 
 export const Apis = {
-    authentication: new AuthenticationApi(undefined, getApiPath(), instance)
+	authentication: new AuthenticationApi(undefined, window.config.endpoints.core)
 }
+
+
+
+

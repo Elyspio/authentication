@@ -1,53 +1,71 @@
 import * as React from 'react';
-import {Paper} from "@material-ui/core";
+import {Box} from "@material-ui/core";
 import "./Application.scss"
-import {connect, ConnectedProps} from "react-redux";
-import {Dispatch} from "redux";
-import {RootState} from "../store/reducer";
-import {toggleTheme} from "../store/module/theme/action";
-import Appbar from "./appbar/Appbar";
 import Brightness5Icon from '@material-ui/icons/Brightness5';
-import {Drawer} from "./utils/drawer/Drawer";
+import Brightness3Icon from '@material-ui/icons/Brightness3';
+import BuildIcon from '@material-ui/icons/Build';
+import {useAppDispatch, useAppSelector} from "../../store";
+import {toggleTheme} from "../../store/module/theme/action";
+import {withDrawer} from "./utils/drawer/Drawer.hoc";
 import Login from "./account/Login";
+import {toast, ToastContainer} from "react-toastify";
+import {updateToastTheme} from "./utils/toast";
+import {createDrawerAction} from "./utils/drawer/actions/Action";
+import {Services} from "../../core/services";
 
-const mapStateToProps = (state: RootState) => ({theme: state.theme.current})
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({toggleTheme: () => dispatch(toggleTheme())})
+const isValid = async () => {
+	let {success} = await Services.authentication.isValid();
+	if (success) {
+		toast.success("OK")
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type ReduxTypes = ConnectedProps<typeof connector>;
-
-export interface Props {
+	} else {
+		toast.error("Vous n'êtes pas autorisé à faire cette action")
+	}
 }
 
-interface State {
+
+function Application() {
+
+	const dispatch = useAppDispatch();
+
+	const theme = useAppSelector(s => s.theme.current)
+	const icon = theme === "dark" ? <Brightness5Icon/> : <Brightness3Icon/>;
+
+
+	React.useEffect(() => updateToastTheme(theme), [theme])
+
+	const forward = React.useCallback(() => {
+		const url = new URL(window.location.href);
+		const params = new URLSearchParams(url.search);
+		const target = params.get("target");
+		if (target) {
+			window.location.href = target;
+		}
+	}, [])
+
+	const drawer = withDrawer({
+		component: <Login onAuthorized={forward}/>,
+		actions: [
+			createDrawerAction(theme === "dark" ? "Light Mode" : "Dark Mode", {
+				icon,
+				onClick: () => dispatch(toggleTheme()),
+			}),
+			createDrawerAction("Verify token", {
+				onClick: isValid,
+				icon: <BuildIcon/>
+			})
+		],
+		title: "Login page"
+	})
+
+	return (
+		<Box className={"Application"} bgcolor={"background.default"}>
+			<ToastContainer/>
+			{drawer}
+		</Box>
+	);
 }
 
-class Application extends React.Component<Props & ReduxTypes, State> {
 
-    render() {
-
-        const forward = () => {
-            const url = new URL(window.location.href);
-            const params = new URLSearchParams(url.search);
-            const target = params.get("target");
-            if (target) {
-                window.location.href = target;
-            }
-        }
-
-
-        return (
-            <Paper square={true} className={"Application"}>
-                <Drawer position={"right"} actions={[{onClick: this.props.toggleTheme, text: "Switch lights", icon: <Brightness5Icon/>}]}>
-                    <div className="content">
-                        <Appbar appName={"Login page"}/>
-                        <Login onAuthorized={forward}/>
-                    </div>
-                </Drawer>
-            </Paper>
-        );
-    }
-}
-
-export default connector(Application)
+export default Application
