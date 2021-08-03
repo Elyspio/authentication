@@ -1,0 +1,13 @@
+version: "3"
+services:
+    server:
+        image: elyspio/authentication:latest
+        ports:
+            - "4002:4000"
+        volumes:
+            - ./config/back/accounts.json:/back/accounts.json
+            - ./config/front/conf.js:/front/conf.js
+        restart: always
+        environment:
+            ACCOUNT_PATH: "/back/accounts.json"
+        container_name: authentication

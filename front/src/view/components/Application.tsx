@@ -15,12 +15,12 @@ import {Services} from "../../core/services";
 
 
 const isValid = async () => {
-	let {success} = await Services.authentication.isValid();
+	let success = await Services.authentication.isValid();
 	if (success) {
-		toast.success("OK")
+		toast.success("Authorized")
 
 	} else {
-		toast.error("Vous n'êtes pas autorisé à faire cette action")
+		toast.error("Unauthorized")
 	}
 }
 

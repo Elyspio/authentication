@@ -18,16 +18,16 @@ import globalAxios, {AxiosInstance, AxiosPromise} from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import {
-	assertParamExists,
-	createRequestFunction,
-	DUMMY_BASE_URL,
-	serializeDataIfNeeded,
-	setApiKeyToObject,
-	setBasicAuthToObject,
-	setBearerAuthToObject,
-	setOAuthToObject,
-	setSearchParams,
-	toPathString
+    assertParamExists,
+    createRequestFunction,
+    DUMMY_BASE_URL,
+    serializeDataIfNeeded,
+    setApiKeyToObject,
+    setBasicAuthToObject,
+    setBearerAuthToObject,
+    setOAuthToObject,
+    setSearchParams,
+    toPathString
 } from './common';
 // @ts-ignore
 import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from './base';
@@ -159,7 +159,7 @@ export interface PostLoginInitRequest {
 	 * @type {string}
 	 * @memberof PostLoginInitRequest
 	 */
-	name?: string;
+	name: string;
 }
 
 /**
@@ -173,7 +173,7 @@ export interface PostLoginModel {
 	 * @type {string}
 	 * @memberof PostLoginModel
 	 */
-	token?: string;
+	token: string;
 	/**
 	 *
 	 * @type {string}
@@ -207,13 +207,13 @@ export interface PostLoginRequest {
 	 * @type {string}
 	 * @memberof PostLoginRequest
 	 */
-	hash?: string;
+	hash: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof PostLoginRequest
 	 */
-	name?: string;
+	name: string;
 }
 
 /**
@@ -266,7 +266,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationDeleteToken: async (inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+		deleteToken: async (inlineObject1?: InlineObject1, options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication/valid`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -297,7 +297,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationGet: async (options: any = {}): Promise<RequestArgs> => {
+		get: async (options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -322,11 +322,13 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		},
 		/**
 		 *
-		 * @param {PostLoginRequest} [postLoginRequest]
+		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationLogin: async (postLoginRequest?: PostLoginRequest, options: any = {}): Promise<RequestArgs> => {
+		login: async (postLoginRequest: PostLoginRequest, options: any = {}): Promise<RequestArgs> => {
+			// verify required parameter 'postLoginRequest' is not null or undefined
+			assertParamExists('login', 'postLoginRequest', postLoginRequest)
 			const localVarPath = `/api/authentication/login`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -358,7 +360,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationLoginInit: async (postLoginInitRequest?: PostLoginInitRequest, options: any = {}): Promise<RequestArgs> => {
+		loginInit: async (postLoginInitRequest?: PostLoginInitRequest, options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication/login/init`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -390,7 +392,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationValidToken: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+		validToken: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication/valid`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -399,7 +401,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 				baseOptions = configuration.baseOptions;
 			}
 
-			const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+			const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
@@ -432,8 +434,8 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authenticationDeleteToken(inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authenticationDeleteToken(inlineObject1, options);
+		async deleteToken(inlineObject1?: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.deleteToken(inlineObject1, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -441,18 +443,18 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authenticationGet(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authenticationGet(options);
+		async get(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.get(options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
 		 *
-		 * @param {PostLoginRequest} [postLoginRequest]
+		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authenticationLogin(postLoginRequest?: PostLoginRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModel>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authenticationLogin(postLoginRequest, options);
+		async login(postLoginRequest: PostLoginRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModel>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.login(postLoginRequest, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -461,8 +463,8 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authenticationLoginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModelWithSalt>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authenticationLoginInit(postLoginInitRequest, options);
+		async loginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModelWithSalt>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.loginInit(postLoginInitRequest, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -471,8 +473,8 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async authenticationValidToken(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.authenticationValidToken(inlineObject, options);
+		async validToken(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.validToken(inlineObject, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	}
@@ -491,25 +493,25 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationDeleteToken(inlineObject1?: InlineObject1, options?: any): AxiosPromise<void> {
-			return localVarFp.authenticationDeleteToken(inlineObject1, options).then((request) => request(axios, basePath));
+		deleteToken(inlineObject1?: InlineObject1, options?: any): AxiosPromise<void> {
+			return localVarFp.deleteToken(inlineObject1, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationGet(options?: any): AxiosPromise<void> {
-			return localVarFp.authenticationGet(options).then((request) => request(axios, basePath));
+		get(options?: any): AxiosPromise<void> {
+			return localVarFp.get(options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
-		 * @param {PostLoginRequest} [postLoginRequest]
+		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationLogin(postLoginRequest?: PostLoginRequest, options?: any): AxiosPromise<PostLoginModel> {
-			return localVarFp.authenticationLogin(postLoginRequest, options).then((request) => request(axios, basePath));
+		login(postLoginRequest: PostLoginRequest, options?: any): AxiosPromise<PostLoginModel> {
+			return localVarFp.login(postLoginRequest, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -517,8 +519,8 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationLoginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any): AxiosPromise<PostLoginModelWithSalt> {
-			return localVarFp.authenticationLoginInit(postLoginInitRequest, options).then((request) => request(axios, basePath));
+		loginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any): AxiosPromise<PostLoginModelWithSalt> {
+			return localVarFp.loginInit(postLoginInitRequest, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -526,8 +528,8 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		authenticationValidToken(inlineObject?: InlineObject, options?: any): AxiosPromise<void> {
-			return localVarFp.authenticationValidToken(inlineObject, options).then((request) => request(axios, basePath));
+		validToken(inlineObject?: InlineObject, options?: any): AxiosPromise<boolean> {
+			return localVarFp.validToken(inlineObject, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -546,8 +548,8 @@ export class AuthenticationApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authenticationDeleteToken(inlineObject1?: InlineObject1, options?: any) {
-		return AuthenticationApiFp(this.configuration).authenticationDeleteToken(inlineObject1, options).then((request) => request(this.axios, this.basePath));
+	public deleteToken(inlineObject1?: InlineObject1, options?: any) {
+		return AuthenticationApiFp(this.configuration).deleteToken(inlineObject1, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -556,19 +558,19 @@ export class AuthenticationApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authenticationGet(options?: any) {
-		return AuthenticationApiFp(this.configuration).authenticationGet(options).then((request) => request(this.axios, this.basePath));
+	public get(options?: any) {
+		return AuthenticationApiFp(this.configuration).get(options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
 	 *
-	 * @param {PostLoginRequest} [postLoginRequest]
+	 * @param {PostLoginRequest} postLoginRequest
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authenticationLogin(postLoginRequest?: PostLoginRequest, options?: any) {
-		return AuthenticationApiFp(this.configuration).authenticationLogin(postLoginRequest, options).then((request) => request(this.axios, this.basePath));
+	public login(postLoginRequest: PostLoginRequest, options?: any) {
+		return AuthenticationApiFp(this.configuration).login(postLoginRequest, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -578,8 +580,8 @@ export class AuthenticationApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authenticationLoginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any) {
-		return AuthenticationApiFp(this.configuration).authenticationLoginInit(postLoginInitRequest, options).then((request) => request(this.axios, this.basePath));
+	public loginInit(postLoginInitRequest?: PostLoginInitRequest, options?: any) {
+		return AuthenticationApiFp(this.configuration).loginInit(postLoginInitRequest, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -589,8 +591,8 @@ export class AuthenticationApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public authenticationValidToken(inlineObject?: InlineObject, options?: any) {
-		return AuthenticationApiFp(this.configuration).authenticationValidToken(inlineObject, options).then((request) => request(this.axios, this.basePath));
+	public validToken(inlineObject?: InlineObject, options?: any) {
+		return AuthenticationApiFp(this.configuration).validToken(inlineObject, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -607,9 +609,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		usersGetUserKeys: async (username: string, options: any = {}): Promise<RequestArgs> => {
+		getUserKeys: async (username: string, options: any = {}): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
-			assertParamExists('usersGetUserKeys', 'username', username)
+			assertParamExists('getUserKeys', 'username', username)
 			const localVarPath = `/api/users/{username}/keys`
 				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -649,8 +651,8 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async usersGetUserKeys(username: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<KeysModel>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.usersGetUserKeys(username, options);
+		async getUserKeys(username: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<KeysModel>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.getUserKeys(username, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	}
@@ -669,8 +671,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		usersGetUserKeys(username: string, options?: any): AxiosPromise<KeysModel> {
-			return localVarFp.usersGetUserKeys(username, options).then((request) => request(axios, basePath));
+		getUserKeys(username: string, options?: any): AxiosPromise<KeysModel> {
+			return localVarFp.getUserKeys(username, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -689,8 +691,8 @@ export class UsersApi extends BaseAPI {
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
 	 */
-	public usersGetUserKeys(username: string, options?: any) {
-		return UsersApiFp(this.configuration).usersGetUserKeys(username, options).then((request) => request(this.axios, this.basePath));
+	public getUserKeys(username: string, options?: any) {
+		return UsersApiFp(this.configuration).getUserKeys(username, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 

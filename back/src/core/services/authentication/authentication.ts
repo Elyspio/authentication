@@ -1,11 +1,11 @@
-import {files, Storage} from "../../storage";
 import * as md5 from "md5";
 import {UserNotFound} from "./errors";
+import {Services} from "../"
 import {token_expiration} from "../../../config/authentication";
 import {$log} from "@tsed/common";
-import {PostLoginRequest} from "../../../web/controllers/authentication/models";
+import {PostLoginRequest} from "../../../web/controllers/authentication/authentication.models";
 import {Accounts} from "./types";
-import {Unauthorized} from "@tsed/exceptions";
+import {files} from "../storage";
 
 
 export namespace Core.Account {
@@ -13,7 +13,7 @@ export namespace Core.Account {
 	export const users: { [p: string]: { salt: string, token?: string } } = {};
 
 	async function getStoredAccounts() {
-		return JSON.parse(await Storage.read(files.account)) as Accounts
+		return JSON.parse(await Services.storage.read(files.account)) as Accounts
 	}
 
 	export async function init(username: string): Promise<string> {
@@ -61,15 +61,6 @@ export namespace Core.Account {
 	}
 
 
-	export async function getAccountData(username: string) {
-		if (users[username]?.token != undefined) {
-			const accounts = await getStoredAccounts()
-			return accounts[username].keys;
-		} else {
-			throw new Unauthorized("Your not connected, please connect and try again")
-		}
-	}
-
 	export namespace Token {
 		export let validate = (token: string) => Object.values(users).some(v => token === v.token);
 
@@ -85,6 +76,18 @@ export namespace Core.Account {
 		export async function del(username: string) {
 			if (users[username].token) delete users[username].token
 		}
+	}
+
+
+	export async function getAccountData(username: string) {
+		const accounts = await getStoredAccounts()
+		return accounts[username ]!.credentials;
+	}
+
+
+	export async function getAccountSettings(username: string) {
+		const accounts = await getStoredAccounts()
+		return accounts[username ]!.settings;
 	}
 
 

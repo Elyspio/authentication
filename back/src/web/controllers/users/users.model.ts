@@ -1,5 +1,5 @@
-import {Property, Required} from "@tsed/schema";
-import {Docker, Github, Keys} from "../../../core/services/authentication/types";
+import {Enum, Property, Required} from "@tsed/schema";
+import {Docker, Github, Credentials, UserSettings} from "../../../core/services/authentication/types";
 
 export class DockerModel implements Docker {
 	@Property()
@@ -23,11 +23,19 @@ export class GithubModel implements Github {
 
 }
 
-export class KeysModel implements Keys {
+export class CredentialsModel implements Credentials {
 	@Property(DockerModel)
 	docker: DockerModel;
 
 	@Property(GithubModel)
 	github: GithubModel;
+
+}
+
+export class UserSettingsModel implements UserSettings {
+	@Enum("dark", "light", "system")
+	@Property()
+	theme: UserSettings["theme"]
+
 
 }

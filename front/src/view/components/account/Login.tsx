@@ -18,7 +18,7 @@ function Login(props: Props) {
 
 	const [submit, {isExecuting}] = useAsyncCallback(async () => {
 
-		let authorisation = await Services.authentication.isAuthorized({name, password});
+		let authorisation = await Services.authentication.login({name, password});
 		if (authorisation.success && authorisation.token) {
 
 			if (props.onAuthorized) {
