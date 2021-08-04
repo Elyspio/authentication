@@ -1,11 +1,11 @@
-import {$log, BodyParams, Controller, Delete, Get, Post, Req, Res, Use} from "@tsed/common";
+import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Res, Use} from "@tsed/common";
 import {Core} from "../../../core/services/authentication/authentication";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_token, authorization_cookie_username, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
 import {Required, Returns} from "@tsed/schema";
 import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./authentication.models";
-import {RequireDevelopmentEnvironment} from "../../middleware/util";
+import {RequireDevelopmentEnvironment, RequireLogin} from "../../middleware/util";
 
 
 @Controller("/authentication")
@@ -87,10 +87,16 @@ export class Authentication {
 		return token !== undefined && Core.Account.Token.validate(token)
 	}
 
-	@Delete("/valid")
+	@Delete("/logout")
 	@Returns(204)
-	async deleteToken(@BodyParams("user") user: string) {
-		await Core.Account.Token.del(user);
+	@Use(RequireLogin)
+	async logout(
+		@Cookies(authorization_cookie_username, String) username: string,
+		@Res() res: Express.Response
+	) {
+		Core.Account.Token.del(username);
+		res.clearCookie(authorization_cookie_username)
+		res.clearCookie(authorization_cookie_token)
 	}
 
 }

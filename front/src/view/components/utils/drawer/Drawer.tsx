@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {Theme,} from '@material-ui/core/styles';
 import MuiDrawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -10,6 +10,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import './Drawer.scss'
 import clsx from 'clsx';
+import {makeStyles} from "@material-ui/styles";
 
 export interface Action {
 	text: React.ReactNode,
@@ -28,8 +29,7 @@ type Props = {
 const drawerWidth = 210;
 let baseWidth = 46;
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
+const useStyles = makeStyles((theme: Theme) => ({
 		drawer: {
 			width: drawerWidth,
 			flexShrink: 0,
@@ -64,8 +64,8 @@ const useStyles = makeStyles((theme: Theme) =>
 				duration: theme.transitions.duration.enteringScreen,
 			}),
 		}
-	}),
-);
+	}
+))
 
 const getActions = (actions: Action[]) => {
 
@@ -122,7 +122,7 @@ export function Drawer(props: Props) {
 					}),
 				}}>
 				<div onClick={handleDrawerClose} className={"drawer-btn"}>
-					<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen}>
+					<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen} size="large">
 						{open ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
 					</IconButton>
 				</div>

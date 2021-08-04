@@ -4,10 +4,18 @@ import './index.scss';
 import {Provider} from "react-redux";
 import store, {useAppSelector} from "./store";
 import Application from "./view/components/Application";
-import {ThemeProvider} from '@material-ui/core';
+import {StyledEngineProvider, Theme, ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
 import {Config} from "./config/window";
 import "react-toastify/dist/ReactToastify.css";
+
+
+declare module '@material-ui/styles/defaultTheme' {
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface DefaultTheme extends Theme {
+	}
+}
+
 
 declare global {
 	interface Window {
@@ -20,9 +28,11 @@ function Wrapper() {
 	const theme = useAppSelector(state => state.theme.current === "dark" ? themes.dark : themes.light)
 
 	return (
-		<ThemeProvider theme={theme}>
-			<Application/>
-		</ThemeProvider>
+		<StyledEngineProvider injectFirst>
+			<ThemeProvider theme={theme}>
+				<Application/>
+			</ThemeProvider>
+		</StyledEngineProvider>
 	);
 }
 

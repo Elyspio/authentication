@@ -73,7 +73,7 @@ export namespace Core.Account {
 			return token;
 		}
 
-		export async function del(username: string) {
+		export function del(username: string) {
 			if (users[username].token) delete users[username].token
 		}
 	}
@@ -81,13 +81,13 @@ export namespace Core.Account {
 
 	export async function getAccountData(username: string) {
 		const accounts = await getStoredAccounts()
-		return accounts[username ]!.credentials;
+		return accounts[username]!.credentials;
 	}
 
 
 	export async function getAccountSettings(username: string) {
 		const accounts = await getStoredAccounts()
-		return accounts[username ]!.settings;
+		return accounts[username]!.settings;
 	}
 
 

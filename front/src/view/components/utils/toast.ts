@@ -1,5 +1,5 @@
 import {getCurrentTheme} from "../../../config/theme";
-import {ThemeState} from "../../../store/module/theme/reducer";
+import {ThemeState} from "../../../store/module/theme/theme.reducer";
 
 export function updateToastTheme(theme: ThemeState["current"]) {
 	const {palette} = getCurrentTheme(theme);

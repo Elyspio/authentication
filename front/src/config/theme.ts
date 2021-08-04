@@ -3,7 +3,7 @@ import * as colors from "@material-ui/core/colors";
 
 const darkTheme = createTheme({
 	palette: {
-		type: "dark",
+		mode: "dark",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["500"],
@@ -23,7 +23,7 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({
 	palette: {
-		type: "light",
+		mode: "light",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["900"],

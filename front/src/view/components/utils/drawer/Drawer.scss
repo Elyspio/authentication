@@ -1,5 +1,10 @@
+$header-size: 4rem;
+
 
 .Drawer {
+
+	height: calc(100% - #{$header-size});
+
 
 	main {
 		display: flex;
@@ -16,6 +21,10 @@
 	}
 
 	.content {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		padding: 1rem;
 
 		* > {
@@ -29,6 +38,6 @@
 	height: 100vh;
 
 	.header {
-		height: 4rem;
+		height: $header-size;
 	}
 }

@@ -24,4 +24,25 @@ export class AuthenticationService {
 		return data;
 	}
 
+	public async logout() {
+		await Apis.authentication.logout();
+	}
+
+	public async getUsername() {
+		const {data} = await Apis.users.getCookieInfo("username");
+		return data;
+	}
+
+
+	public async getSettings(username: string) {
+		const {data} = await Apis.users.getUserSettings(username);
+		return data
+	}
+
+
+	public async getCredentials(username: string) {
+		const {data} = await Apis.users.getUserCredentials(username);
+		return data
+	}
+
 }

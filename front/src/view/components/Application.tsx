@@ -4,14 +4,16 @@ import "./Application.scss"
 import Brightness5Icon from '@material-ui/icons/Brightness5';
 import Brightness3Icon from '@material-ui/icons/Brightness3';
 import BuildIcon from '@material-ui/icons/Build';
+import Logout from '@material-ui/icons/Logout';
+
 import {useAppDispatch, useAppSelector} from "../../store";
-import {toggleTheme} from "../../store/module/theme/action";
-import {withDrawer} from "./utils/drawer/Drawer.hoc";
+import {toggleTheme} from "../../store/module/theme/theme.action";
+import {createDrawerAction, withDrawer} from "./utils/drawer/Drawer.hoc";
 import Login from "./account/Login";
 import {toast, ToastContainer} from "react-toastify";
 import {updateToastTheme} from "./utils/toast";
-import {createDrawerAction} from "./utils/drawer/actions/Action";
 import {Services} from "../../core/services";
+import {logout} from "../../store/module/authentication/authentication.action";
 
 
 const isValid = async () => {
@@ -30,6 +32,7 @@ function Application() {
 	const dispatch = useAppDispatch();
 
 	const theme = useAppSelector(s => s.theme.current)
+	const isLogged = useAppSelector(s => s.authentication.logged)
 	const icon = theme === "dark" ? <Brightness5Icon/> : <Brightness3Icon/>;
 
 
@@ -44,24 +47,38 @@ function Application() {
 		}
 	}, [])
 
+	let actions = [
+		createDrawerAction(theme === "dark" ? "Light Mode" : "Dark Mode", {
+			icon,
+			onClick: () => dispatch(toggleTheme()),
+		}),
+		createDrawerAction("Verify token", {
+			onClick: isValid,
+			icon: <BuildIcon/>
+		})
+	];
+
+
+	if (isLogged) {
+		actions.push(
+			createDrawerAction("Logout", {
+				onClick: () => dispatch(logout()),
+				icon: <Logout/>
+			})
+		)
+	}
+
+
 	const drawer = withDrawer({
 		component: <Login onAuthorized={forward}/>,
-		actions: [
-			createDrawerAction(theme === "dark" ? "Light Mode" : "Dark Mode", {
-				icon,
-				onClick: () => dispatch(toggleTheme()),
-			}),
-			createDrawerAction("Verify token", {
-				onClick: isValid,
-				icon: <BuildIcon/>
-			})
-		],
+		actions: actions,
 		title: "Login page"
 	})
 
+
 	return (
 		<Box className={"Application"} bgcolor={"background.default"}>
-			<ToastContainer/>
+			<ToastContainer position={"top-left"}/>
 			{drawer}
 		</Box>
 	);

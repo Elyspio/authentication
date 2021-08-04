@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react';
 import {IconButton, Typography} from "@material-ui/core";
-import {WithDrawerProps} from "../Drawer.hoc";
 
 export type ActionComponentProps = {
 	icon: React.ReactNode,
@@ -13,7 +12,7 @@ export const ActionComponent = ({children, icon, onClick, className}: ActionComp
 
 	return (
 		<div className={"Action " + (className ?? "")} onClick={onClick}>
-			<div className={"icon"}><IconButton>{icon}</IconButton></div>
+			<div className={"icon"}><IconButton size="large">{icon}</IconButton></div>
 			<div className={"description"}>{children}</div>
 		</div>
 	);
@@ -25,9 +24,3 @@ export const ActionDescription = (props: ActionDescriptionProps) => <Typography
 	{props.children}
 </Typography>
 
-export function createDrawerAction(name: string, config: ActionComponentProps): WithDrawerProps["actions"][number] {
-	return {
-		description: {children: name},
-		component: config
-	}
-}
