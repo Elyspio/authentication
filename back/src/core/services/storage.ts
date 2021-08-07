@@ -5,13 +5,10 @@ import {Log} from "../utils/decorators/logger";
 import {getLogger} from "../utils/logger";
 import {Service} from "@tsed/common";
 import * as crypto from "crypto";
-import * as process from "process"
 
 const {writeFile, readFile, rm, mkdir} = promises
 
-export const files = {
-	account: process.env.ACCOUNT_PATH ?? "./accounts.json"
-}
+export const files = {}
 
 @Service()
 export class StorageService {

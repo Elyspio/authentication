@@ -3,8 +3,8 @@ import {NotFound, Unauthorized} from "@tsed/exceptions";
 import {Helper} from "../../core/utils/helper";
 import {getLogger} from "../../core/utils/logger";
 import {Request} from "express"
-import {Core} from "../../core/services/authentication/authentication"
 import {authorization_cookie_token} from "../../config/authentication";
+import {AuthenticationService} from "../../core/services/authentication/authentication.service";
 import isDev = Helper.isDev;
 
 @Middleware()
@@ -20,6 +20,15 @@ export class RequireDevelopmentEnvironment implements IMiddleware {
 export class RequireLogin implements IMiddleware {
 
 	private static log = getLogger.middleware(RequireLogin)
+	private services: { authentication: AuthenticationService };
+
+
+	constructor(authenticationService: AuthenticationService) {
+		this.services = {
+			authentication: authenticationService
+		}
+	}
+
 
 	public async use(@Req() {headers, cookies}: Request, @QueryParams("token") token: string) {
 
@@ -36,7 +45,7 @@ export class RequireLogin implements IMiddleware {
 				token = token ?? cookieAuth;
 				token = token ?? headerToken as string
 
-				if (Core.Account.Token.validate(token)) {
+				if (this.services.authentication.validateToken(token)) {
 					return true
 				} else throw ""
 			} catch (e) {

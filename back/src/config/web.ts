@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as process from "process";
 import {Configuration} from "@tsed/common"
 import {Helper} from "../core/utils/helper";
 import isDev = Helper.isDev;

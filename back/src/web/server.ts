@@ -3,8 +3,9 @@ import {PlatformApplication} from "@tsed/common";
 import "@tsed/swagger";
 import {webConfig} from "../config/web";
 import {middlewares} from "./middleware/raw";
+import {databaseConfig} from "../config/db";
 
-@Configuration(webConfig)
+@Configuration({...webConfig, typeorm: databaseConfig})
 export class Server {
 
 	@Inject()

@@ -1,20 +1,31 @@
 import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Res, Use} from "@tsed/common";
-import {Core} from "../../../core/services/authentication/authentication";
+import {AuthenticationService} from "../../../core/services/authentication/authentication.service";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_token, authorization_cookie_username, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
 import {Required, Returns} from "@tsed/schema";
 import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./authentication.models";
 import {RequireDevelopmentEnvironment, RequireLogin} from "../../middleware/util";
+import {getLogger} from "../../../core/utils/logger";
+import {Log} from "../../../core/utils/decorators/logger";
 
 
 @Controller("/authentication")
 export class Authentication {
+	static log = getLogger.controller(Authentication);
+	private services: { authentication: AuthenticationService };
 
-	@Get("/everything")
+	constructor(authenticationService: AuthenticationService) {
+		this.services = {
+			authentication: authenticationService
+		}
+	}
+
+	@Get("/logged")
 	@Use(RequireDevelopmentEnvironment)
+	@Log(Authentication.log)
 	async get() {
-		return {users: Core.Account.users}
+		return {users: this.services.authentication.getLoggedUser()}
 	}
 
 	// region login
@@ -22,6 +33,7 @@ export class Authentication {
 	@Post("/login")
 	@Returns(200, PostLoginModel)
 	@Returns(Unauthorized.STATUS, Unauthorized)
+	@Log(Authentication.log, false)
 	async login(
 		@Req() {cookies}: Express.Request,
 		@Required() @BodyParams() {hash, name}: PostLoginRequest,
@@ -31,7 +43,7 @@ export class Authentication {
 		let token = cookies[authorization_cookie_token];
 
 		if (token) {
-			if (!Core.Account.Token.validate(token)) {
+			if (!this.services.authentication.validateToken(token)) {
 				res.clearCookie(authorization_cookie_token)
 				throw new Unauthorized("Invalid token")
 			} else {
@@ -39,7 +51,7 @@ export class Authentication {
 			}
 
 		} else {
-			const {token, authorized} = await Core.Account.verify({name: name, hash: hash})
+			const {token, authorized} = await this.services.authentication.verifyLogin({name: name, hash: hash})
 
 			if (authorized && token) {
 				res.cookie(authorization_cookie_username, name, {maxAge: token_expiration, httpOnly: true, secure: true})
@@ -55,6 +67,7 @@ export class Authentication {
 	@Post("/login/init")
 	@Returns(200, PostLoginModelWithSalt)
 	@Returns(Unauthorized.STATUS, Unauthorized)
+	@Log(Authentication.log, false)
 	async loginInit(@Req() {cookies}: Express.Request, @BodyParams(PostLoginInitRequest) {name}: PostLoginInitRequest) {
 
 		$log.info("cookies", cookies);
@@ -64,16 +77,16 @@ export class Authentication {
 			return {token: cookies[authorization_cookie_token], comment: "already logged in"};
 		} else {
 			const ret = new PostLoginModelWithSalt();
-			ret.salt = await Core.Account.init(name)
+			ret.salt = await this.services.authentication.initLogin(name)
 			return ret
 		}
 	}
-
 
 	// endregion login
 
 	@Get("/valid")
 	@Returns(200, Boolean)
+	@Log(Authentication.log, [0])
 	async validToken(@BodyParams("token") token: string, @Req() {cookies, headers}: Express.Request) {
 
 		const cookieAuth = cookies[authorization_cookie_token]
@@ -84,17 +97,18 @@ export class Authentication {
 		token = token ?? cookieAuth;
 		token = token ?? headerToken as string
 
-		return token !== undefined && Core.Account.Token.validate(token)
+		return token !== undefined && this.services.authentication.validateToken(token)
 	}
 
 	@Delete("/logout")
 	@Returns(204)
 	@Use(RequireLogin)
+	@Log(Authentication.log)
 	async logout(
 		@Cookies(authorization_cookie_username, String) username: string,
 		@Res() res: Express.Response
 	) {
-		Core.Account.Token.del(username);
+		await this.services.authentication.logout(username);
 		res.clearCookie(authorization_cookie_username)
 		res.clearCookie(authorization_cookie_token)
 	}

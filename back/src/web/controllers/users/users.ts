@@ -1,20 +1,28 @@
 import {Controller, Cookies, Get, PathParams, Use} from "@tsed/common";
-import {Core} from "../../../core/services/authentication/authentication";
 import {Description, Enum, Required, Returns} from "@tsed/schema";
 import {Forbidden, Unauthorized} from "@tsed/exceptions";
 import {CredentialsModel, UserSettingsModel} from "./users.model";
 import {authorization_cookie_token, authorization_cookie_username} from "../../../config/authentication";
 import {RequireLogin} from "../../middleware/util";
+import {UserService} from "../../../core/services/user/user.service";
 
 @Controller("/users")
 export class Users {
+	private services: { user: UserService };
+
+	constructor(userService: UserService) {
+		this.services = {
+			user: userService
+		}
+	}
+
 
 	@Get("/:username/credentials")
 	@Returns(200, CredentialsModel)
 	@Returns(Unauthorized.STATUS, Unauthorized)
 	@Use(RequireLogin)
 	async getUserCredentials(@Required @PathParams("username") username: string) {
-		return await Core.Account.getAccountData(username);
+		return this.services.user.getAccountData(username);
 	}
 
 
@@ -23,7 +31,7 @@ export class Users {
 	@Returns(Unauthorized.STATUS, Unauthorized)
 	@Use(RequireLogin)
 	async getUserSettings(@Required @PathParams("username") username: string) {
-		return await Core.Account.getAccountSettings(username);
+		return this.services.user.getAccountSettings(username);
 	}
 
 

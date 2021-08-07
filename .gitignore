@@ -9,3 +9,6 @@ front/.bitmap
 front/.babelrc
 back/accounts.json
 front/.eslintcache
+dev-proxy/data/db
+dev-proxy/data/dev
+back/util/insert.db.ts

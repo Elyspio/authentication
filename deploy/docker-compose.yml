@@ -1,13 +1,30 @@
 version: "3"
 services:
-    server:
+    authentication-server:
         image: elyspio/authentication:latest
         ports:
             - "4002:4000"
         volumes:
-            - ./config/back/accounts.json:/back/accounts.json
             - ./config/front/conf.js:/front/conf.js
         restart: always
         environment:
-            ACCOUNT_PATH: "/back/accounts.json"
-        container_name: authentication
+            DB_PASSWORD: "Azeqsdwxc123"
+            DB_HOST: authentication-db
+            DB_USERNAME: "postgres"
+            DB_PORT: 5432
+            DB_DATABASE: authentication
+        container_name: authentication-server
+        depends_on:
+            - authentication-db
+
+    authentication-db:
+        image: postgres:alpine
+        container_name: authentication-database
+        environment:
+            - POSTGRES_PASSWORD=Azeqsdwxc123
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - './data/db:/var/lib/postgresql/data'
+        ports:
+            - "5432:5432"
+
