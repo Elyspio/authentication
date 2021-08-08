@@ -35,7 +35,13 @@ export class CredentialsModel implements Credentials {
 export class UserSettingsModel implements UserSettings {
 	@Enum("dark", "light", "system")
 	@Property()
+	@Required()
 	theme: UserSettings["theme"]
+}
 
 
+export class SetUserSettingsModel implements UserSettings {
+	@Enum("dark", "light", "system")
+	@Property()
+	theme: UserSettings["theme"]
 }

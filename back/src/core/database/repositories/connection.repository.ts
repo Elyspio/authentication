@@ -1,6 +1,6 @@
 import {AfterRoutesInit, Service} from "@tsed/common";
 import {TypeORMService} from "@tsed/typeorm";
-import {Connection, LessThan} from "typeorm"
+import {Connection, LessThan, MoreThan} from "typeorm"
 import {ConnectionEntity} from "../entities/connection.entity";
 import {token_expiration} from "../../../config/authentication";
 import {getLogger} from "../../utils/logger";
@@ -53,7 +53,7 @@ export class ConnectionRepository implements AfterRoutesInit {
 	async findActiveConnections(): Promise<ConnectionEntity[]> {
 		return await this.connection.manager.find(ConnectionEntity, {
 			where: {
-				expire: LessThan(new Date()),
+				expire: MoreThan(new Date()),
 				invalidated: false
 			}
 		});

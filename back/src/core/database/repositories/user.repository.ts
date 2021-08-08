@@ -26,21 +26,16 @@ export class UserRepository implements AfterRoutesInit {
 
 	@Log(UserRepository.log)
 	async findByUsername(username: string): Promise<UserEntity | undefined> {
-		const connections = await this.connection.manager.findOne(UserEntity, {where: {username}});
+		const connections = await this.connection.manager.findOne(UserEntity, {
+			where: {username}, relations: [
+				"credentials",
+				"credentials.github",
+				"credentials.docker",
+				"settings"
+			]
+		});
 		console.log("Loaded connections: ", connections);
 		return connections;
-	}
-
-	@Log(UserRepository.log)
-	async findActiveConnection(username: string): Promise<UserEntity | undefined> {
-		return await this.connection.manager.findOne(UserEntity, {
-			where: {
-				username,
-				expire: {
-					$lt: new Date()
-				}
-			}
-		});
 	}
 
 }

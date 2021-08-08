@@ -16,6 +16,26 @@ export const login = createAsyncThunk("authentication/login", async (payload: { 
 	}
 })
 
+
+export const verifyLogin = createAsyncThunk("authentication/verifyLogin", async () => {
+	const valid = await Services.authentication.isValid();
+	if (valid) {
+		const token = await Services.authentication.getToken();
+		const username = await Services.authentication.getUsername();
+		const [settings, credentials] = await Promise.all([
+			Services.authentication.getSettings(username),
+			Services.authentication.getCredentials(username)
+		])
+		return {
+			token,
+			username,
+			settings,
+			credentials
+		}
+	}
+})
+
+
 export const logout = createAsyncThunk("authentication/logout", async () => {
 	await Services.authentication.logout();
 })

@@ -68,7 +68,7 @@ export class AuthenticationService implements AfterRoutesInit {
 				token
 			}
 
-			const entity = await this.repositories.connection.create({
+			await this.repositories.connection.create({
 				username: user.name,
 				token,
 				salt
@@ -95,5 +95,13 @@ export class AuthenticationService implements AfterRoutesInit {
 	@Log(AuthenticationService.log)
 	private async generateSalt() {
 		return crypto.randomBytes(16).toString("hex")
+	}
+
+
+	@Log(AuthenticationService.log)
+	public getUserFromToken(token: string) {
+		return Object.entries(this.users)
+			.map(([username, info]) => ({username, token: info.token}) )
+			.find(({token: t}) => t === token)
 	}
 }

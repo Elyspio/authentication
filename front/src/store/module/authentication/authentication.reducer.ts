@@ -1,5 +1,5 @@
-import {createReducer} from "@reduxjs/toolkit";
-import {login, logout} from "./authentication.action";
+import {createReducer, Draft} from "@reduxjs/toolkit";
+import {login, logout, verifyLogin} from "./authentication.action";
 import {CredentialsModel, UserSettingsModel} from "../../../core/apis/backend";
 import {toast} from "react-toastify";
 
@@ -16,7 +16,7 @@ const defaultState: AuthenticationState = {
 };
 
 export const authenticationReducer = createReducer(defaultState, (builder) => {
-	builder.addCase(login.fulfilled, (state, action) => {
+	function setLogged(state: Draft<AuthenticationState>, action) {
 		state.logged = true;
 		state.credentials = action.payload.credentials
 		state.username = action.payload.username;
@@ -24,6 +24,12 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 		state.token = action.payload.token
 
 		toast.success("Logged in")
+	}
+
+	builder.addCase(login.fulfilled, (state, action) => {
+		if (action.payload) {
+			setLogged(state, action);
+		}
 	});
 
 	builder.addCase(login.rejected, (state, e) => {
@@ -40,5 +46,12 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 
 		toast.success("Logged out")
 
+	})
+
+
+	builder.addCase(verifyLogin.fulfilled, (state, action) => {
+		if (action.payload) {
+			setLogged(state, action);
+		}
 	})
 });

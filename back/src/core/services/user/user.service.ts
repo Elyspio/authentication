@@ -3,22 +3,25 @@ import {ConnectionRepository} from "../../database/repositories/connection.repos
 import {getLogger} from "../../utils/logger";
 import {Log} from "../../utils/decorators/logger";
 import {UserRepository} from "../../database/repositories/user.repository";
+import {SetUserSettingsModel} from "../../../web/controllers/users/users.model";
+import {SettingRepository} from "../../database/repositories/settings.repository";
 
 @Service()
 export class UserService {
 
 	private static log = getLogger.service(UserService);
-	private repositories: { connection: ConnectionRepository; user: UserRepository };
+	private repositories: { setting: SettingRepository; connection: ConnectionRepository; user: UserRepository };
 
-	constructor(connectionRepository: ConnectionRepository, userRepository: UserRepository) {
+	constructor(connectionRepository: ConnectionRepository, userRepository: UserRepository, userSettingRepository: SettingRepository) {
 		this.repositories = {
 			connection: connectionRepository,
-			user: userRepository
+			user: userRepository,
+			setting: userSettingRepository
 		}
 	}
 
 	@Log(UserService.log)
-	public async getAccountData(username: string) {
+	public async getUserCredentials(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
 		return user.credentials;
 	}
@@ -28,5 +31,10 @@ export class UserService {
 	public async getAccountSettings(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
 		return user.settings;
+	}
+
+	@Log(UserService.log)
+	async setAccountSettings(username: string, settings: SetUserSettingsModel) {
+		return await this.repositories.setting.updateByUsername(username, settings)
 	}
 }

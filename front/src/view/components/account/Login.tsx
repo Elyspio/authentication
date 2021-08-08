@@ -5,13 +5,8 @@ import {useAsyncCallback} from "../../hooks/useAsyncCallback";
 import {useAppDispatch} from "../../../store";
 import {login} from "../../../store/module/authentication/authentication.action";
 
-interface Props {
-	onAuthorized?: Function,
-	onForbidden?: Function,
-}
 
-
-function Login(props: Props) {
+function Login() {
 
 	const [password, setPassword] = React.useState("")
 	const [name, setName] = React.useState("")
@@ -20,11 +15,11 @@ function Login(props: Props) {
 
 		await dispatch(login({password, name}))
 		setPassword("");
-	}, [props.onForbidden, props.onAuthorized, name, password])
+	}, [ name, password])
 
 
 	return (
-		<Paper elevation={2} className={"Login"} onKeyDown={e => e.key === "Enter" && submit()}>
+		<Paper className={"Login"} onKeyDown={e => e.key === "Enter" && submit()}>
 
 			<Typography variant={"h6"} align={"center"}>Your information</Typography>
 

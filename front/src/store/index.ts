@@ -1,16 +1,27 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {combineReducers, configureStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {authenticationReducer} from "./module/authentication/authentication.reducer";
-import {settingsReducer} from "./module/settings/settings.reducer";
 import {themeReducer} from "./module/theme/theme.reducer";
+import {connectRouter, routerMiddleware} from 'connected-react-router'
+import {createBrowserHistory} from 'history'
+
+export const history = createBrowserHistory()
+
+
+const createRootReducer = (history) => combineReducers({
+	router: connectRouter(history),
+	theme: themeReducer,
+	authentication: authenticationReducer,
+	// rest of your reducers
+})
 
 const store = configureStore({
-	reducer: {
-		theme: themeReducer,
-		authentication: authenticationReducer,
-		settings: settingsReducer
-	},
+	reducer: createRootReducer(history),
 	devTools: process.env.NODE_ENV !== "production",
+	middleware: getDefaultMiddleware => [
+		routerMiddleware(history),
+		...getDefaultMiddleware(),
+	]
 });
 
 export type RootState = ReturnType<typeof store.getState>

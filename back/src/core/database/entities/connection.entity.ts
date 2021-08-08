@@ -1,9 +1,12 @@
-import {Column, Entity, PrimaryColumn} from "typeorm";
+import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("connections")
 export class ConnectionEntity {
 
-	@PrimaryColumn()
+	@PrimaryGeneratedColumn()
+	id: number
+
+	@Column()
 	username: string;
 
 	@Column()

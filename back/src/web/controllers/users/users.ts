@@ -1,7 +1,7 @@
-import {Controller, Cookies, Get, PathParams, Use} from "@tsed/common";
-import {Description, Enum, Required, Returns} from "@tsed/schema";
+import {BodyParams, Controller, Cookies, Get, Patch, PathParams, Use} from "@tsed/common";
+import {Description, Enum, Required, Returns, string} from "@tsed/schema";
 import {Forbidden, Unauthorized} from "@tsed/exceptions";
-import {CredentialsModel, UserSettingsModel} from "./users.model";
+import {CredentialsModel, SetUserSettingsModel, UserSettingsModel} from "./users.model";
 import {authorization_cookie_token, authorization_cookie_username} from "../../../config/authentication";
 import {RequireLogin} from "../../middleware/util";
 import {UserService} from "../../../core/services/user/user.service";
@@ -22,7 +22,19 @@ export class Users {
 	@Returns(Unauthorized.STATUS, Unauthorized)
 	@Use(RequireLogin)
 	async getUserCredentials(@Required @PathParams("username") username: string) {
-		return this.services.user.getAccountData(username);
+		return this.services.user.getUserCredentials(username);
+	}
+
+
+	@Patch("/:username/settings")
+	@Returns(201)
+	@Returns(Unauthorized.STATUS, Unauthorized)
+	@Use(RequireLogin)
+	async setUserSettings(
+		@Required @PathParams("username") username: string,
+		@Required @BodyParams() settings: SetUserSettingsModel
+	) {
+		await this.services.user.setAccountSettings(username, settings);
 	}
 
 

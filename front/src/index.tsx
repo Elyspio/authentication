@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import {Provider} from "react-redux";
-import store, {useAppSelector} from "./store";
+import store, {history, useAppSelector} from "./store";
 import Application from "./view/components/Application";
 import {StyledEngineProvider, Theme, ThemeProvider} from '@material-ui/core';
 import {themes} from "./config/theme";
 import {Config} from "./config/window";
 import "react-toastify/dist/ReactToastify.css";
+import {ConnectedRouter} from "connected-react-router";
 
 
 declare module '@material-ui/styles/defaultTheme' {
@@ -40,7 +41,9 @@ function App() {
 
 	return (
 		<Provider store={store}>
-			<Wrapper/>
+			<ConnectedRouter history={history}>
+				<Wrapper/>
+			</ConnectedRouter>
 		</Provider>
 	);
 }

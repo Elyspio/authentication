@@ -54,14 +54,18 @@ export class Authentication {
 			const {token, authorized} = await this.services.authentication.verifyLogin({name: name, hash: hash})
 
 			if (authorized && token) {
-				res.cookie(authorization_cookie_username, name, {maxAge: token_expiration, httpOnly: true, secure: true})
-				res.cookie(authorization_cookie_token, token, {maxAge: token_expiration, httpOnly: true, secure: true})
+				this.setCookies(res, name, token);
 				res.json({token})
 			} else {
 				throw new Unauthorized("Username or Password do not match")
 			}
 		}
 
+	}
+
+	private setCookies(res: Express.Response, username: string, token: string) {
+		res.cookie(authorization_cookie_username, username, {maxAge: token_expiration, httpOnly: true, secure: true})
+		res.cookie(authorization_cookie_token, token, {maxAge: token_expiration, httpOnly: true, secure: true})
 	}
 
 	@Post("/login/init")
@@ -87,7 +91,7 @@ export class Authentication {
 	@Get("/valid")
 	@Returns(200, Boolean)
 	@Log(Authentication.log, [0])
-	async validToken(@BodyParams("token") token: string, @Req() {cookies, headers}: Express.Request) {
+	async validToken(@BodyParams("token") token: string, @Req() {cookies, headers}: Express.Request, @Res() res: Express.Response) {
 
 		const cookieAuth = cookies[authorization_cookie_token]
 		const headerToken = headers[authorization_cookie_token];
@@ -97,7 +101,13 @@ export class Authentication {
 		token = token ?? cookieAuth;
 		token = token ?? headerToken as string
 
-		return token !== undefined && this.services.authentication.validateToken(token)
+		const valid = token !== undefined && this.services.authentication.validateToken(token);
+		if(valid) {
+			const {username} = this.services.authentication.getUserFromToken(token);
+			this.setCookies(res, username, token);
+		}
+
+		return valid
 	}
 
 	@Delete("/logout")
