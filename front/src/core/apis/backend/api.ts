@@ -774,6 +774,42 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		/**
 		 *
 		 * @param {string} username
+		 * @param {string} [body]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		getUserTheme: async (username: string, body?: string, options: any = {}): Promise<RequestArgs> => {
+			// verify required parameter 'username' is not null or undefined
+			assertParamExists('getUserTheme', 'username', username)
+			const localVarPath = `/api/users/{username}/settings/theme`
+				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if (configuration) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = {method: 'GET', ...baseOptions, ...options};
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
+		 *
+		 * @param {string} username
 		 * @param {SetUserSettingsModel} [setUserSettingsModel]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -852,6 +888,17 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {string} username
+		 * @param {string} [body]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async getUserTheme(username: string, body?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.getUserTheme(username, body, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
+		 *
+		 * @param {string} username
 		 * @param {SetUserSettingsModel} [setUserSettingsModel]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -898,6 +945,16 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		 */
 		getUserSettings(username: string, options?: any): AxiosPromise<UserSettingsModel> {
 			return localVarFp.getUserSettings(username, options).then((request) => request(axios, basePath));
+		},
+		/**
+		 *
+		 * @param {string} username
+		 * @param {string} [body]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		getUserTheme(username: string, body?: string, options?: any): AxiosPromise<object> {
+			return localVarFp.getUserTheme(username, body, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -952,6 +1009,18 @@ export class UsersApi extends BaseAPI {
 	 */
 	public getUserSettings(username: string, options?: any) {
 		return UsersApiFp(this.configuration).getUserSettings(username, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
+	 *
+	 * @param {string} username
+	 * @param {string} [body]
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof UsersApi
+	 */
+	public getUserTheme(username: string, body?: string, options?: any) {
+		return UsersApiFp(this.configuration).getUserTheme(username, body, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**

@@ -45,13 +45,10 @@ export const logout = createAsyncThunk("authentication/logout", async () => {
 })
 
 
-
-
 export const setUserSettings = createAsyncThunk("authentication/setUserSettings", async (arg: { username: string, settings: SetUserSettingsModel }, {dispatch}) => {
 	await Services.user.settings.set(arg.username, arg.settings)
 	await dispatch(getUserMetadata());
 })
-
 
 
 function updateTheme(dispatch: Dispatch, theme: UserSettingsModel["theme"]) {

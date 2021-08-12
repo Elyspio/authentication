@@ -1,5 +1,5 @@
 import {createReducer} from "@reduxjs/toolkit";
-import {getUserMetadata, login, logout} from "./authentication.action";
+import {getUserMetadata, logout} from "./authentication.action";
 import {CredentialsModel, UserSettingsModel} from "../../../core/apis/backend";
 import {toast} from "react-toastify";
 

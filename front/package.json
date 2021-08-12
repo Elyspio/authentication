@@ -4,7 +4,8 @@
 	"private": true,
 	"homepage": "/authentication",
 	"scripts": {
-		"start": "cross-env PORT=3001 react-scripts start",
+		"start": "npm run start-docker && cross-env PORT=3001 react-scripts start",
+		"start-docker": "cd ../deploy/dev && docker-compose up -d",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",

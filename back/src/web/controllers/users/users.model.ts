@@ -1,5 +1,6 @@
 import {Enum, Property, Required} from "@tsed/schema";
 import {Credentials, Docker, Github, UserSettings} from "../../../core/services/authentication/types";
+import {Helper} from "../../../core/utils/helper";
 
 export class DockerModel implements Docker {
 	@Property()
@@ -44,4 +45,17 @@ export class SetUserSettingsModel implements UserSettings {
 	@Enum("dark", "light", "system")
 	@Property()
 	theme: UserSettings["theme"]
+}
+
+export enum FrontThemes {
+	dark = "dark",
+	light = "light"
+}
+
+
+export class FrontThemeReturnModel {
+	@Required()
+	@Property()
+	@Enum(...Helper.getEnumValues(FrontThemes))
+	theme: FrontThemes
 }

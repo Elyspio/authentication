@@ -1,6 +1,6 @@
 import React from 'react';
 import {useAppDispatch, useAppSelector} from "../../../store";
-import {SetUserSettingsModelThemeEnum, UserSettingsModel, UserSettingsModelThemeEnum} from "../../../core/apis/backend";
+import {UserSettingsModel, UserSettingsModelThemeEnum} from "../../../core/apis/backend";
 import {Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select} from "@material-ui/core";
 import {push} from "connected-react-router";
 import {applicationPaths} from "../../../config/routes";

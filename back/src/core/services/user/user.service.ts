@@ -3,7 +3,7 @@ import {ConnectionRepository} from "../../database/repositories/connection.repos
 import {getLogger} from "../../utils/logger";
 import {Log} from "../../utils/decorators/logger";
 import {UserRepository} from "../../database/repositories/user.repository";
-import {SetUserSettingsModel} from "../../../web/controllers/users/users.model";
+import {FrontThemes, SetUserSettingsModel} from "../../../web/controllers/users/users.model";
 import {SettingRepository} from "../../database/repositories/settings.repository";
 
 @Service()
@@ -36,5 +36,11 @@ export class UserService {
 	@Log(UserService.log)
 	async setAccountSettings(username: string, settings: SetUserSettingsModel) {
 		return await this.repositories.setting.updateByUsername(username, settings)
+	}
+
+	async getUserTheme(username: string, windowsTheme: FrontThemes) {
+		const user = await this.repositories.user.findByUsername(username);
+		if (user.settings.theme === "system") return windowsTheme;
+		else return user.settings.theme as unknown as FrontThemes
 	}
 }

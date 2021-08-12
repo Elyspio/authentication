@@ -69,4 +69,8 @@ export namespace Helper {
 			return typeof obj === "object" && obj != null;
 		}
 	}
+
+	export function getEnumValues(Enum: any) {
+		return Object.values(Enum);
+	}
 }

@@ -1,10 +1,11 @@
-import {BodyParams, Controller, Cookies, Get, Patch, PathParams, Use} from "@tsed/common";
+import {BodyParams, Controller, Cookies, Get, Patch, PathParams, QueryParams, Use} from "@tsed/common";
 import {Description, Enum, Required, Returns} from "@tsed/schema";
 import {Forbidden, Unauthorized} from "@tsed/exceptions";
-import {CredentialsModel, SetUserSettingsModel, UserSettingsModel} from "./users.model";
+import {CredentialsModel, FrontThemeReturnModel, FrontThemes, SetUserSettingsModel, UserSettingsModel,} from "./users.model";
 import {authorization_cookie_token, authorization_cookie_username} from "../../../config/authentication";
 import {RequireLogin} from "../../middleware/util";
 import {UserService} from "../../../core/services/user/user.service";
+import {Helper} from "../../../core/utils/helper";
 
 @Controller("/users")
 export class Users {
@@ -44,6 +45,20 @@ export class Users {
 	@Use(RequireLogin)
 	async getUserSettings(@Required @PathParams("username") username: string) {
 		return this.services.user.getAccountSettings(username);
+	}
+
+	@Get("/:username/settings/theme")
+	@Returns(200, FrontThemeReturnModel)
+	@Returns(Unauthorized.STATUS, Unauthorized)
+	@Use(RequireLogin)
+	async getUserTheme(
+		@Required() @PathParams("username") username: string,
+		@Required() @Enum(...Helper.getEnumValues(FrontThemes)) @QueryParams("windowsTheme") windowsTheme: FrontThemes
+	) {
+		const theme = await this.services.user.getUserTheme(username, windowsTheme);
+		return {
+			theme
+		}
 	}
 
 
