@@ -1,9 +1,11 @@
 import React from 'react';
 import './Login.scss'
-import {Button, CircularProgress, Paper, TextField, Typography} from "@material-ui/core";
+import {Button, CircularProgress, Grid, Paper, TextField} from "@material-ui/core";
 import {useAsyncCallback} from "../../hooks/useAsyncCallback";
 import {useAppDispatch} from "../../../store";
 import {login} from "../../../store/module/authentication/authentication.action";
+import {Title} from "../utils/title";
+import Divider from "@material-ui/core/Divider";
 
 
 function Login() {
@@ -15,39 +17,55 @@ function Login() {
 
 		await dispatch(login({password, name}))
 		setPassword("");
-	}, [ name, password])
+	}, [name, password])
 
 
 	return (
 		<Paper className={"Login"} onKeyDown={e => e.key === "Enter" && submit()}>
 
-			<Typography variant={"h6"} align={"center"}>Your information</Typography>
+			<Grid container direction={"column"} spacing={4} alignItems={"center"} justifyContent={"center"}>
 
-			<TextField
-				id={"login-name"}
-				label="Name"
-				variant={"standard"}
-				value={name}
-				onChange={e => setName(e.target.value)}/>
+				<Grid item>
+					<Title>Your informations</Title>
+					<Divider className={"Divider"}/>
+				</Grid>
 
-			<TextField
-				id={"login-password"}
-				label="Password"
-				value={password}
-				type={"password"}
-				variant={"standard"}
-				onChange={e => setPassword(e.target.value)}/>
+				<Grid item>
+					<TextField
+						id={"login-name"}
+						label="Name"
+						variant={"standard"}
+						value={name}
+						onChange={e => setName(e.target.value)}/>
+				</Grid>
 
-			<Button
-				disabled={name.length === 0 || password.length === 0}
-				color={"primary"}
-				type={"submit"}
-				variant={"outlined"}
-				onClick={submit}>
-				{isExecuting ? <CircularProgress/> : "Submit"}
-			</Button>
+				<Grid item>
+
+					<TextField
+						id={"login-password"}
+						label="Password"
+						value={password}
+						type={"password"}
+						variant={"standard"}
+						onChange={e => setPassword(e.target.value)}/>
+				</Grid>
+
+				<Grid item>
+					<Button
+						disabled={name.length === 0 || password.length === 0}
+						color={"primary"}
+						type={"submit"}
+						variant={"outlined"}
+						onClick={submit}>
+						{isExecuting ? <CircularProgress/> : "Submit"}
+					</Button>
+				</Grid>
+			</Grid>
+
+
 		</Paper>
-	);
+	)
+
 }
 
 export default Login;

@@ -5,7 +5,9 @@ import {themeReducer} from "./module/theme/theme.reducer";
 import {connectRouter, routerMiddleware} from 'connected-react-router'
 import {createBrowserHistory} from 'history'
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory({
+	basename: process.env.NODE_ENV === "production" ? "/authentication": undefined
+})
 
 
 const createRootReducer = (history) => combineReducers({
@@ -21,7 +23,8 @@ const store = configureStore({
 	middleware: getDefaultMiddleware => [
 		routerMiddleware(history),
 		...getDefaultMiddleware(),
-	]
+	],
+
 });
 
 export type RootState = ReturnType<typeof store.getState>

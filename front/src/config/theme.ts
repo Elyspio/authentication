@@ -1,9 +1,11 @@
 import {createTheme, Theme} from "@material-ui/core";
 import * as colors from "@material-ui/core/colors";
+import {Services} from "../core/services";
+import {UserSettingsModel} from "../core/apis/backend";
 
 const darkTheme = createTheme({
 	palette: {
-		mode: "dark",
+		type: "dark",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["500"],
@@ -23,7 +25,7 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({
 	palette: {
-		mode: "light",
+		type: "light",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["900"],
@@ -41,8 +43,20 @@ export const themes = {
 };
 
 export type Themes = "dark" | "light";
-export const getUrlTheme = (): Themes =>
-	new URL(window.location.toString()).searchParams.get("theme")
-	|| ("light" as any);
 
-export const getCurrentTheme = (theme: Themes): Theme => themes[theme];
+
+export const getUrlTheme = (): Themes => {
+	let fromUrl = new URL(window.location.toString()).searchParams.get("theme");
+	let fromSession = Services.localStorage.settings.retrieve<UserSettingsModel>()
+	if (fromUrl) return fromUrl as Themes;
+	if (fromSession?.theme) {
+		if (fromSession.theme === "system") {
+			return Services.theme.getThemeFromSystem();
+		} else return fromSession.theme;
+	}
+	return "light";
+};
+
+export const getCurrentTheme = (theme: Themes): Theme => {
+	return themes[theme];
+};

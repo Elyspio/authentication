@@ -3,9 +3,9 @@ import {UserEntity} from "./user.entity";
 
 
 export enum Theme {
-	Light = "Light",
-	System = "System",
-	Dark = "Dark"
+	Light = "light",
+	System = "system",
+	Dark = "dark"
 }
 
 @Entity("settings")

@@ -13,16 +13,12 @@ import {toast, ToastContainer} from "react-toastify";
 import {updateToastTheme} from "./utils/toast";
 import {Services} from "../../core/services";
 import {logout, verifyLogin} from "../../store/module/authentication/authentication.action";
-import {Home, Logout, Settings as SettingsIcon} from "@material-ui/icons";
+import {Home, Settings as SettingsIcon} from "@material-ui/icons";
 import {push} from "connected-react-router";
-import Settings from "./settings/Settings";
+import Settings, {SettingContainer} from "./settings/Settings";
 import {useAsyncEffect} from "../hooks/useAsyncEffect";
-
-
-const paths = {
-	home: "/",
-	settings: "/settings"
-}
+import {applicationPaths} from "../../config/routes";
+import {ReactComponent as Logout} from "../icons/logout.svg"
 
 const isValid = async () => {
 	let success = await Services.authentication.isValid();
@@ -60,29 +56,29 @@ function AppDrawer() {
 		actions.push(
 			createDrawerAction("Logout", {
 				onClick: () => dispatch(logout()),
-				icon: <Logout/>
+				icon: <Logout fill={"currentColor"}/>
 			})
 		)
 
-		if (pathname !== paths.settings) actions.push(
+		if (pathname !== applicationPaths.settings) actions.push(
 			createDrawerAction("Settings", {
-				onClick: () => dispatch(push(paths.settings)),
+				onClick: () => dispatch(push(applicationPaths.settings)),
 				icon: <SettingsIcon/>
 			})
 		)
 	}
 
-	if (pathname !== paths.home) actions.push(
+	if (pathname !== applicationPaths.home) actions.push(
 		createDrawerAction("Home", {
-			onClick: () => dispatch(push(paths.home)),
+			onClick: () => dispatch(push(applicationPaths.home)),
 			icon: <Home/>
 		})
 	)
 
 	return withDrawer({
 		component: <SwitchRouter>
-			<Route exact path={paths.home} component={Login}/>
-			<Route exact path={paths.settings} component={Settings}/>
+			<Route exact path={applicationPaths.home} component={Login}/>
+			<Route exact path={applicationPaths.settings} component={SettingContainer}/>
 		</SwitchRouter>,
 		actions: actions,
 		title: "Login page"

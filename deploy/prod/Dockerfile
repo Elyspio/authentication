@@ -1,22 +1,22 @@
 # Building back
 FROM  --platform=linux/amd64 node:16 as builder-back
 
-COPY ../back/package.json /back/package.json
+COPY ../../back/package.json /back/package.json
 RUN cd /back && npm install
 
-COPY ../back/src /back/src
-COPY ../back/tsconfig.json /back/tsconfig.json
+COPY ../../back/src /back/src
+COPY ../../back/tsconfig.json /back/tsconfig.json
 RUN cd /back && npm run build
 
 # Building front
 FROM --platform=linux/amd64 node:16 as builder-front
 
-COPY ../front/package.json /front/package.json
+COPY ../../front/package.json /front/package.json
 RUN cd /front && npm install
 
-COPY ../front/tsconfig.json /front/tsconfig.json
-COPY ../front/public /front/public
-COPY ../front/src /front/src
+COPY ../../front/tsconfig.json /front/tsconfig.json
+COPY ../../front/public /front/public
+COPY ../../front/src /front/src
 RUN cd /front && npm run build
 
 # Running

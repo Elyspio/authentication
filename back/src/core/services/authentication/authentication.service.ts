@@ -93,15 +93,14 @@ export class AuthenticationService implements AfterRoutesInit {
 	}
 
 	@Log(AuthenticationService.log)
-	private async generateSalt() {
-		return crypto.randomBytes(16).toString("hex")
-	}
-
-
-	@Log(AuthenticationService.log)
 	public getUserFromToken(token: string) {
 		return Object.entries(this.users)
-			.map(([username, info]) => ({username, token: info.token}) )
+			.map(([username, info]) => ({username, token: info.token}))
 			.find(({token: t}) => t === token)
+	}
+
+	@Log(AuthenticationService.log)
+	private async generateSalt() {
+		return crypto.randomBytes(16).toString("hex")
 	}
 }

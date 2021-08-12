@@ -3,7 +3,6 @@ import {TypeORMService} from "@tsed/typeorm";
 import {Connection} from "typeorm"
 import {getLogger} from "../../utils/logger";
 import {Log} from "../../utils/decorators/logger";
-import {UserEntity} from "../entities/user/user.entity";
 import {SettingsEntity} from "../entities/user/settings.entity";
 import {SetUserSettingsModel} from "../../../web/controllers/users/users.model";
 

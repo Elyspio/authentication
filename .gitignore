@@ -6,9 +6,7 @@ logs
 *.d.ts
 front/.bitmap
 .idea/
-front/.babelrc
-back/accounts.json
-front/.eslintcache
-dev-proxy/data/db
-dev-proxy/data/dev
+.eslintcache
+deploy/dev/data/db
+deploy/dev/data/dev
 back/util/insert.db.ts

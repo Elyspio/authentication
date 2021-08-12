@@ -63,11 +63,6 @@ export class Authentication {
 
 	}
 
-	private setCookies(res: Express.Response, username: string, token: string) {
-		res.cookie(authorization_cookie_username, username, {maxAge: token_expiration, httpOnly: true, secure: true})
-		res.cookie(authorization_cookie_token, token, {maxAge: token_expiration, httpOnly: true, secure: true})
-	}
-
 	@Post("/login/init")
 	@Returns(200, PostLoginModelWithSalt)
 	@Returns(Unauthorized.STATUS, Unauthorized)
@@ -86,8 +81,6 @@ export class Authentication {
 		}
 	}
 
-	// endregion login
-
 	@Get("/valid")
 	@Returns(200, Boolean)
 	@Log(Authentication.log, [0])
@@ -102,13 +95,15 @@ export class Authentication {
 		token = token ?? headerToken as string
 
 		const valid = token !== undefined && this.services.authentication.validateToken(token);
-		if(valid) {
+		if (valid) {
 			const {username} = this.services.authentication.getUserFromToken(token);
 			this.setCookies(res, username, token);
 		}
 
 		return valid
 	}
+
+	// endregion login
 
 	@Delete("/logout")
 	@Returns(204)
@@ -121,6 +116,11 @@ export class Authentication {
 		await this.services.authentication.logout(username);
 		res.clearCookie(authorization_cookie_username)
 		res.clearCookie(authorization_cookie_token)
+	}
+
+	private setCookies(res: Express.Response, username: string, token: string) {
+		res.cookie(authorization_cookie_username, username, {maxAge: token_expiration, httpOnly: true, secure: true})
+		res.cookie(authorization_cookie_token, token, {maxAge: token_expiration, httpOnly: true, secure: true})
 	}
 
 }

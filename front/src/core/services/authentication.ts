@@ -3,10 +3,7 @@ import {Apis} from "../apis";
 
 export class AuthenticationService {
 
-	public async login({name, password}: { name: string, password: string }): Promise<{
-		success: boolean,
-		token?: string
-	}> {
+	public async login({name, password}: { name: string, password: string }) {
 		const ownHash = md5(name + password)
 		try {
 			const salt = (await Apis.authentication.loginInit({name: name})).data.salt
@@ -28,27 +25,11 @@ export class AuthenticationService {
 		await Apis.authentication.logout();
 	}
 
-	public async getUsername() {
-		const {data} = await Apis.users.getCookieInfo("username");
-		return data;
-	}
-
 
 	public async getToken() {
 		const {data} = await Apis.users.getCookieInfo("token");
 		return data;
 	}
 
-
-	public async getSettings(username: string) {
-		const {data} = await Apis.users.getUserSettings(username);
-		return data
-	}
-
-
-	public async getCredentials(username: string) {
-		const {data} = await Apis.users.getUserCredentials(username);
-		return data
-	}
 
 }

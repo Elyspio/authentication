@@ -1,5 +1,5 @@
 import {BodyParams, Controller, Cookies, Get, Patch, PathParams, Use} from "@tsed/common";
-import {Description, Enum, Required, Returns, string} from "@tsed/schema";
+import {Description, Enum, Required, Returns} from "@tsed/schema";
 import {Forbidden, Unauthorized} from "@tsed/exceptions";
 import {CredentialsModel, SetUserSettingsModel, UserSettingsModel} from "./users.model";
 import {authorization_cookie_token, authorization_cookie_username} from "../../../config/authentication";
