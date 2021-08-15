@@ -1,4 +1,4 @@
-import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, Req, Res, Use} from "@tsed/common";
+import {$log, BodyParams, Controller, Cookies, Delete, Get, Post, QueryParams, Req, Res, Use} from "@tsed/common";
 import {AuthenticationService} from "../../../core/services/authentication/authentication.service";
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_token, authorization_cookie_username, token_expiration} from '../../../config/authentication';
@@ -84,7 +84,7 @@ export class Authentication {
 	@Get("/valid")
 	@Returns(200, Boolean)
 	@Log(Authentication.log, [0])
-	async validToken(@BodyParams("token") token: string, @Req() {cookies, headers}: Express.Request, @Res() res: Express.Response) {
+	async validToken(@QueryParams("token") token: string, @Req() {cookies, headers}: Express.Request, @Res() res: Express.Response) {
 
 		const cookieAuth = cookies[authorization_cookie_token]
 		const headerToken = headers[authorization_cookie_token];

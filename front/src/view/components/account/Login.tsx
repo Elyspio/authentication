@@ -26,7 +26,7 @@ function Login() {
 			<Grid container direction={"column"} spacing={4} alignItems={"center"} justifyContent={"center"}>
 
 				<Grid item>
-					<Title>Your informations</Title>
+					<Title>Your credentials</Title>
 					<Divider className={"Divider"}/>
 				</Grid>
 

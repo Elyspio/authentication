@@ -15,7 +15,7 @@ import {Services} from "../../core/services";
 import {logout, verifyLogin} from "../../store/module/authentication/authentication.action";
 import {Home, Settings as SettingsIcon} from "@material-ui/icons";
 import {push} from "connected-react-router";
-import Settings, {SettingContainer} from "./settings/Settings";
+import {SettingContainer} from "./settings/Settings";
 import {useAsyncEffect} from "../hooks/useAsyncEffect";
 import {applicationPaths} from "../../config/routes";
 import {ReactComponent as Logout} from "../icons/logout.svg"

@@ -53,7 +53,7 @@ export class Users {
 	@Use(RequireLogin)
 	async getUserTheme(
 		@Required() @PathParams("username") username: string,
-		@Required() @Enum(...Helper.getEnumValues(FrontThemes)) @QueryParams("windowsTheme") windowsTheme: FrontThemes
+		@Required() @Enum(...Helper.getEnumValues(FrontThemes)) @QueryParams("windows_theme") windowsTheme: FrontThemes
 	) {
 		const theme = await this.services.user.getUserTheme(username, windowsTheme);
 		return {

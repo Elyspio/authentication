@@ -7,6 +7,7 @@ services:
         ports:
             - "80:80"
         container_name: authentication-dev-proxy
+        restart: always
 
     authentication-db:
         image: postgres:alpine
@@ -18,3 +19,4 @@ services:
             - './data/db:/var/lib/postgresql/data'
         ports:
             - "5432:5432"
+        restart: always

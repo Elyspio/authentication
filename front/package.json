@@ -4,7 +4,7 @@
 	"private": true,
 	"homepage": "/authentication",
 	"scripts": {
-		"start": "npm run start-docker && cross-env PORT=3001 react-scripts start",
+		"start": "npm run start-docker && cross-env PORT=3001 WDS_SOCKET_PATH=/authentication/sockjs-node BROWSER=none react-scripts start",
 		"start-docker": "cd ../deploy/dev && docker-compose up -d",
 		"build": "react-scripts build",
 		"test": "react-scripts test",

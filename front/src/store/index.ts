@@ -6,7 +6,7 @@ import {connectRouter, routerMiddleware} from 'connected-react-router'
 import {createBrowserHistory} from 'history'
 
 export const history = createBrowserHistory({
-	basename: process.env.NODE_ENV === "production" ? "/authentication" : undefined
+	basename: "/authentication"
 })
 
 

@@ -1,5 +1,5 @@
 window.config = {
     endpoints: {
-        core: "http://localhost"
+        core: "http://localhost/authentication"
     }
 }
