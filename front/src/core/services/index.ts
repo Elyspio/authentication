@@ -7,7 +7,8 @@ export const Services = {
 	authentication: new AuthenticationService(),
 	user: new UserService(),
 	localStorage: {
-		settings: new LocalStorageService("elyspio-authentication-settings")
+		settings: new LocalStorageService("elyspio-authentication-settings"),
+		validation: new LocalStorageService("elyspio-authentication-validation"),
 	},
 	theme: new ThemeService()
 

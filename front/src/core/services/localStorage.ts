@@ -16,4 +16,10 @@ export class LocalStorageService {
 		if (baseObj === null) return undefined;
 		return JSON.parse(baseObj) as T;
 	}
+
+	remove(key?: string) {
+		let name = this.base;
+		if (key !== undefined) name += " " + key
+		window.localStorage.removeItem(name);
+	}
 }

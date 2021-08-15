@@ -29,6 +29,7 @@ export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata"
 export const login = createAsyncThunk("authentication/login", async (payload: { name: string, password: string }, {dispatch}) => {
 	const {token} = await Services.authentication.login(payload);
 	if (token) {
+		Services.localStorage.validation.store(undefined, "done");
 		await dispatch(getUserMetadata());
 	}
 })
@@ -36,7 +37,10 @@ export const login = createAsyncThunk("authentication/login", async (payload: { 
 
 export const verifyLogin = createAsyncThunk("authentication/verifyLogin", async (_, {dispatch}) => {
 	const valid = await Services.authentication.isValid();
-	if (valid) await dispatch(getUserMetadata());
+	if (valid) {
+		Services.localStorage.validation.store(undefined, "done");
+		await dispatch(getUserMetadata());
+	}
 })
 
 

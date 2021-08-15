@@ -113,6 +113,29 @@ export interface Forbidden {
 /**
  *
  * @export
+ * @interface FrontThemeReturnModel
+ */
+export interface FrontThemeReturnModel {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof FrontThemeReturnModel
+	 */
+	theme: FrontThemeReturnModelThemeEnum;
+}
+
+/**
+ * @export
+ * @enum {string}
+ */
+export enum FrontThemeReturnModelThemeEnum {
+	Dark = 'dark',
+	Light = 'light'
+}
+
+/**
+ *
+ * @export
  * @interface GenericError
  */
 export interface GenericError {
@@ -150,20 +173,6 @@ export interface GithubModel {
 	 * @memberof GithubModel
 	 */
 	user: string;
-}
-
-/**
- *
- * @export
- * @interface InlineObject
- */
-export interface InlineObject {
-	/**
-	 *
-	 * @type {string}
-	 * @memberof InlineObject
-	 */
-	token?: string;
 }
 
 /**
@@ -458,11 +467,11 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		validToken: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+		validToken: async (token?: string, options: any = {}): Promise<RequestArgs> => {
 			const localVarPath = `/api/authentication/valid`;
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -475,13 +484,14 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			if (token !== undefined) {
+				localVarQueryParameter['token'] = token;
+			}
 
-			localVarHeaderParameter['Content-Type'] = 'application/json';
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-			localVarRequestOptions.data = serializeDataIfNeeded(inlineObject, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -539,12 +549,12 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async validToken(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.validToken(inlineObject, options);
+		async validToken(token?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.validToken(token, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 	}
@@ -594,12 +604,12 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 		},
 		/**
 		 *
-		 * @param {InlineObject} [inlineObject]
+		 * @param {string} [token]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		validToken(inlineObject?: InlineObject, options?: any): AxiosPromise<boolean> {
-			return localVarFp.validToken(inlineObject, options).then((request) => request(axios, basePath));
+		validToken(token?: string, options?: any): AxiosPromise<boolean> {
+			return localVarFp.validToken(token, options).then((request) => request(axios, basePath));
 		},
 	};
 };
@@ -656,13 +666,13 @@ export class AuthenticationApi extends BaseAPI {
 
 	/**
 	 *
-	 * @param {InlineObject} [inlineObject]
+	 * @param {string} [token]
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof AuthenticationApi
 	 */
-	public validToken(inlineObject?: InlineObject, options?: any) {
-		return AuthenticationApiFp(this.configuration).validToken(inlineObject, options).then((request) => request(this.axios, this.basePath));
+	public validToken(token?: string, options?: any) {
+		return AuthenticationApiFp(this.configuration).validToken(token, options).then((request) => request(this.axios, this.basePath));
 	}
 }
 
@@ -774,13 +784,15 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [body]
+		 * @param {'dark' | 'light'} windowsTheme
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		getUserTheme: async (username: string, body?: string, options: any = {}): Promise<RequestArgs> => {
+		getUserTheme: async (username: string, windowsTheme: 'dark' | 'light', options: any = {}): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists('getUserTheme', 'username', username)
+			// verify required parameter 'windowsTheme' is not null or undefined
+			assertParamExists('getUserTheme', 'windowsTheme', windowsTheme)
 			const localVarPath = `/api/users/{username}/settings/theme`
 				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -794,13 +806,14 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
+			if (windowsTheme !== undefined) {
+				localVarQueryParameter['windows_theme'] = windowsTheme;
+			}
 
-			localVarHeaderParameter['Content-Type'] = 'application/json';
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-			localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
 			return {
 				url: toPathString(localVarUrlObj),
@@ -888,12 +901,12 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [body]
+		 * @param {'dark' | 'light'} windowsTheme
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async getUserTheme(username: string, body?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-			const localVarAxiosArgs = await localVarAxiosParamCreator.getUserTheme(username, body, options);
+		async getUserTheme(username: string, windowsTheme: 'dark' | 'light', options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FrontThemeReturnModel>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.getUserTheme(username, windowsTheme, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
@@ -949,12 +962,12 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [body]
+		 * @param {'dark' | 'light'} windowsTheme
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		getUserTheme(username: string, body?: string, options?: any): AxiosPromise<object> {
-			return localVarFp.getUserTheme(username, body, options).then((request) => request(axios, basePath));
+		getUserTheme(username: string, windowsTheme: 'dark' | 'light', options?: any): AxiosPromise<FrontThemeReturnModel> {
+			return localVarFp.getUserTheme(username, windowsTheme, options).then((request) => request(axios, basePath));
 		},
 		/**
 		 *
@@ -1014,13 +1027,13 @@ export class UsersApi extends BaseAPI {
 	/**
 	 *
 	 * @param {string} username
-	 * @param {string} [body]
+	 * @param {'dark' | 'light'} windowsTheme
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
 	 */
-	public getUserTheme(username: string, body?: string, options?: any) {
-		return UsersApiFp(this.configuration).getUserTheme(username, body, options).then((request) => request(this.axios, this.basePath));
+	public getUserTheme(username: string, windowsTheme: 'dark' | 'light', options?: any) {
+		return UsersApiFp(this.configuration).getUserTheme(username, windowsTheme, options).then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
