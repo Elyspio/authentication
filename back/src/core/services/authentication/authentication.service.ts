@@ -1,5 +1,5 @@
 import * as md5 from "md5";
-import {UserNotFound} from "./errors";
+import {UserNotFound} from "./authentication.errors";
 import {token_expiration} from "../../../config/authentication";
 import {$log, AfterRoutesInit, Service} from "@tsed/common";
 import {PostLoginRequest} from "../../../web/controllers/authentication/authentication.models";

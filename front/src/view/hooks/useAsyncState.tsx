@@ -25,6 +25,7 @@ export function useAsyncState<T>(func: UseAsyncStateParams<T>, defaultValue: T, 
 			timer && clearInterval(timer);
 		}
 
+		// eslint-disable-next-line
 	}, [func])
 
 
@@ -35,3 +36,4 @@ export function useAsyncState<T>(func: UseAsyncStateParams<T>, defaultValue: T, 
 
 
 }
+

@@ -43,4 +43,6 @@ export class UserService {
 		if (user.settings.theme === "system") return windowsTheme;
 		else return user.settings.theme as unknown as FrontThemes
 	}
+
+
 }

@@ -3,7 +3,7 @@ import {AuthenticationService} from "../../../core/services/authentication/authe
 import {Unauthorized,} from "@tsed/exceptions"
 import {authorization_cookie_token, authorization_cookie_username, token_expiration} from '../../../config/authentication';
 import * as Express from "express";
-import {Required, Returns} from "@tsed/schema";
+import {Description, Required, Returns} from "@tsed/schema";
 import {PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest} from "./authentication.models";
 import {RequireDevelopmentEnvironment, RequireLogin} from "../../middleware/util";
 import {getLogger} from "../../../core/utils/logger";
@@ -24,16 +24,38 @@ export class Authentication {
 	@Get("/logged")
 	@Use(RequireDevelopmentEnvironment)
 	@Log(Authentication.log)
+	@Description("Return all logged users (Not available in production)")
 	async get() {
 		return {users: this.services.authentication.getLoggedUser()}
 	}
 
 	// region login
 
+	@Post("/login/init")
+	@Returns(200, PostLoginModelWithSalt)
+	@Returns(Unauthorized.STATUS, Unauthorized)
+	@Log(Authentication.log, false)
+	@Description("Login first step: create a salt from user's name")
+	async loginInit(@Req() {cookies}: Express.Request, @BodyParams(PostLoginInitRequest) {name}: PostLoginInitRequest) {
+
+		$log.info("cookies", cookies);
+
+		if (cookies[authorization_cookie_token]) {
+
+			return {token: cookies[authorization_cookie_token], comment: "already logged in"};
+		} else {
+			const ret = new PostLoginModelWithSalt();
+			ret.salt = await this.services.authentication.initLogin(name)
+			return ret
+		}
+	}
+
+
 	@Post("/login")
 	@Returns(200, PostLoginModel)
 	@Returns(Unauthorized.STATUS, Unauthorized)
 	@Log(Authentication.log, false)
+	@Description("Login second step: check if the token provided match with the one computed by the server")
 	async login(
 		@Req() {cookies}: Express.Request,
 		@Required() @BodyParams() {hash, name}: PostLoginRequest,
@@ -63,23 +85,22 @@ export class Authentication {
 
 	}
 
-	@Post("/login/init")
-	@Returns(200, PostLoginModelWithSalt)
-	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Log(Authentication.log, false)
-	async loginInit(@Req() {cookies}: Express.Request, @BodyParams(PostLoginInitRequest) {name}: PostLoginInitRequest) {
-
-		$log.info("cookies", cookies);
-
-		if (cookies[authorization_cookie_token]) {
-
-			return {token: cookies[authorization_cookie_token], comment: "already logged in"};
-		} else {
-			const ret = new PostLoginModelWithSalt();
-			ret.salt = await this.services.authentication.initLogin(name)
-			return ret
-		}
+	@Delete("/login")
+	@Returns(204)
+	@Use(RequireLogin)
+	@Log(Authentication.log)
+	async logout(
+		@Cookies(authorization_cookie_username, String) username: string,
+		@Res() res: Express.Response
+	) {
+		await this.services.authentication.logout(username);
+		res.clearCookie(authorization_cookie_username)
+		res.clearCookie(authorization_cookie_token)
 	}
+
+
+	// endregion login
+
 
 	@Get("/valid")
 	@Returns(200, Boolean)
@@ -103,20 +124,6 @@ export class Authentication {
 		return valid
 	}
 
-	// endregion login
-
-	@Delete("/logout")
-	@Returns(204)
-	@Use(RequireLogin)
-	@Log(Authentication.log)
-	async logout(
-		@Cookies(authorization_cookie_username, String) username: string,
-		@Res() res: Express.Response
-	) {
-		await this.services.authentication.logout(username);
-		res.clearCookie(authorization_cookie_username)
-		res.clearCookie(authorization_cookie_token)
-	}
 
 	private setCookies(res: Express.Response, username: string, token: string) {
 		res.cookie(authorization_cookie_username, username, {maxAge: token_expiration, httpOnly: true, secure: true})

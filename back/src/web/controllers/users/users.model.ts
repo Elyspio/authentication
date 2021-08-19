@@ -1,5 +1,5 @@
 import {Enum, Property, Required} from "@tsed/schema";
-import {Credentials, Docker, Github, UserSettings} from "../../../core/services/authentication/types";
+import {Credentials, Docker, Github, UserSettings} from "../../../core/services/authentication/authentication.types";
 import {Helper} from "../../../core/utils/helper";
 
 export class DockerModel implements Docker {
@@ -59,3 +59,4 @@ export class FrontThemeReturnModel {
 	@Enum(...Helper.getEnumValues(FrontThemes))
 	theme: FrontThemes
 }
+

@@ -19,7 +19,7 @@ export class UserService {
 
 
 	private async getUsername() {
-		const {data} = await Apis.users.getCookieInfo("username");
+		const {data} = await Apis.users.getUserInfo("username");
 		return data;
 	}
 
@@ -30,7 +30,7 @@ export class UserService {
 	}
 
 	private async setSettings(username: string, settings: SetUserSettingsModel) {
-		await Apis.users.setUserSettings(username, settings);
+		await Apis.users.setUserSettings(username, undefined, undefined, settings);
 	}
 
 

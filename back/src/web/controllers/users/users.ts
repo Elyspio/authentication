@@ -1,11 +1,10 @@
-import {BodyParams, Controller, Cookies, Get, Patch, PathParams, QueryParams, Use} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, QueryParams, Req} from "@tsed/common";
 import {Description, Enum, Required, Returns} from "@tsed/schema";
-import {Forbidden, Unauthorized} from "@tsed/exceptions";
 import {CredentialsModel, FrontThemeReturnModel, FrontThemes, SetUserSettingsModel, UserSettingsModel,} from "./users.model";
-import {authorization_cookie_token, authorization_cookie_username} from "../../../config/authentication";
-import {RequireLogin} from "../../middleware/util";
 import {UserService} from "../../../core/services/user/user.service";
 import {Helper} from "../../../core/utils/helper";
+import {Protected} from "../../decorators/protected";
+import {Request} from "express";
 
 @Controller("/users")
 export class Users {
@@ -20,8 +19,7 @@ export class Users {
 
 	@Get("/:username/credentials")
 	@Returns(200, CredentialsModel)
-	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Use(RequireLogin)
+	@Protected()
 	async getUserCredentials(@Required @PathParams("username") username: string) {
 		return this.services.user.getUserCredentials(username);
 	}
@@ -29,8 +27,7 @@ export class Users {
 
 	@Patch("/:username/settings")
 	@Returns(201)
-	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Use(RequireLogin)
+	@Protected()
 	async setUserSettings(
 		@Required @PathParams("username") username: string,
 		@Required @BodyParams() settings: SetUserSettingsModel
@@ -41,16 +38,14 @@ export class Users {
 
 	@Get("/:username/settings")
 	@Returns(200, UserSettingsModel)
-	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Use(RequireLogin)
+	@Protected()
 	async getUserSettings(@Required @PathParams("username") username: string) {
 		return this.services.user.getAccountSettings(username);
 	}
 
 	@Get("/:username/settings/theme")
 	@Returns(200, FrontThemeReturnModel)
-	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Use(RequireLogin)
+	@Protected()
 	async getUserTheme(
 		@Required() @PathParams("username") username: string,
 		@Required() @Enum(...Helper.getEnumValues(FrontThemes)) @QueryParams("windows_theme") windowsTheme: FrontThemes
@@ -63,20 +58,14 @@ export class Users {
 
 
 	@Get("/:kind")
-	@Returns(200, String)
-	@Returns(Forbidden.STATUS, Forbidden)
-	@Description("Return username")
-	async getCookieInfo(
-		@Cookies(authorization_cookie_username) username: string,
-		@Required @Cookies(authorization_cookie_token) token: string,
-		@Required @Enum("username", "token") @PathParams("kind") kind: "username" | "token"
+	@Returns(200, String).Description("Username or token of logged user")
+	@Description("Return username or token of logged user")
+	@Protected()
+	async getUserInfo(
+		@Required @Enum("username", "token") @PathParams("kind") kind: "username" | "token",
+		@Req() {auth}: Request
 	) {
-
-		if (!token && !username) throw new Forbidden("Not logged")
-
-		if (kind === "username") return username
-		if (kind === "token") return token
+		return auth[kind];
 	}
-
 
 }

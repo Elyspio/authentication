@@ -5,5 +5,6 @@ export const useAsyncEffect = (func: () => Promise<any>, dependencies: any[]) =>
 		(async () => {
 			await func();
 		})()
+		// eslint-disable-next-line
 	}, dependencies)
 }

@@ -27,7 +27,7 @@ export class AuthenticationService {
 
 
 	public async getToken() {
-		const {data} = await Apis.users.getCookieInfo("token");
+		const {data} = await Apis.users.getUserInfo("token");
 		return data;
 	}
 

@@ -11,7 +11,7 @@ import isDev = Helper.isDev;
 export class RequireDevelopmentEnvironment implements IMiddleware {
 	public use() {
 		if (!isDev()) {
-			throw new NotFound("This resource is not accessible in production");
+			throw new NotFound("This endpoint is not available in production");
 		}
 	}
 }
