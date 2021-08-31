@@ -1,22 +1,26 @@
-import {Column, Entity, OneToOne, PrimaryColumn} from "typeorm";
+import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from "typeorm";
 import {CredentialsEntity} from "./credentials/credentials.entity";
 import {SettingsEntity} from "./settings.entity";
 import {AuthorizationEntity} from "./authorization/authorization.entity";
 
 @Entity("users")
+@Unique(["username"])
 export class UserEntity {
-	@PrimaryColumn()
+	@ObjectIdColumn()
+	id: ObjectID
+
+	@Column()
 	username: string
 
 	@Column()
 	hash: string;
 
-	@OneToOne(() => CredentialsEntity, credentials => credentials.user)
+	@Column(() => CredentialsEntity,)
 	credentials: CredentialsEntity;
 
-	@OneToOne(() => SettingsEntity, setting => setting.user)
+	@Column(() => SettingsEntity)
 	settings: SettingsEntity;
 
-	@OneToOne(() => SettingsEntity, setting => setting.id)
+	@Column(() => SettingsEntity)
 	authorization: AuthorizationEntity;
 }

@@ -55,7 +55,7 @@ export function getLogger(name: LoggerName, type?: "Middleware" | "Service" | "C
 			type: "console"
 		})
 		.set("std-log", {
-			type: "graylog", level: ["debug", "info", "trace"]
+			type: "graylog"
 		});
 
 	return log;

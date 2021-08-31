@@ -1,6 +1,6 @@
 import {AfterRoutesInit, Service} from "@tsed/common";
 import {TypeORMService} from "@tsed/typeorm";
-import {Connection, LessThan, MoreThan} from "typeorm"
+import {MongoRepository, MoreThan} from "typeorm"
 import {ConnectionEntity} from "../entities/connection.entity";
 import {token_expiration} from "../../../config/authentication";
 import {getLogger} from "../../utils/logger";
@@ -9,17 +9,19 @@ import {Log} from "../../utils/decorators/logger";
 @Service()
 export class ConnectionRepository implements AfterRoutesInit {
 	private static log = getLogger.service(ConnectionRepository);
-	private connection: Connection;
+	private repo: { connection: MongoRepository<ConnectionEntity> };
 
 	constructor(private typeORMService: TypeORMService) {
-
 	}
 
 	$afterRoutesInit() {
-		this.connection = this.typeORMService.get("postgres")!; // get connection by name
+		const connection = this.typeORMService.get("db")!; // get connection by name
+		this.repo = {
+			connection: connection.getMongoRepository(ConnectionEntity)
+		}
 	}
 
-	@Log(ConnectionRepository.log)
+	@Log.service(ConnectionRepository.log)
 	async create(user: Omit<ConnectionEntity, "created" | "invalidated" | "expire" | "id">): Promise<ConnectionEntity> {
 		const obj = new ConnectionEntity();
 		Object.assign(obj, {
@@ -28,30 +30,30 @@ export class ConnectionRepository implements AfterRoutesInit {
 			expire: new Date(Date.now() + token_expiration),
 			invalidated: false
 		})
-		return this.connection.manager.save(obj);
+		return this.repo.connection.save(obj);
 	}
 
-	@Log(ConnectionRepository.log)
+	@Log.service(ConnectionRepository.log)
 	async find(): Promise<ConnectionEntity[]> {
-		const connections = await this.connection.manager.find(ConnectionEntity);
+		const connections = await this.repo.connection.find();
 		console.log("Loaded connections: ", connections);
 		return connections;
 	}
 
-	@Log(ConnectionRepository.log)
+	@Log.service(ConnectionRepository.log)
 	async findActiveConnection(username: string): Promise<ConnectionEntity | undefined> {
-		return await this.connection.manager.findOne(ConnectionEntity, {
+		return await this.repo.connection.findOne({
 			where: {
-				username,
-				expire: LessThan(new Date()),
-				invalidated: false
+				username: {$eq: username},
+				expire: {$lt: new Date()},
+				invalidated: {$eq: false}
 			}
 		});
 	}
 
-	@Log(ConnectionRepository.log)
+	@Log.service(ConnectionRepository.log)
 	async findActiveConnections(): Promise<ConnectionEntity[]> {
-		return await this.connection.manager.find(ConnectionEntity, {
+		return await this.repo.connection.find({
 			where: {
 				expire: MoreThan(new Date()),
 				invalidated: false
@@ -59,19 +61,18 @@ export class ConnectionRepository implements AfterRoutesInit {
 		});
 	}
 
-	@Log(ConnectionRepository.log)
+	@Log.service(ConnectionRepository.log)
 	async invalidateConnection(username: ConnectionEntity["username"]) {
-		const con = await this.findByUsername(username)
-		const obj = new ConnectionEntity();
-		Object.assign(obj, {
-			...con,
+		return await this.repo.connection.updateOne({
+			username,
+		}, {
 			invalidated: true
 		})
-		return await this.connection.manager.save(obj);
 	}
 
+
 	private async findByUsername(username: string) {
-		return this.connection.manager.findOne(ConnectionEntity, {
+		return this.repo.connection.findOne({
 			where: {
 				username
 			}

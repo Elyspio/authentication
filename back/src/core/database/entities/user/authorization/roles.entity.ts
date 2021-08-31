@@ -1,5 +1,4 @@
-import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from "typeorm";
-import {AuthenticationEntity} from "./authentication.entity";
+import {Column} from "typeorm";
 
 
 export enum Roles {
@@ -8,16 +7,13 @@ export enum Roles {
 }
 
 
-@Entity("roles")
 export class RolesEntity {
-	@PrimaryGeneratedColumn({type: "smallint"})
-	id: number;
-
 	@Column({type: "enum", enum: Roles, default: Roles.User, nullable: false})
 	value: Roles
 
-	@ManyToMany(() => AuthenticationEntity)
-	authentications: AuthenticationEntity[]
 
+	constructor(value: Roles) {
+		this.value = value;
+	}
 }
 

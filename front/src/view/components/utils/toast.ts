@@ -20,7 +20,6 @@ export function updateToastTheme(theme: ThemeState["current"]) {
         background-color: ${palette.error[theme]}
     }
     `
-	console.log("switch theme", theme);
 	const id = "style-toastify";
 	let el = window.document.querySelector(`#${id}`)
 	if (el === null) {

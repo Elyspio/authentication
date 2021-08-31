@@ -1,4 +1,5 @@
 version: '3.7'
+
 services:
     reverse-proxy:
         image: nginx:alpine
@@ -10,13 +11,13 @@ services:
         restart: always
 
     authentication-db:
-        image: postgres:alpine
-        container_name: authentication-dev-database
-        environment:
-            - POSTGRES_PASSWORD=mysecretpassword
-            - PGDATA=/var/lib/postgresql/data/pgdata
-        volumes:
-            - './data/db:/var/lib/postgresql/data'
-        ports:
-            - "5432:5432"
+        image: mongo:latest
         restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: mysecretpassword
+        volumes:
+            - ./data:/data/db
+        ports:
+            - "6001:27017"
+

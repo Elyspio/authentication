@@ -55,6 +55,11 @@ export class AuthenticationService implements AfterRoutesInit {
 		$log.debug("verify", {user, users: this.users})
 
 		let userStored = await this.repositories.user.findByUsername(user.name)
+
+		if (userStored === undefined) {
+			throw UserNotFound(user.name)
+		}
+
 		const userStoredHash = userStored.hash;
 
 		if (userStoredHash === undefined) {

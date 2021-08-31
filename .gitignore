@@ -8,3 +8,4 @@ front/.bitmap
 deploy/dev/data/db
 deploy/dev/data/dev
 back/util/insert.db.ts
+deploy/dev/data

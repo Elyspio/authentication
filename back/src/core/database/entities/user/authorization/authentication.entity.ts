@@ -1,20 +1,8 @@
-import {Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
-import {AuthorizationEntity} from "./authorization.entity";
+import {Column} from "typeorm";
 import {RolesEntity} from "./roles.entity";
 
-@Entity("authentications")
 export class AuthenticationEntity {
-	@PrimaryGeneratedColumn()
-	id: number;
-
-	@OneToOne(() => AuthorizationEntity, user => user.authentication)
-	@JoinColumn({name: "authorization_id"})
-	authorization: AuthorizationEntity
-
-
-	@ManyToMany(() => RolesEntity,)
-	@JoinTable({name: "authentications_roles"})
+	@Column({array: true})
 	roles: RolesEntity[]
-
 }
 

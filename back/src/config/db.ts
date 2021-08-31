@@ -6,14 +6,14 @@ import isDev = Helper.isDev;
 
 export const databaseConfig: ConnectionOptions[] = [
 	{
-		name: "postgres",
-		type: "postgres",
+		name: "db",
+		type: "mongodb",
 		host: env.DB_HOST ?? "127.0.0.1",
-		port: env.DB_PORT ? Number.parseInt(env.DB_PORT) : 5432,
-		username: env.DB_USERNAME ?? "postgres",
+		port: env.DB_PORT ? Number.parseInt(env.DB_PORT) : 6001,
+		username: env.DB_USERNAME ?? "root",
 		password: env.DB_PASSWORD ?? "mysecretpassword",
-		database: env.DB_DATABASE ?? "authentication",
-		synchronize: isDev(),
+		database: env.DB_DATABASE ?? "admin",
+		synchronize: true,
 		logging: isDev(),
 		entities: [
 			`${__dirname}/../core/database/entities/*{.ts,.js}`,

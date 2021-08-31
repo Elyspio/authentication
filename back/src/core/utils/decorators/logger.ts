@@ -14,9 +14,10 @@ declare global {
  *
  * @param logger
  * @param logArguments false means that no argument is logged, [] means that all arguments are logged, [0] means that only the first argument is logged
+ * @param level
  * @constructor
  */
-export const Log = (logger: Logger, logArguments: number[] | boolean = true) => (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+export const Log = (logger: Logger, logArguments: number[] | boolean = true, level: "debug" | "info" = "info") => (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
 	let originalMethod = descriptor.value
 
 
@@ -34,13 +35,13 @@ export const Log = (logger: Logger, logArguments: number[] | boolean = true) => 
 			}, "-");
 		}
 
-		logger.info(`${propertyKey} - Entering ${argsStr}`);
+		logger[level](`${propertyKey} - Entering ${argsStr}`);
 
 		const now = Date.now();
 		const result = originalMethod.apply(this, args);
 
 		const exitLog = () => {
-			logger.info(`${propertyKey} - Exited after ${Date.now() - now}ms`);
+			logger[level](`${propertyKey} - Exited after ${Date.now() - now}ms`);
 		};
 
 		if (typeof result === "object" && typeof result.then === "function") {
@@ -62,5 +63,7 @@ export const Log = (logger: Logger, logArguments: number[] | boolean = true) => 
 	};
 
 }
+
+Log.service = (logger: Logger, logArguments: number[] | boolean = true,) => Log(logger, logArguments, "debug")
 
 
