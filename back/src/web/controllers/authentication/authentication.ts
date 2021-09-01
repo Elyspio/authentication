@@ -77,7 +77,7 @@ export class Authentication {
 
 			if (authorized && token) {
 				this.setCookies(res, name, token);
-				res.json({token})
+				return {token};
 			} else {
 				throw new Unauthorized("Username or Password do not match")
 			}

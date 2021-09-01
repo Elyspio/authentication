@@ -5,8 +5,8 @@ import {GithubEntity} from "./github.entity";
 export class CredentialsEntity {
 
 	@Column(() => GithubEntity)
-	github: GithubEntity;
+	github?: GithubEntity;
 
 	@Column(() => DockerEntity)
-	docker: DockerEntity;
+	docker?: DockerEntity;
 }

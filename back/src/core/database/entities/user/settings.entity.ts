@@ -9,5 +9,5 @@ export enum Theme {
 
 export class SettingsEntity {
 	@Column({type: "enum", enum: Theme, default: Theme.System,})
-	theme: Theme;
+	theme!: Theme;
 }

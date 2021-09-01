@@ -12,7 +12,7 @@ export namespace Helper {
 
 	export const exec = (command: string): Promise<ExecReturn> => {
 		return new Promise(resolve => {
-			let c, s;
+			let c: number | null, s: NodeJS.Signals | null;
 			_exec(command, (error, stdout, stderr) => {
 				resolve({
 					stdout,
@@ -31,7 +31,7 @@ export namespace Helper {
 
 	export const isDev = () => process.env.NODE_ENV !== "production";
 
-	export function getCurrentFunctionName(skipOne) {
+	export function getCurrentFunctionName(skipOne: boolean) {
 		return new Error().stack!
 			.split('\n')[2 + (skipOne ? 1 : 0)]
 			// " at functionName ( ..." => "functionName"
@@ -65,7 +65,7 @@ export namespace Helper {
 		}
 
 		// Private
-		function isObject(obj) {
+		function isObject(obj: any) {
 			return typeof obj === "object" && obj != null;
 		}
 	}

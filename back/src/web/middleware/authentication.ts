@@ -7,16 +7,6 @@ import {getLogger} from "../../core/utils/logger";
 import {Inject} from "@tsed/di";
 import {AuthenticationService} from "../../core/services/authentication/authentication.service";
 
-export class UnauthorizedModel {
-	@ArrayOf(String)
-	errors: []
-	@Property()
-	message: "You must be logged to access to this resource see https://elyspio.fr/authentication"
-	@Property()
-	name: "UNAUTHORIZED"
-	@Integer()
-	status: 401
-}
 
 
 @Middleware()
@@ -25,7 +15,7 @@ export class RequireLogin implements IMiddleware {
 
 	private static log = getLogger.middleware(RequireLogin)
 	@Inject()
-	private authenticationService: AuthenticationService
+	private authenticationService!: AuthenticationService
 
 	public async use(@Req() req: Request, @QueryParams("token") token?: string) {
 
@@ -50,7 +40,11 @@ export class RequireLogin implements IMiddleware {
 
 
 			if (this.authenticationService.validateToken(token)) {
-				req.auth = this.authenticationService.getUserFromToken(token);
+				const userFromToken = this.authenticationService.getUserFromToken(token);
+				req.auth = {
+					username: userFromToken.username,
+					token: userFromToken.token!
+				};
 			} else throw exception;
 		} catch (e) {
 			throw exception;

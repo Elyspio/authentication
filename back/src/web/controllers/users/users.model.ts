@@ -5,31 +5,31 @@ import {Helper} from "../../../core/utils/helper";
 export class DockerModel implements Docker {
 	@Property()
 	@Required()
-	password: string;
+	password!: string;
 
 	@Property()
 	@Required()
-	username: string;
+	username!: string;
 
 }
 
 export class GithubModel implements Github {
 	@Property()
 	@Required()
-	token: string;
+	token!: string;
 
 	@Property()
 	@Required()
-	user: string;
+	user!: string;
 
 }
 
 export class CredentialsModel implements Credentials {
 	@Property(DockerModel)
-	docker: DockerModel;
+	docker!: DockerModel;
 
 	@Property(GithubModel)
-	github: GithubModel;
+	github!: GithubModel;
 
 }
 
@@ -37,14 +37,14 @@ export class UserSettingsModel implements UserSettings {
 	@Enum("dark", "light", "system")
 	@Property()
 	@Required()
-	theme: UserSettings["theme"]
+	theme!: UserSettings["theme"]
 }
 
 
 export class SetUserSettingsModel implements UserSettings {
 	@Enum("dark", "light", "system")
 	@Property()
-	theme: UserSettings["theme"]
+	theme!: UserSettings["theme"]
 }
 
 export enum FrontThemes {
@@ -57,6 +57,6 @@ export class FrontThemeReturnModel {
 	@Required()
 	@Property()
 	@Enum(...Helper.getEnumValues(FrontThemes))
-	theme: FrontThemes
+	theme!: FrontThemes
 }
 

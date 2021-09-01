@@ -65,7 +65,7 @@ export class Users {
 		@Required @Enum("username", "token") @PathParams("kind") kind: "username" | "token",
 		@Req() {auth}: Request
 	) {
-		return auth[kind];
+		return auth![kind];
 	}
 
 }

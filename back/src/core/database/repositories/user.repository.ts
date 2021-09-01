@@ -8,7 +8,7 @@ import {UserEntity} from "../entities/user/user.entity";
 @Service()
 export class UserRepository implements AfterRoutesInit {
 	private static log = getLogger.service(UserRepository);
-	private repo: { user: MongoRepository<UserEntity> };
+	private repo!: { user: MongoRepository<UserEntity> };
 
 	constructor(private typeORMService: TypeORMService) {
 

@@ -6,11 +6,12 @@ import {Log} from "../../utils/decorators/logger";
 import {SettingsEntity} from "../entities/user/settings.entity";
 import {SetUserSettingsModel} from "../../../web/controllers/users/users.model";
 import {UserEntity} from "../entities/user/user.entity";
+import {UserNotFound} from "../../services/authentication/authentication.errors";
 
 @Service()
 export class SettingRepository implements AfterRoutesInit {
 	private static log = getLogger.service(SettingRepository);
-	private repo: { user: MongoRepository<UserEntity> };
+	private repo!: { user: MongoRepository<UserEntity> };
 
 	constructor(private typeORMService: TypeORMService) {
 
@@ -35,12 +36,14 @@ export class SettingRepository implements AfterRoutesInit {
 	}
 
 	@Log(SettingRepository.log)
-	async findByUsername(username: string): Promise<SettingsEntity | undefined> {
-		return (await this.repo.user.findOne({
+	async findByUsername(username: string): Promise<SettingsEntity> {
+		const user = await this.repo.user.findOne({
 			where: {
 				username
 			}
-		}))?.settings;
+		});
+		if (!user) throw UserNotFound(username);
+		return user.settings;
 	}
 
 }

@@ -7,20 +7,20 @@ import {AuthorizationEntity} from "./authorization/authorization.entity";
 @Unique(["username"])
 export class UserEntity {
 	@ObjectIdColumn()
-	id: ObjectID
+	id!: ObjectID
 
 	@Column()
-	username: string
+	username!: string
 
 	@Column()
-	hash: string;
+	hash!: string;
 
-	@Column(() => CredentialsEntity,)
-	credentials: CredentialsEntity;
-
-	@Column(() => SettingsEntity)
-	settings: SettingsEntity;
+	@Column(() => CredentialsEntity)
+	credentials!: CredentialsEntity;
 
 	@Column(() => SettingsEntity)
-	authorization: AuthorizationEntity;
+	settings!: SettingsEntity;
+
+	@Column(() => SettingsEntity)
+	authorization!: AuthorizationEntity;
 }

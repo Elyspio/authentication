@@ -4,24 +4,24 @@ import {Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
 export class ConnectionEntity {
 
 	@ObjectIdColumn()
-	id: ObjectID
+	id!: ObjectID
 
 	@Column()
-	username: string;
+	username!: string;
 
 	@Column()
-	token: string;
+	token!: string;
 
 	@Column()
-	salt: string;
+	salt!: string;
 
 	@Column()
-	created: Date;
+	created!: Date;
 
 	@Column()
-	expire: Date;
+	expire!: Date;
 
 	@Column({default: false})
-	invalidated: boolean
+	invalidated!: boolean
 
 }

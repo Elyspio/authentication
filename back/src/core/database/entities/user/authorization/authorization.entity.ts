@@ -3,5 +3,5 @@ import {AuthenticationEntity} from "./authentication.entity";
 
 export class AuthorizationEntity {
 	@Column(() => AuthenticationEntity)
-	authentication: AuthenticationEntity
+	authentication?: AuthenticationEntity
 }

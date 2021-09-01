@@ -3,6 +3,6 @@ import {RolesEntity} from "./roles.entity";
 
 export class AuthenticationEntity {
 	@Column({array: true})
-	roles: RolesEntity[]
+	roles!: RolesEntity[]
 }
 

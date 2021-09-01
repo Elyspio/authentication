@@ -1,1 +1,1 @@
-export const UserNotFound = (user) => new Error(`Could not found user ${user}`);
+export const UserNotFound = (user: string) => new Error(`Could not find user ${user}`);

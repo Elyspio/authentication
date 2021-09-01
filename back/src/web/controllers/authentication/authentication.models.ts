@@ -3,7 +3,7 @@ import {Property, Required} from "@tsed/schema";
 export class PostLoginModel {
 	@Property()
 	@Required()
-	token: string
+	token!: string
 
 	@Property()
 	comment?: string
@@ -12,11 +12,11 @@ export class PostLoginModel {
 export class PostLoginRequest {
 	@Property()
 	@Required()
-	hash: string
+	hash!: string
 
 	@Property()
 	@Required()
-	name: string
+	name!: string
 }
 
 export class PostLoginInitRequest {
@@ -25,12 +25,12 @@ export class PostLoginInitRequest {
 
 	@Property()
 	@Required()
-	name: string
+	name!: string
 }
 
 export class PostLoginModelWithSalt {
 	@Property()
 	@Required()
-	salt: string
+	salt!: string
 }
 

@@ -101,7 +101,7 @@ export class AuthenticationService implements AfterRoutesInit {
 	public getUserFromToken(token: string) {
 		return Object.entries(this.users)
 			.map(([username, info]) => ({username, token: info.token}))
-			.find(({token: t}) => t === token)
+			.find(({token: t}) => t === token)!
 	}
 
 	@Log(AuthenticationService.log)

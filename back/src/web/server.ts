@@ -9,10 +9,10 @@ import {databaseConfig} from "../config/db";
 export class Server {
 
 	@Inject()
-	app: PlatformApplication;
+	app!: PlatformApplication;
 
 	@Configuration()
-	settings: Configuration;
+	settings!: Configuration;
 
 	$beforeRoutesInit() {
 		this.app.use(...middlewares)

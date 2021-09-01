@@ -45,7 +45,7 @@ export const Log = (logger: Logger, logArguments: number[] | boolean = true, lev
 		};
 
 		if (typeof result === "object" && typeof result.then === "function") {
-			const promise = result.then((ret) => {
+			const promise = result.then((ret: any) => {
 				exitLog();
 				return ret;
 			});
