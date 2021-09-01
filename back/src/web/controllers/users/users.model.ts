@@ -1,6 +1,7 @@
 import {Enum, Property, Required} from "@tsed/schema";
 import {Credentials, Docker, Github, UserSettings} from "../../../core/services/authentication/authentication.types";
 import {Helper} from "../../../core/utils/helper";
+import {UserEntity} from "../../../core/database/entities/user/user.entity";
 
 export class DockerModel implements Docker {
 	@Property()
@@ -60,3 +61,13 @@ export class FrontThemeReturnModel {
 	theme!: FrontThemes
 }
 
+
+export class AddUserModel implements Pick<UserEntity, | "hash" | "username"> {
+	@Required()
+	@Property()
+	hash!: string;
+
+	@Required()
+	@Property()
+	username!: string;
+}

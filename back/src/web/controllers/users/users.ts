@@ -1,6 +1,6 @@
-import {BodyParams, Controller, Get, Patch, PathParams, QueryParams, Req} from "@tsed/common";
+import {BodyParams, Controller, Get, Patch, PathParams, Post, QueryParams, Req} from "@tsed/common";
 import {Description, Enum, Required, Returns} from "@tsed/schema";
-import {CredentialsModel, FrontThemeReturnModel, FrontThemes, SetUserSettingsModel, UserSettingsModel,} from "./users.model";
+import {AddUserModel, CredentialsModel, FrontThemeReturnModel, FrontThemes, SetUserSettingsModel, UserSettingsModel,} from "./users.model";
 import {UserService} from "../../../core/services/user/user.service";
 import {Helper} from "../../../core/utils/helper";
 import {Protected} from "../../decorators/protected";
@@ -66,6 +66,17 @@ export class Users {
 		@Req() {auth}: Request
 	) {
 		return auth![kind];
+	}
+
+
+	@Post("/")
+	@Returns(201, String).Description("User's username")
+	@Description("Create an user")
+	async addUser(
+		@Required @BodyParams() {username, hash}: AddUserModel
+	) {
+		await this.services.user.createUser(username, hash);
+		return username;
 	}
 
 }

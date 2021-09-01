@@ -35,6 +35,26 @@ import {BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError} from
 /**
  *
  * @export
+ * @interface AddUserModel
+ */
+export interface AddUserModel {
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AddUserModel
+	 */
+	hash: string;
+	/**
+	 *
+	 * @type {string}
+	 * @memberof AddUserModel
+	 */
+	username: string;
+}
+
+/**
+ *
+ * @export
  * @interface CredentialsModel
  */
 export interface CredentialsModel {
@@ -371,7 +391,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			};
 		},
 		/**
-		 * Login second step: check if the token provided match with the one computed by the server
+		 * Create second step: check if the token provided match with the one computed by the server
 		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -405,7 +425,7 @@ export const AuthenticationApiAxiosParamCreator = function (configuration?: Conf
 			};
 		},
 		/**
-		 * Login first step: create a salt from user\'s name
+		 * Create first step: create a salt from user\'s name
 		 * @param {PostLoginInitRequest} [postLoginInitRequest]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -518,7 +538,7 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
-		 * Login second step: check if the token provided match with the one computed by the server
+		 * Create second step: check if the token provided match with the one computed by the server
 		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -528,7 +548,7 @@ export const AuthenticationApiFp = function (configuration?: Configuration) {
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
 		/**
-		 * Login first step: create a salt from user\'s name
+		 * Create first step: create a salt from user\'s name
 		 * @param {PostLoginInitRequest} [postLoginInitRequest]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -576,7 +596,7 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 			return localVarFp.get(options).then((request) => request(axios, basePath));
 		},
 		/**
-		 * Login second step: check if the token provided match with the one computed by the server
+		 * Create second step: check if the token provided match with the one computed by the server
 		 * @param {PostLoginRequest} postLoginRequest
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -585,7 +605,7 @@ export const AuthenticationApiFactory = function (configuration?: Configuration,
 			return localVarFp.login(postLoginRequest, options).then((request) => request(axios, basePath));
 		},
 		/**
-		 * Login first step: create a salt from user\'s name
+		 * Create first step: create a salt from user\'s name
 		 * @param {PostLoginInitRequest} [postLoginInitRequest]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -632,7 +652,7 @@ export class AuthenticationApi extends BaseAPI {
 	}
 
 	/**
-	 * Login second step: check if the token provided match with the one computed by the server
+	 * Create second step: check if the token provided match with the one computed by the server
 	 * @param {PostLoginRequest} postLoginRequest
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
@@ -643,7 +663,7 @@ export class AuthenticationApi extends BaseAPI {
 	}
 
 	/**
-	 * Login first step: create a salt from user\'s name
+	 * Create first step: create a salt from user\'s name
 	 * @param {PostLoginInitRequest} [postLoginInitRequest]
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
@@ -684,10 +704,42 @@ export class AuthenticationApi extends BaseAPI {
 export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
+		 * Create an user
+		 * @param {AddUserModel} [addUserModel]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addUser: async (addUserModel?: AddUserModel, options: any = {}): Promise<RequestArgs> => {
+			const localVarPath = `/api/users`;
+			// use dummy base URL string because the URL constructor only accepts absolute URLs.
+			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+			let baseOptions;
+			if (configuration) {
+				baseOptions = configuration.baseOptions;
+			}
+
+			const localVarRequestOptions = {method: 'POST', ...baseOptions, ...options};
+			const localVarHeaderParameter = {} as any;
+			const localVarQueryParameter = {} as any;
+
+
+			localVarHeaderParameter['Content-Type'] = 'application/json';
+
+			setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+			localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+			localVarRequestOptions.data = serializeDataIfNeeded(addUserModel, localVarRequestOptions, configuration)
+
+			return {
+				url: toPathString(localVarUrlObj),
+				options: localVarRequestOptions,
+			};
+		},
+		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -708,7 +760,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarQueryParameter = {} as any;
 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
-				localVarHeaderParameter['authentication_token'] = String(authenticationToken);
+				localVarHeaderParameter['authentication-token'] = String(authenticationToken);
 			}
 
 
@@ -724,8 +776,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		/**
 		 * Return username or token of logged user
 		 * @param {'username' | 'token'} kind
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -746,7 +798,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarQueryParameter = {} as any;
 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
-				localVarHeaderParameter['authentication_token'] = String(authenticationToken);
+				localVarHeaderParameter['authentication-token'] = String(authenticationToken);
 			}
 
 
@@ -762,8 +814,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -784,7 +836,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarQueryParameter = {} as any;
 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
-				localVarHeaderParameter['authentication_token'] = String(authenticationToken);
+				localVarHeaderParameter['authentication-token'] = String(authenticationToken);
 			}
 
 
@@ -801,8 +853,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		 *
 		 * @param {string} username
 		 * @param {'dark' | 'light'} windowsTheme
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -829,7 +881,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			}
 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
-				localVarHeaderParameter['authentication_token'] = String(authenticationToken);
+				localVarHeaderParameter['authentication-token'] = String(authenticationToken);
 			}
 
 
@@ -845,8 +897,8 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {SetUserSettingsModel} [setUserSettingsModel]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -868,7 +920,7 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
 			const localVarQueryParameter = {} as any;
 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
-				localVarHeaderParameter['authentication_token'] = String(authenticationToken);
+				localVarHeaderParameter['authentication-token'] = String(authenticationToken);
 			}
 
 
@@ -895,10 +947,20 @@ export const UsersApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration)
 	return {
 		/**
+		 * Create an user
+		 * @param {AddUserModel} [addUserModel]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		async addUser(addUserModel?: AddUserModel, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+			const localVarAxiosArgs = await localVarAxiosParamCreator.addUser(addUserModel, options);
+			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+		},
+		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -909,8 +971,8 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		/**
 		 * Return username or token of logged user
 		 * @param {'username' | 'token'} kind
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -921,8 +983,8 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -934,8 +996,8 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		 *
 		 * @param {string} username
 		 * @param {'dark' | 'light'} windowsTheme
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -946,8 +1008,8 @@ export const UsersApiFp = function (configuration?: Configuration) {
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {SetUserSettingsModel} [setUserSettingsModel]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -967,10 +1029,19 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 	const localVarFp = UsersApiFp(configuration)
 	return {
 		/**
+		 * Create an user
+		 * @param {AddUserModel} [addUserModel]
+		 * @param {*} [options] Override http request option.
+		 * @throws {RequiredError}
+		 */
+		addUser(addUserModel?: AddUserModel, options?: any): AxiosPromise<string> {
+			return localVarFp.addUser(addUserModel, options).then((request) => request(axios, basePath));
+		},
+		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -980,8 +1051,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		/**
 		 * Return username or token of logged user
 		 * @param {'username' | 'token'} kind
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -991,8 +1062,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -1003,8 +1074,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		 *
 		 * @param {string} username
 		 * @param {'dark' | 'light'} windowsTheme
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
@@ -1014,8 +1085,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
 		/**
 		 *
 		 * @param {string} username
-		 * @param {string} [authenticationToken]
-		 * @param {string} [authenticationToken2]
+		 * @param {string} [authenticationToken] Authorization in header
+		 * @param {string} [authenticationToken2] Authorization in cookie
 		 * @param {SetUserSettingsModel} [setUserSettingsModel]
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
@@ -1034,10 +1105,21 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
  */
 export class UsersApi extends BaseAPI {
 	/**
+	 * Create an user
+	 * @param {AddUserModel} [addUserModel]
+	 * @param {*} [options] Override http request option.
+	 * @throws {RequiredError}
+	 * @memberof UsersApi
+	 */
+	public addUser(addUserModel?: AddUserModel, options?: any) {
+		return UsersApiFp(this.configuration).addUser(addUserModel, options).then((request) => request(this.axios, this.basePath));
+	}
+
+	/**
 	 *
 	 * @param {string} username
-	 * @param {string} [authenticationToken]
-	 * @param {string} [authenticationToken2]
+	 * @param {string} [authenticationToken] Authorization in header
+	 * @param {string} [authenticationToken2] Authorization in cookie
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
@@ -1049,8 +1131,8 @@ export class UsersApi extends BaseAPI {
 	/**
 	 * Return username or token of logged user
 	 * @param {'username' | 'token'} kind
-	 * @param {string} [authenticationToken]
-	 * @param {string} [authenticationToken2]
+	 * @param {string} [authenticationToken] Authorization in header
+	 * @param {string} [authenticationToken2] Authorization in cookie
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
@@ -1062,8 +1144,8 @@ export class UsersApi extends BaseAPI {
 	/**
 	 *
 	 * @param {string} username
-	 * @param {string} [authenticationToken]
-	 * @param {string} [authenticationToken2]
+	 * @param {string} [authenticationToken] Authorization in header
+	 * @param {string} [authenticationToken2] Authorization in cookie
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
@@ -1076,8 +1158,8 @@ export class UsersApi extends BaseAPI {
 	 *
 	 * @param {string} username
 	 * @param {'dark' | 'light'} windowsTheme
-	 * @param {string} [authenticationToken]
-	 * @param {string} [authenticationToken2]
+	 * @param {string} [authenticationToken] Authorization in header
+	 * @param {string} [authenticationToken2] Authorization in cookie
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}
 	 * @memberof UsersApi
@@ -1089,8 +1171,8 @@ export class UsersApi extends BaseAPI {
 	/**
 	 *
 	 * @param {string} username
-	 * @param {string} [authenticationToken]
-	 * @param {string} [authenticationToken2]
+	 * @param {string} [authenticationToken] Authorization in header
+	 * @param {string} [authenticationToken2] Authorization in cookie
 	 * @param {SetUserSettingsModel} [setUserSettingsModel]
 	 * @param {*} [options] Override http request option.
 	 * @throws {RequiredError}

@@ -1,4 +1,5 @@
 export const applicationPaths = {
 	home: "/",
-	settings: "/settings"
+	settings: "/settings",
+	register: "/register"
 }

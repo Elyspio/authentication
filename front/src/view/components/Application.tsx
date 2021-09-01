@@ -13,12 +13,13 @@ import {toast, ToastContainer} from "react-toastify";
 import {updateToastTheme} from "./utils/toast";
 import {Services} from "../../core/services";
 import {logout, verifyLogin} from "../../store/module/authentication/authentication.action";
-import {Home, Settings as SettingsIcon} from "@material-ui/icons";
+import {AddCircle, Home, Settings as SettingsIcon} from "@material-ui/icons";
 import {push} from "connected-react-router";
 import {SettingContainer} from "./settings/Settings";
 import {useAsyncEffect} from "../hooks/useAsyncEffect";
 import {applicationPaths} from "../../config/routes";
 import {ReactComponent as Logout} from "../icons/logout.svg"
+import Register from "./account/register/Register";
 
 const isValid = async () => {
 	let success = await Services.authentication.isValid();
@@ -49,7 +50,8 @@ function AppDrawer() {
 		createDrawerAction("Verify token", {
 			onClick: isValid,
 			icon: <BuildIcon/>
-		})
+		}),
+
 	];
 
 	if (isLogged) {
@@ -75,13 +77,20 @@ function AppDrawer() {
 		})
 	)
 
+	if (pathname !== applicationPaths.register) actions.push(createDrawerAction("Register", {
+		icon: <AddCircle/>,
+		onClick: () => dispatch(push(applicationPaths.register))
+	}))
+
+
 	return withDrawer({
 		component: <SwitchRouter>
 			<Route exact path={applicationPaths.home} component={Login}/>
 			<Route exact path={applicationPaths.settings} component={SettingContainer}/>
+			<Route exact path={applicationPaths.register} component={Register}/>
 		</SwitchRouter>,
 		actions: actions,
-		title: "Login page"
+		title: "Authentication"
 	})
 }
 

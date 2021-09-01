@@ -39,7 +39,7 @@ export class ConsoleAppender extends BaseAppender {
 
 type LoggerName = string | Function | { constructor: { name: string } };
 
-export function getLogger(name: LoggerName, type?: "Middleware" | "Service" | "Controller", autoMapping = false) {
+export function getLogger(name: LoggerName, type?: "Middleware" | "Service" | "Controller" | "Repository", autoMapping = false) {
 
 
 	const nameType = typeof name;
@@ -62,6 +62,7 @@ export function getLogger(name: LoggerName, type?: "Middleware" | "Service" | "C
 }
 
 getLogger.service = (name: LoggerName) => getLogger(name, "Service", true)
+getLogger.repository = (name: LoggerName) => getLogger(name, "Repository", true)
 getLogger.middleware = (name: LoggerName) => getLogger(name, "Middleware", true)
 getLogger.controller = (name: LoggerName) => getLogger(name, "Controller", true)
 getLogger.default = () => getLogger("Default", undefined, true)

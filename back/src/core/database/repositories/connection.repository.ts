@@ -8,7 +8,7 @@ import {Log} from "../../utils/decorators/logger";
 
 @Service()
 export class ConnectionRepository implements AfterRoutesInit {
-	private static log = getLogger.service(ConnectionRepository);
+	private static log = getLogger.repository(ConnectionRepository);
 	private repo!: { connection: MongoRepository<ConnectionEntity> };
 
 	constructor(private typeORMService: TypeORMService) {

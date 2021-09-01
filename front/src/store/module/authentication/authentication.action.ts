@@ -34,6 +34,11 @@ export const login = createAsyncThunk("authentication/login", async (payload: { 
 	}
 })
 
+export const create = createAsyncThunk("authentication/create", async (payload: { name: string, password: string }, {dispatch}) => {
+	await Services.authentication.create(payload);
+	dispatch(login(payload));
+})
+
 
 export const verifyLogin = createAsyncThunk("authentication/verifyLogin", async (_, {dispatch}) => {
 	const valid = await Services.authentication.isValid();

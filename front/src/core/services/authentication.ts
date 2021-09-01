@@ -32,4 +32,9 @@ export class AuthenticationService {
 	}
 
 
+	public async create({name, password}: { name: string, password: string }) {
+		const ownHash = md5(name + password)
+		await Apis.users.addUser({username: name, hash: ownHash});
+	}
+
 }

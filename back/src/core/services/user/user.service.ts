@@ -24,7 +24,7 @@ export class UserService {
 	@Log(UserService.log)
 	public async getUserCredentials(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
-		if(!user) throw UserNotFound(username);
+		if (!user) throw UserNotFound(username);
 		return user.credentials;
 	}
 
@@ -32,7 +32,7 @@ export class UserService {
 	@Log(UserService.log)
 	public async getAccountSettings(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
-		if(!user) throw UserNotFound(username);
+		if (!user) throw UserNotFound(username);
 		return user.settings;
 	}
 
@@ -43,10 +43,13 @@ export class UserService {
 
 	async getUserTheme(username: string, windowsTheme: FrontThemes) {
 		const user = await this.repositories.user.findByUsername(username);
-		if(!user) throw UserNotFound(username);
+		if (!user) throw UserNotFound(username);
 		if (user.settings.theme === "system") return windowsTheme;
 		else return user.settings.theme as unknown as FrontThemes
 	}
 
 
+	async createUser(username: string, hash: string) {
+		await this.repositories.user.create(username, hash)
+	}
 }

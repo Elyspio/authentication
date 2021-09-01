@@ -10,7 +10,7 @@ import {UserNotFound} from "../../services/authentication/authentication.errors"
 
 @Service()
 export class SettingRepository implements AfterRoutesInit {
-	private static log = getLogger.service(SettingRepository);
+	private static log = getLogger.repository(SettingRepository);
 	private repo!: { user: MongoRepository<UserEntity> };
 
 	constructor(private typeORMService: TypeORMService) {
