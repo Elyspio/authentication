@@ -1,8 +1,7 @@
 import {AfterRoutesInit, Service} from "@tsed/common";
 import {TypeORMService} from "@tsed/typeorm";
-import {MongoRepository, MoreThan} from "typeorm"
+import {MongoRepository} from "typeorm"
 import {ConnectionEntity} from "../entities/connection.entity";
-import {token_expiration} from "../../../config/authentication";
 import {getLogger} from "../../utils/logger";
 import {Log} from "../../utils/decorators/logger";
 
@@ -23,14 +22,7 @@ export class ConnectionRepository implements AfterRoutesInit {
 
 	@Log.service(ConnectionRepository.log)
 	async create(user: Omit<ConnectionEntity, "created" | "invalidated" | "expire" | "id">): Promise<ConnectionEntity> {
-		const obj = new ConnectionEntity();
-		Object.assign(obj, {
-			...user,
-			created: new Date(),
-			expire: new Date(Date.now() + token_expiration),
-			invalidated: false
-		})
-		return this.repo.connection.save(obj);
+		return this.repo.connection.save(new ConnectionEntity(user.username, user.token, user.salt));
 	}
 
 	@Log.service(ConnectionRepository.log)
@@ -44,9 +36,11 @@ export class ConnectionRepository implements AfterRoutesInit {
 	async findActiveConnection(username: string): Promise<ConnectionEntity | undefined> {
 		return await this.repo.connection.findOne({
 			where: {
-				username: {$eq: username},
-				expire: {$lt: new Date()},
-				invalidated: {$eq: false}
+				username,
+				invalidated: false,
+				expire: {
+					$gt: new Date()
+				},
 			}
 		});
 	}
@@ -55,27 +49,29 @@ export class ConnectionRepository implements AfterRoutesInit {
 	async findActiveConnections(): Promise<ConnectionEntity[]> {
 		return await this.repo.connection.find({
 			where: {
-				expire: MoreThan(new Date()),
-				invalidated: false
+				invalidated: false,
+				expire: {
+					$gt: new Date()
+				},
 			}
 		});
 	}
 
 	@Log.service(ConnectionRepository.log)
 	async invalidateConnection(username: ConnectionEntity["username"]) {
-		return await this.repo.connection.updateOne({
-			username,
-		}, {
-			invalidated: true
-		})
-	}
+
+		const activeConnections = await this.findActiveConnection(username);
+
+		if (activeConnections) {
+			return await this.repo.connection.update({
+				username,
+				id: activeConnections.id
+
+			}, {
+				invalidated: true
+			})
+		}
 
 
-	private async findByUsername(username: string) {
-		return this.repo.connection.findOne({
-			where: {
-				username
-			}
-		})
 	}
 }
