@@ -8,42 +8,46 @@ services:
         restart: always
         labels:
             - "traefik.enable=true"
-            - "traefik.docker.network=frontend"
+            - "traefik.docker.network=external"
             - "traefik.http.middlewares.authentication-prefix.stripprefix.prefixes=/authentication"
             - "traefik.http.routers.authentication.middlewares=authentication-prefix@docker"
             - "traefik.http.routers.authentication.rule=PathPrefix(`/authentication`)"
             - "traefik.http.services.authentication.loadbalancer.server.port=4000"
-            - "traefik.http.routers.authentication.entrypoints=http"
+            - "traefik.http.routers.authentication.entrypoints=external"
 
         environment:
             DB_PASSWORD: "Azeqsdwxc123"
             DB_HOST: authentication-db
-            DB_USERNAME: "postgres"
-            DB_PORT: 5432
-            DB_DATABASE: authentication
+            DB_USERNAME: "root"
+            DB_PORT: 27017
+            DB_DATABASE: admin
+            HTTP_PORT: 4000
         volumes:
             - ./config/front/conf.js:/front/conf.js
         depends_on:
             - authentication-db
         networks:
             - authentication
-            - frontend
+            - external
 
     # database
     authentication-db:
-        image: postgres:alpine
-        container_name: authentication-database
+        image: mongo:latest
+        restart: always
         environment:
-            - POSTGRES_PASSWORD=Azeqsdwxc123
-            - PGDATA=/var/lib/postgresql/data/pgdata
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: Azeqsdwxc123
         volumes:
-            - './data/db:/var/lib/postgresql/data'
+            - ./data:/data/db
         networks:
+            - internal
             - authentication
 
 networks:
     authentication:
         name: "authentication"
-    frontend:
+    external:
+        external: true
+    internal:
         external: true
 
