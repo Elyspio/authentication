@@ -33,6 +33,8 @@ services:
     # database
     authentication-db:
         image: mongo:latest
+        labels:
+            - "traefik.enable=false"
         restart: always
         environment:
             MONGO_INITDB_ROOT_USERNAME: root
