@@ -1,9 +1,9 @@
-import {Column} from "typeorm";
+import { Column } from "typeorm";
 
 export class GithubEntity {
-	@Column({nullable: false})
+	@Column({ nullable: false })
 	token!: string;
 
-	@Column({nullable: false})
+	@Column({ nullable: false })
 	user!: string;
 }

@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"start": "npm run start-docker && cross-env HTTP_PORT=4001 nodemon src/app.ts",
-		"start-docker": "cd ../deploy/dev && docker-compose up -d",
+		"start-docker": "cd ../deploy/dev && docker compose up -d",
 		"build": "tsc",
 		"docker": "docker buildx build --platform linux/arm64,linux/amd64  -f ../deploy/prod/Dockerfile  -t elyspio/authentication --push ..",
 		"typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
@@ -41,6 +41,7 @@
 		"cross-env": "^7.0.3",
 		"nodemon": "latest",
 		"ts-node": "latest",
-		"typescript": "latest"
+		"typescript": "latest",
+		"prettier": "^2.4.1"
 	}
 }

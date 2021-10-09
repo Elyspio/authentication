@@ -1,9 +1,9 @@
-import {Column} from "typeorm";
+import { Column } from "typeorm";
 
 export class DockerEntity {
-	@Column({nullable: false})
+	@Column({ nullable: false })
 	username!: string;
 
-	@Column({nullable: false})
+	@Column({ nullable: false })
 	password!: string;
 }

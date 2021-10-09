@@ -1,36 +1,35 @@
-import {Property, Required} from "@tsed/schema";
+import { Property, Required } from "@tsed/schema";
 
 export class PostLoginModel {
 	@Property()
 	@Required()
-	token!: string
+	token!: string;
 
 	@Property()
-	comment?: string
+	comment?: string;
 }
 
 export class PostLoginRequest {
 	@Property()
 	@Required()
-	hash!: string
+	hash!: string;
 
 	@Property()
 	@Required()
-	name!: string
+	name!: string;
 }
 
 export class PostLoginInitRequest {
 	@Property()
-	hash?: string
+	hash?: string;
 
 	@Property()
 	@Required()
-	name!: string
+	name!: string;
 }
 
 export class PostLoginModelWithSalt {
 	@Property()
 	@Required()
-	salt!: string
+	salt!: string;
 }
-

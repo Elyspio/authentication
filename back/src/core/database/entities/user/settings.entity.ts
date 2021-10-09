@@ -1,13 +1,12 @@
-import {Column} from "typeorm";
+import { Column } from "typeorm";
 
-
-export enum Theme {
+export enum UserTheme {
 	Light = "light",
 	System = "system",
-	Dark = "dark"
+	Dark = "dark",
 }
 
 export class SettingsEntity {
-	@Column({type: "enum", enum: Theme, default: Theme.System,})
-	theme!: Theme;
+	@Column({ type: "enum", enum: UserTheme, default: UserTheme.System })
+	theme!: UserTheme;
 }

@@ -1,11 +1,10 @@
-import {Column, Entity, ObjectID, ObjectIdColumn} from "typeorm";
-import {token_expiration} from "../../../config/authentication";
+import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
+import { token_expiration } from "../../../config/authentication";
 
 @Entity("connections")
 export class ConnectionEntity {
-
 	@ObjectIdColumn()
-	id!: ObjectID
+	id!: ObjectID;
 
 	@Column()
 	username!: string;
@@ -22,9 +21,8 @@ export class ConnectionEntity {
 	@Column()
 	expire!: Date;
 
-	@Column({default: false})
-	invalidated!: boolean
-
+	@Column({ default: false })
+	invalidated!: boolean;
 
 	/***
 	 * Create a connection entity with default params
@@ -32,12 +30,12 @@ export class ConnectionEntity {
 	 * @param token
 	 * @param salt
 	 */
-	constructor(username: string, token: string, salt: string,) {
+	constructor(username: string, token: string, salt: string) {
 		this.username = username;
 		this.token = token;
 		this.salt = salt;
-		this.created = new Date()
-		this.expire = new Date(Date.now() + token_expiration)
-		this.invalidated = false
+		this.created = new Date();
+		this.expire = new Date(Date.now() + token_expiration);
+		this.invalidated = false;
 	}
 }

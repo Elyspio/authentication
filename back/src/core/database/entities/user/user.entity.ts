@@ -1,16 +1,16 @@
-import {Column, Entity, ObjectID, ObjectIdColumn, Unique} from "typeorm";
-import {CredentialsEntity} from "./credentials/credentials.entity";
-import {SettingsEntity} from "./settings.entity";
-import {AuthorizationEntity} from "./authorization/authorization.entity";
+import { Column, Entity, ObjectID, ObjectIdColumn, Unique } from "typeorm";
+import { CredentialsEntity } from "./credentials/credentials.entity";
+import { SettingsEntity } from "./settings.entity";
+import { AuthorizationEntity } from "./authorization/authorization.entity";
 
 @Entity("users")
 @Unique(["username"])
 export class UserEntity {
 	@ObjectIdColumn()
-	id!: ObjectID
+	id!: ObjectID;
 
 	@Column()
-	username!: string
+	username!: string;
 
 	@Column()
 	hash!: string;

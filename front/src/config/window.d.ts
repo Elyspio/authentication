@@ -1,5 +1,5 @@
 export type Config = {
 	endpoints: {
-		core: string
-	}
-}
+		core: string;
+	};
+};

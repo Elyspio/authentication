@@ -5,7 +5,7 @@
 	"homepage": "/authentication",
 	"scripts": {
 		"start": "npm run start-docker && react-scripts start",
-		"start-docker": "cd ../deploy/dev && docker-compose up -d",
+		"start-docker": "cd ../deploy/dev && docker compose up -d",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",

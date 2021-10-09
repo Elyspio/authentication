@@ -1,5 +1,5 @@
 window.config = {
-    endpoints: {
-        core: "https://elyspio.fr/authentication"
-    }
-}
+	endpoints: {
+		core: "https://elyspio.fr/authentication",
+	},
+};

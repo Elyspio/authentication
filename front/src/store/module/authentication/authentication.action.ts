@@ -1,17 +1,13 @@
-import {createAsyncThunk, Dispatch} from "@reduxjs/toolkit";
-import {Services} from "../../../core/services";
-import {SetUserSettingsModel, UserSettingsModel, UserSettingsModelThemeEnum} from "../../../core/apis/backend";
-import {setTheme} from "../theme/theme.action";
-import {Themes} from "../../../config/theme";
+import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
+import { Services } from "../../../core/services";
+import { CredentialsModel, SetUserSettingsModel, UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
+import { setTheme } from "../theme/theme.action";
+import { Themes } from "../../../config/theme";
 
-
-export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata", async (_, {dispatch}) => {
+export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata", async (_, { dispatch }) => {
 	const token = await Services.authentication.getToken();
 	const username = await Services.user.username.get();
-	const [settings, credentials] = await Promise.all([
-		Services.user.settings.get(username),
-		Services.user.credentials.get(username)
-	])
+	const [settings, credentials] = await Promise.all([Services.user.settings.get(username), Services.user.credentials.get(username)]);
 
 	Services.localStorage.settings.store(undefined, settings);
 
@@ -21,49 +17,48 @@ export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata"
 		token,
 		username,
 		settings,
-		credentials
-	}
+		credentials,
+	};
 });
 
-
-export const login = createAsyncThunk("authentication/login", async (payload: { name: string, password: string }, {dispatch}) => {
-	const {token} = await Services.authentication.login(payload);
+export const login = createAsyncThunk("authentication/login", async (payload: { name: string; password: string }, { dispatch }) => {
+	const { token } = await Services.authentication.login(payload);
 	if (token) {
 		Services.localStorage.validation.store(undefined, "done");
 		await dispatch(getUserMetadata());
 	}
-})
+});
 
-export const create = createAsyncThunk("authentication/create", async (payload: { name: string, password: string }, {dispatch}) => {
+export const create = createAsyncThunk("authentication/create", async (payload: { name: string; password: string }, { dispatch }) => {
 	await Services.authentication.create(payload);
 	dispatch(login(payload));
-})
+});
 
-
-export const verifyLogin = createAsyncThunk("authentication/verifyLogin", async (_, {dispatch}) => {
+export const verifyLogin = createAsyncThunk("authentication/verifyLogin", async (_, { dispatch }) => {
 	const valid = await Services.authentication.isValid();
 	if (valid) {
 		Services.localStorage.validation.store(undefined, "done");
 		await dispatch(getUserMetadata());
 	}
-})
-
+});
 
 export const logout = createAsyncThunk("authentication/logout", async () => {
 	await Services.authentication.logout();
-})
+});
 
-
-export const setUserSettings = createAsyncThunk("authentication/setUserSettings", async (arg: { username: string, settings: SetUserSettingsModel }, {dispatch}) => {
-	await Services.user.settings.set(arg.username, arg.settings)
+export const setUserSettings = createAsyncThunk("authentication/setUserSettings", async (arg: { username: string; settings: SetUserSettingsModel }, { dispatch }) => {
+	await Services.user.settings.set(arg.username, arg.settings);
 	await dispatch(getUserMetadata());
-})
+});
 
+export const setUserCredentials = createAsyncThunk("authentication/setUserCredentials", async (arg: { username: string; credential: CredentialsModel }, { dispatch }) => {
+	await Services.user.credentials.set(arg.username, arg.credential);
+	await dispatch(getUserMetadata());
+});
 
 function updateTheme(dispatch: Dispatch, theme: UserSettingsModel["theme"]) {
 	let themeStr: Themes;
 	if (theme === UserSettingsModelThemeEnum.System) themeStr = Services.theme.getThemeFromSystem();
-	else themeStr = theme.toString() as Themes
+	else themeStr = theme.toString() as Themes;
 	dispatch(setTheme(themeStr));
 }
-

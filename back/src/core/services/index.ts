@@ -1,5 +1,5 @@
-import {StorageService} from "./storage";
+import { StorageService } from "./storage";
 
 export const Services = {
-	storage: new StorageService()
-}
+	storage: new StorageService(),
+};

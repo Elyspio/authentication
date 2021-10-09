@@ -1,25 +1,23 @@
-import {AfterRoutesInit, Service} from "@tsed/common";
-import {TypeORMService} from "@tsed/typeorm";
-import {MongoRepository} from "typeorm"
-import {getLogger} from "../../utils/logger";
-import {Log} from "../../utils/decorators/logger";
-import {UserEntity} from "../entities/user/user.entity";
-import {Theme} from "../entities/user/settings.entity";
+import { AfterRoutesInit, Service } from "@tsed/common";
+import { TypeORMService } from "@tsed/typeorm";
+import { MongoRepository } from "typeorm";
+import { getLogger } from "../../utils/logger";
+import { Log } from "../../utils/decorators/logger";
+import { UserEntity } from "../entities/user/user.entity";
+import { UserTheme } from "../entities/user/settings.entity";
 
 @Service()
 export class UserRepository implements AfterRoutesInit {
 	private static log = getLogger.repository(UserRepository);
 	private repo!: { user: MongoRepository<UserEntity> };
 
-	constructor(private typeORMService: TypeORMService) {
-
-	}
+	constructor(private typeORMService: TypeORMService) {}
 
 	$afterRoutesInit() {
 		const connection = this.typeORMService.get("db")!; // get connection by name
 		this.repo = {
-			user: connection.getMongoRepository(UserEntity)
-		}
+			user: connection.getMongoRepository(UserEntity),
+		};
 	}
 
 	@Log(UserRepository.log)
@@ -28,12 +26,11 @@ export class UserRepository implements AfterRoutesInit {
 			username,
 			hash,
 			settings: {
-				theme: Theme.System
+				theme: UserTheme.System,
 			},
 			credentials: {},
-			authorization: {}
+			authorization: {},
 		});
-
 
 		return user;
 	}
@@ -41,10 +38,9 @@ export class UserRepository implements AfterRoutesInit {
 	@Log(UserRepository.log)
 	async findByUsername(username: string): Promise<UserEntity | undefined> {
 		const connections = await this.repo.user.findOne({
-			where: {username}
+			where: { username },
 		});
 		console.log("Loaded connections: ", connections);
 		return connections;
 	}
-
 }

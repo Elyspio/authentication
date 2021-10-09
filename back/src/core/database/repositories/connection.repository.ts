@@ -1,23 +1,22 @@
-import {AfterRoutesInit, Service} from "@tsed/common";
-import {TypeORMService} from "@tsed/typeorm";
-import {MongoRepository} from "typeorm"
-import {ConnectionEntity} from "../entities/connection.entity";
-import {getLogger} from "../../utils/logger";
-import {Log} from "../../utils/decorators/logger";
+import { AfterRoutesInit, Service } from "@tsed/common";
+import { TypeORMService } from "@tsed/typeorm";
+import { MongoRepository } from "typeorm";
+import { ConnectionEntity } from "../entities/connection.entity";
+import { getLogger } from "../../utils/logger";
+import { Log } from "../../utils/decorators/logger";
 
 @Service()
 export class ConnectionRepository implements AfterRoutesInit {
 	private static log = getLogger.repository(ConnectionRepository);
 	private repo!: { connection: MongoRepository<ConnectionEntity> };
 
-	constructor(private typeORMService: TypeORMService) {
-	}
+	constructor(private typeORMService: TypeORMService) {}
 
 	$afterRoutesInit() {
 		const connection = this.typeORMService.get("db")!; // get connection by name
 		this.repo = {
-			connection: connection.getMongoRepository(ConnectionEntity)
-		}
+			connection: connection.getMongoRepository(ConnectionEntity),
+		};
 	}
 
 	@Log.service(ConnectionRepository.log)
@@ -39,9 +38,9 @@ export class ConnectionRepository implements AfterRoutesInit {
 				username,
 				invalidated: false,
 				expire: {
-					$gt: new Date()
+					$gt: new Date(),
 				},
-			}
+			},
 		});
 	}
 
@@ -51,27 +50,26 @@ export class ConnectionRepository implements AfterRoutesInit {
 			where: {
 				invalidated: false,
 				expire: {
-					$gt: new Date()
+					$gt: new Date(),
 				},
-			}
+			},
 		});
 	}
 
 	@Log.service(ConnectionRepository.log)
 	async invalidateConnection(username: ConnectionEntity["username"]) {
-
 		const activeConnections = await this.findActiveConnection(username);
 
 		if (activeConnections) {
-			return await this.repo.connection.update({
-				username,
-				id: activeConnections.id
-
-			}, {
-				invalidated: true
-			})
+			return await this.repo.connection.update(
+				{
+					username,
+					id: activeConnections.id,
+				},
+				{
+					invalidated: true,
+				}
+			);
 		}
-
-
 	}
 }

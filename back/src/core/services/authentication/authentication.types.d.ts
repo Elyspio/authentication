@@ -1,15 +1,17 @@
+import { UserTheme } from "../../database/entities/user/settings.entity";
+
 /**
  * list of md5 hashed passwords
  */
 
 export type Accounts = {
-	[key in string]: Account
-}
+	[key in string]: Account;
+};
 
 export interface Account {
 	hash: string;
 	credentials: Credentials;
-	settings: UserSettings
+	settings: UserSettings;
 }
 
 export interface Credentials {
@@ -18,7 +20,7 @@ export interface Credentials {
 }
 
 export interface UserSettings {
-	theme: "dark" | "light" | "system"
+	theme: UserTheme;
 }
 
 export interface Docker {

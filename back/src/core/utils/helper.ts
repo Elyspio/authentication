@@ -1,17 +1,16 @@
-import {exec as _exec, ExecException} from "child_process";
+import { exec as _exec, ExecException } from "child_process";
 
 export namespace Helper {
-
 	export type ExecReturn = {
-		stdout: string,
-		stderr: string,
-		error: ExecException | null,
-		code: number | null,
-		signal: NodeJS.Signals | null
-	}
+		stdout: string;
+		stderr: string;
+		error: ExecException | null;
+		code: number | null;
+		signal: NodeJS.Signals | null;
+	};
 
 	export const exec = (command: string): Promise<ExecReturn> => {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			let c: number | null, s: NodeJS.Signals | null;
 			_exec(command, (error, stdout, stderr) => {
 				resolve({
@@ -19,35 +18,35 @@ export namespace Helper {
 					stderr,
 					error,
 					code: c,
-					signal: s
-				})
+					signal: s,
+				});
 			}).on("exit", (code, signal) => {
 				c = code;
 				s = signal;
-
-			})
-		})
-	}
+			});
+		});
+	};
 
 	export const isDev = () => process.env.NODE_ENV !== "production";
 
 	export function getCurrentFunctionName(skipOne: boolean) {
-		return new Error().stack!
-			.split('\n')[2 + (skipOne ? 1 : 0)]
-			// " at functionName ( ..." => "functionName"
-			.replace(/^\s+at\s+(.+?)\s.+/g, '$1');
+		return new Error()
+			.stack!.split("\n")
+			[2 + (skipOne ? 1 : 0)] // " at functionName ( ..." => "functionName"
+			.replace(/^\s+at\s+(.+?)\s.+/g, "$1");
 	}
 
 	export function getFunctionArgs(func: Function) {
-		return (func + '')
-			.replace(/[/][/].*$/mg, '') // strip single-line comments
-			.replace(/\s+/g, '') // strip white space
-			.replace(/[/][*][^/*]*[*][/]/g, '') // strip multi-line comments
-			.split('){', 1)[0].replace(/^[^(]*[(]/, '') // extract the parameters
-			.replace(/=[^,]+/g, '') // strip any ES6 defaults
-			.split(',').filter(Boolean); // split & filter [""]
+		return (func + "")
+			.replace(/[/][/].*$/gm, "") // strip single-line comments
+			.replace(/\s+/g, "") // strip white space
+			.replace(/[/][*][^/*]*[*][/]/g, "") // strip multi-line comments
+			.split("){", 1)[0]
+			.replace(/^[^(]*[(]/, "") // extract the parameters
+			.replace(/=[^,]+/g, "") // strip any ES6 defaults
+			.split(",")
+			.filter(Boolean); // split & filter [""]
 	}
-
 
 	export function deepEqual(obj1: any, obj2: any) {
 		if (obj1 === obj2) {
@@ -70,7 +69,7 @@ export namespace Helper {
 		}
 	}
 
-	export function getEnumValues(Enum: any) {
+	export function getEnumValues(Enum: any): string[] {
 		return Object.values(Enum);
 	}
 }

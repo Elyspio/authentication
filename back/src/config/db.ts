@@ -1,7 +1,7 @@
-import {ConnectionOptions} from "typeorm";
+import { ConnectionOptions } from "typeorm";
 import "@tsed/typeorm";
-import {env} from "process";
-import {Helper} from "../core/utils/helper";
+import { env } from "process";
+import { Helper } from "../core/utils/helper";
 import isDev = Helper.isDev;
 
 export const databaseConfig: ConnectionOptions[] = [
@@ -15,15 +15,8 @@ export const databaseConfig: ConnectionOptions[] = [
 		database: env.DB_DATABASE ?? "admin",
 		synchronize: true,
 		logging: isDev(),
-		entities: [
-			`${__dirname}/../core/database/entities/*{.ts,.js}`,
-			`${__dirname}/../core/database/entities/**/*{.ts,.js}`
-		],
-		migrations: [
-			`${__dirname}/../core/database/migrations/*{.ts,.js}`
-		],
-		subscribers: [
-			`${__dirname}/../core/database/subscriber/*{.ts,.js}`
-		]
+		entities: [`${__dirname}/../core/database/entities/*{.ts,.js}`, `${__dirname}/../core/database/entities/**/*{.ts,.js}`],
+		migrations: [`${__dirname}/../core/database/migrations/*{.ts,.js}`],
+		subscribers: [`${__dirname}/../core/database/subscriber/*{.ts,.js}`],
 	},
-]
+];

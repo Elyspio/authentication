@@ -9,6 +9,8 @@ services:
             - "80:80"
         container_name: authentication-dev-proxy
         restart: always
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
 
     authentication-db:
         image: mongo:latest
@@ -17,7 +19,11 @@ services:
             MONGO_INITDB_ROOT_USERNAME: root
             MONGO_INITDB_ROOT_PASSWORD: mysecretpassword
         volumes:
-            - ./data:/data/db
+            - authentication-db-data:/data/db
         ports:
             - "6001:27017"
 
+
+volumes:
+    authentication-db-data:
+        name: authentication-db-data

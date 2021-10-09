@@ -1,5 +1,3 @@
 export const globalConf = {
-	appName: "Authentication"
-}
-
-
+	appName: "Authentication",
+};
