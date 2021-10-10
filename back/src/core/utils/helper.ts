@@ -72,4 +72,11 @@ export namespace Helper {
 	export function getEnumValues(Enum: any): string[] {
 		return Object.values(Enum);
 	}
+
+	export function getEnumValue<T>(Enum: any, val: string | number): T {
+		for (const [key, value] of Object.entries(Enum)) {
+			if (value === val) return Enum[key] as T;
+		}
+		throw new Error(`${val} is not in ${Enum}`);
+	}
 }

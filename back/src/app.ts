@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import "@tsed/platform-express"; // /!\ keep this import
 import { PlatformExpress } from "@tsed/platform-express";
 import { Server } from "./web/server";

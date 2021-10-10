@@ -3,6 +3,8 @@ import { Credentials, Docker, Github, UserSettings } from "../../../core/service
 import { Helper } from "../../../core/utils/helper";
 import { UserEntity } from "../../../core/database/entities/user/user.entity";
 import { UserTheme } from "../../../core/database/entities/user/settings.entity";
+import { AuthenticationEntity, Roles } from "../../../core/database/entities/user/authorization/authentication.entity";
+import { AuthorizationEntity } from "../../../core/database/entities/user/authorization/authorization.entity";
 
 export class DockerModel implements Docker {
 	@Property()
@@ -65,4 +67,15 @@ export class AddUserModel implements Pick<UserEntity, "hash" | "username"> {
 	@Required()
 	@Property()
 	username!: string;
+}
+
+export class AuthorizationAuthenticationModel implements AuthenticationEntity {
+	@Required()
+	@Enum(Roles)
+	public roles!: Roles[];
+}
+
+export class AuthorizationModel implements AuthorizationEntity {
+	@Property(AuthorizationAuthenticationModel)
+	public authentication?: AuthorizationAuthenticationModel;
 }

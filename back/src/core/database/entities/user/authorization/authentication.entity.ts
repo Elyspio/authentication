@@ -1,7 +1,11 @@
 import { Column } from "typeorm";
-import { RolesEntity } from "./roles.entity";
+
+export enum Roles {
+	User = "User",
+	Admin = "Admin",
+}
 
 export class AuthenticationEntity {
-	@Column({ array: true })
-	roles!: RolesEntity[];
+	@Column({ type: "enum", enum: Roles, default: Roles.User, array: true })
+	roles!: Roles[];
 }

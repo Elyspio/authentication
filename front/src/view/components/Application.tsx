@@ -70,7 +70,7 @@ function AppDrawer() {
 
 		if (pathname !== applicationPaths.credentials)
 			actions.push(
-				createDrawerAction("Settings", {
+				createDrawerAction("Credentials", {
 					onClick: () => dispatch(push(applicationPaths.credentials)),
 					icon: <AccountCircle />,
 				})
