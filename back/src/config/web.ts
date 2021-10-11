@@ -6,7 +6,7 @@ import isDev = Helper.isDev;
 
 export const rootDir = path.resolve(__dirname, "..");
 
-let frontPath = process.env.FRONT_PATH ?? path.resolve(rootDir, "..", "..", "..", "front", "build");
+export let frontPath = process.env.FRONT_PATH ?? path.resolve(rootDir, "..", "..", "..", "front", "build");
 
 export const webConfig: Partial<Configuration> = {
 	rootDir,

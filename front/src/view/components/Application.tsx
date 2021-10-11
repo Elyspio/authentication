@@ -120,6 +120,10 @@ function AppDrawer() {
 		}
 	}
 
+	React.useEffect(() => {
+		if (!isLogged) dispatch(push(applicationPaths.login));
+	}, [dispatch, isLogged]);
+
 	return withDrawer({
 		component: (
 			<SwitchRouter>

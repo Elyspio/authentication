@@ -20,7 +20,7 @@ $header-size: 4rem;
 		user-select: none;
 	}
 
-	.content {
+	> .content {
 		width: 100%;
 		display: flex;
 		justify-content: center;
