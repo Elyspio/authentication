@@ -29,7 +29,7 @@ export class UserRepository implements AfterRoutesInit {
 				theme: UserTheme.System,
 			},
 			credentials: {},
-			authorization: {},
+			authorizations: {},
 		});
 
 		return user;

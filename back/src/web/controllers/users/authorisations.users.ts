@@ -1,6 +1,6 @@
 import { BodyParams, Controller, Get, Patch, PathParams } from "@tsed/common";
 import { Name, Required, Returns } from "@tsed/schema";
-import { AuthorizationModel, CredentialsModel } from "./users.model";
+import { AuthorizationModel } from "./users.model";
 import { UserService } from "../../../core/services/user/user.service";
 import { Protected } from "../../decorators/protected";
 import { Roles } from "../../../core/database/entities/user/authorization/authentication.entity";
@@ -17,10 +17,10 @@ export class AuthorisationsUsersController {
 	}
 
 	@Get("/")
-	@Returns(200, CredentialsModel)
+	@Returns(200, AuthorizationModel)
 	@Protected()
 	async get(@Required() @PathParams("username") username: string) {
-		return this.services.user.getUserCredentials(username);
+		return this.services.user.getUserAuthorisatons(username);
 	}
 
 	@Patch("/")

@@ -1,13 +1,18 @@
 import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
 import { Services } from "../../../core/services";
-import { CredentialsModel, SetUserSettingsModel, UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
+import { AuthorizationModel, CredentialsModel, SetUserSettingsModel, UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
 import { setTheme } from "../theme/theme.action";
 import { Themes } from "../../../config/theme";
+import { toast } from "react-toastify";
 
 export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata", async (_, { dispatch }) => {
 	const token = await Services.authentication.getToken();
 	const username = await Services.user.username.get();
-	const [settings, credentials] = await Promise.all([Services.user.settings.get(username), Services.user.credentials.get(username)]);
+	const [settings, credentials, authorizations] = await Promise.all([
+		Services.user.settings.get(username),
+		Services.user.credentials.get(username),
+		Services.user.authorizations.get(username),
+	]);
 
 	Services.localStorage.settings.store(undefined, settings);
 
@@ -18,6 +23,7 @@ export const getUserMetadata = createAsyncThunk("authentication/getUserMetadata"
 		username,
 		settings,
 		credentials,
+		authorizations,
 	};
 });
 
@@ -25,7 +31,9 @@ export const login = createAsyncThunk("authentication/login", async (payload: { 
 	const { token } = await Services.authentication.login(payload);
 	if (token) {
 		Services.localStorage.validation.store(undefined, "done");
-		await dispatch(getUserMetadata());
+		await dispatch(getUserMetadata()).then(() => {
+			toast.success("Logged in");
+		});
 	}
 });
 
@@ -47,14 +55,37 @@ export const logout = createAsyncThunk("authentication/logout", async () => {
 });
 
 export const setUserSettings = createAsyncThunk("authentication/setUserSettings", async (arg: { username: string; settings: SetUserSettingsModel }, { dispatch }) => {
-	await Services.user.settings.set(arg.username, arg.settings);
-	await dispatch(getUserMetadata());
+	try {
+		await Services.user.settings.set(arg.username, arg.settings);
+		await dispatch(getUserMetadata());
+		toast.success("Successfully set User settings");
+	} catch {
+		toast.success("Successfully set User settings");
+	}
 });
 
 export const setUserCredentials = createAsyncThunk("authentication/setUserCredentials", async (arg: { username: string; credential: CredentialsModel }, { dispatch }) => {
-	await Services.user.credentials.set(arg.username, arg.credential);
-	await dispatch(getUserMetadata());
+	try {
+		await Services.user.credentials.set(arg.username, arg.credential);
+		await dispatch(getUserMetadata());
+		toast.success("Successfully set User credentials");
+	} catch {
+		toast.error("Could not set User credentials");
+	}
 });
+
+export const setUserAuthorizations = createAsyncThunk(
+	"authentication/setUserAuthorizations",
+	async (arg: { username: string; authorizations: AuthorizationModel }, { dispatch }) => {
+		try {
+			await Services.user.authorizations.set(arg.username, arg.authorizations);
+			await dispatch(getUserMetadata());
+			toast.success("Successfully set User authorizations");
+		} catch {
+			toast.error("Could not set User authorizations");
+		}
+	}
+);
 
 function updateTheme(dispatch: Dispatch, theme: UserSettingsModel["theme"]) {
 	let themeStr: Themes;

@@ -1,6 +1,8 @@
 export const applicationPaths = {
-	home: "/",
+	dashboard: "/",
+	login: "/login",
 	settings: "/settings",
 	register: "/register",
 	credentials: "/credentials",
+	authorizations: "/authorizations",
 };

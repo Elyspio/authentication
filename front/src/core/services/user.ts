@@ -1,5 +1,5 @@
 import { Apis } from "../apis";
-import { CredentialsModel, SetUserSettingsModel } from "../apis/backend";
+import { AuthorizationModel, CredentialsModel, SetUserSettingsModel } from "../apis/backend";
 
 export class UserService {
 	public readonly username = {
@@ -14,6 +14,11 @@ export class UserService {
 	public readonly settings = {
 		get: this.getSettings,
 		set: this.setSettings,
+	};
+
+	public readonly authorizations = {
+		get: this.getAuthorizations,
+		set: this.setAuthorizations,
 	};
 
 	private async getUsername() {
@@ -37,6 +42,16 @@ export class UserService {
 
 	private async setCredentials(username: string, credential: CredentialsModel) {
 		const { data } = await Apis.users.credentials.set(username, credential);
+		return data;
+	}
+
+	private async getAuthorizations(username: string) {
+		const { data } = await Apis.users.authorizations.get(username);
+		return data;
+	}
+
+	private async setAuthorizations(username: string, credential: AuthorizationModel) {
+		const { data } = await Apis.users.authorizations.set(username, credential);
 		return data;
 	}
 }

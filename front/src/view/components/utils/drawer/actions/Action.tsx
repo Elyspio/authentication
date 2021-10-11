@@ -10,10 +10,8 @@ export type ActionComponentProps = {
 
 export const ActionComponent = ({ children, icon, onClick, className }: ActionComponentProps) => {
 	return (
-		<div className={"Action " + (className ?? "")} onClick={onClick}>
-			<div className={"icon"}>
-				<IconButton size="medium">{icon}</IconButton>
-			</div>
+		<div className={`Action ${className ?? ""} ${icon === null ? "divider" : ""}`} onClick={onClick}>
+			<div className={"icon"}>{icon && <IconButton size="medium">{icon}</IconButton>}</div>
 			<div className={"description"}>{children}</div>
 		</div>
 	);

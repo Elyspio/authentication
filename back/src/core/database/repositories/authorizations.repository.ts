@@ -24,9 +24,9 @@ export class AuthorizationsRepository implements AfterRoutesInit {
 	@Log(AuthorizationsRepository.log)
 	async updateByUsername(username: string, authorization: AuthorizationEntity): Promise<AuthorizationEntity> {
 		const [user] = await this.repo.user.find({ where: { username } });
-		user.authorization = authorization;
+		user.authorizations = authorization;
 		await this.repo.user.save(user);
-		return user.authorization;
+		return user.authorizations;
 	}
 
 	@Log(AuthorizationsRepository.log)
@@ -37,6 +37,6 @@ export class AuthorizationsRepository implements AfterRoutesInit {
 			},
 		});
 		if (!user) throw UserNotFound(username);
-		return user.authorization;
+		return user.authorizations;
 	}
 }

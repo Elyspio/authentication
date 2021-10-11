@@ -89,7 +89,7 @@ export class Authentication {
 	@Get("/valid")
 	@Returns(200, Boolean)
 	@Log(Authentication.log, [0])
-	async validToken(@Required() @QueryParams("token") token: string, @Req() { cookies, headers }: Express.Request, @Res() res: Express.Response) {
+	async validToken(@QueryParams("token") token: string, @Req() { cookies, headers }: Express.Request, @Res() res: Express.Response) {
 		const cookieAuth = cookies[authorization_cookie_token];
 		const headerToken = headers[authorization_cookie_token];
 

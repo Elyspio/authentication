@@ -22,5 +22,5 @@ export class UserEntity {
 	settings!: SettingsEntity;
 
 	@Column(() => AuthorizationEntity)
-	authorization!: AuthorizationEntity;
+	authorizations!: AuthorizationEntity;
 }

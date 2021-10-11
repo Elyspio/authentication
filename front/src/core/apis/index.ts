@@ -1,4 +1,4 @@
-import { AuthenticationApi, UsersApi, UsersCredentialsApi, UsersSettingsApi } from "./backend";
+import { AuthenticationApi, UsersApi, UsersAuthorisationsApi, UsersCredentialsApi, UsersSettingsApi } from "./backend";
 import axios from "axios";
 
 const instance = axios.create({ withCredentials: true });
@@ -11,5 +11,6 @@ export const Apis = {
 		core: new UsersApi(undefined, basePath, instance),
 		settings: new UsersSettingsApi(undefined, basePath, instance),
 		credentials: new UsersCredentialsApi(undefined, basePath, instance),
+		authorizations: new UsersAuthorisationsApi(undefined, basePath, instance),
 	},
 };

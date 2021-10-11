@@ -16,7 +16,7 @@ export class AuthenticationService {
 	}
 
 	public async isValid() {
-		const { data } = await Apis.authentication.validToken("use_data_from_cookie");
+		const { data } = await Apis.authentication.validToken();
 		return data;
 	}
 

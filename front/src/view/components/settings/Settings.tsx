@@ -19,7 +19,7 @@ export function SettingContainer() {
 	return (
 		<Grid container justifyContent={"center"} alignItems={"center"}>
 			<Grid item>
-				<Paper>{logged && settings ? <Settings /> : <Button onClick={changePath(applicationPaths.home)}>You are not logged, please login first</Button>}</Paper>
+				<Paper>{logged && settings ? <Settings /> : <Button onClick={changePath(applicationPaths.dashboard)}>You are not logged, please login first</Button>}</Paper>
 			</Grid>
 		</Grid>
 	);

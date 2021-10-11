@@ -78,7 +78,7 @@ export class UserService {
 	async getUserAuthorisatons(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
 		if (!user) throw UserNotFound(username);
-		else return user.authorization;
+		else return user.authorizations;
 	}
 
 	@Log(UserService.log)

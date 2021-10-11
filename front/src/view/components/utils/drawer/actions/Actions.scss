@@ -10,6 +10,7 @@
 
 		.icon {
 			margin-right: 0.5rem;
+			width: calc(46px - 0.5rem);
 		}
 
 		.description {
@@ -26,6 +27,12 @@
 			font-size: 1rem;
 
 		}
+
+
+	}
+
+	.divider {
+		cursor: default;
 	}
 
 }

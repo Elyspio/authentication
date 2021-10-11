@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { getUserMetadata, logout } from "./authentication.action";
-import { CredentialsModel, UserSettingsModel } from "../../../core/apis/backend";
+import { AuthorizationModel, CredentialsModel, UserSettingsModel } from "../../../core/apis/backend";
 import { toast } from "react-toastify";
 
 export interface AuthenticationState {
@@ -9,6 +9,7 @@ export interface AuthenticationState {
 	username?: string;
 	credentials?: CredentialsModel;
 	settings?: UserSettingsModel;
+	authorizations?: AuthorizationModel;
 }
 
 const defaultState: AuthenticationState = {
@@ -23,8 +24,7 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 			state.username = action.payload.username;
 			state.settings = action.payload.settings;
 			state.token = action.payload.token;
-
-			toast.success("Logged in");
+			state.authorizations = action.payload.authorizations;
 		}
 	});
 
@@ -39,6 +39,7 @@ export const authenticationReducer = createReducer(defaultState, (builder) => {
 		state.username = defaultState.username;
 		state.settings = defaultState.settings;
 		state.token = defaultState.token;
+		state.authorizations = defaultState.authorizations;
 
 		toast.success("Logged out");
 	});
