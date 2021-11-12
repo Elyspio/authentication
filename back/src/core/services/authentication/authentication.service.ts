@@ -1,24 +1,27 @@
 import * as md5 from "md5";
-import { UserNotFound } from "./authentication.errors";
+import { AppTokenNotFound, UserNotFound } from "./authentication.errors";
 import { token_expiration } from "../../../config/authentication";
 import { $log, AfterRoutesInit, Service } from "@tsed/common";
 import { PostLoginRequest } from "../../../web/controllers/authentication/authentication.models";
 import * as crypto from "crypto";
-import { ConnectionRepository } from "../../database/repositories/connection.repository";
+import { UserConnectionRepository } from "../../database/repositories/connection/user.connection.repository";
 import { getLogger } from "../../utils/logger";
 import { Log } from "../../utils/decorators/logger";
-import { UserRepository } from "../../database/repositories/user.repository";
+import { UserRepository } from "../../database/repositories/user/user.repository";
+import { AppConnectionRepository } from "../../database/repositories/connection/app.connection.repository";
 
 @Service()
 export class AuthenticationService implements AfterRoutesInit {
 	private static log = getLogger.service(AuthenticationService);
 	private users: { [p: string]: { salt: string; token?: string } } = {};
-	private repositories: { connection: ConnectionRepository; user: UserRepository };
+	private apps: { [p: string]: string[] } = {};
+	private repositories: { connection: UserConnectionRepository; user: UserRepository; appConnection: AppConnectionRepository };
 
-	constructor(connectionRepository: ConnectionRepository, userRepository: UserRepository) {
+	constructor(connectionRepository: UserConnectionRepository, userRepository: UserRepository, appConnectionRepository: AppConnectionRepository) {
 		this.repositories = {
 			connection: connectionRepository,
 			user: userRepository,
+			appConnection: appConnectionRepository,
 		};
 	}
 
@@ -28,7 +31,15 @@ export class AuthenticationService implements AfterRoutesInit {
 		for (const con of activeConnection) {
 			this.users[con.username] = { token: con.token, salt: con.salt };
 		}
+
+		const activeAppConnection = await this.repositories.appConnection.findActiveConnections();
+		for (const con of activeAppConnection) {
+			if (this.apps[con.app] === undefined) this.apps[con.app] = [];
+			this.apps[con.app].push(con.token);
+		}
 	}
+
+	// region User
 
 	@Log(AuthenticationService.log)
 	public async initLogin(username: string): Promise<string> {
@@ -64,7 +75,7 @@ export class AuthenticationService implements AfterRoutesInit {
 		}
 		const isAuthorized = user.hash === md5(userStoredHash + salt);
 		if (isAuthorized) {
-			let token = crypto.randomBytes(64).toString("hex");
+			let token = this.generateToken();
 			this.users[user.name] = {
 				...this.users[user.name],
 				token,
@@ -101,8 +112,50 @@ export class AuthenticationService implements AfterRoutesInit {
 			.find(({ token: t }) => t === token)!;
 	}
 
+	// endregion User
+
+	// region App
+
+	@Log(AuthenticationService.log)
+	public async createAppToken(app: string, expire: boolean) {
+		const token = this.generateToken();
+
+		if (this.apps[app] === undefined) this.apps[app] = [token];
+		else this.apps[app].push(token);
+		await this.repositories.appConnection.create({ token, app }, expire);
+
+		return token;
+	}
+
+	@Log(AuthenticationService.log)
+	public async deleteAppToken(app: string, token: string) {
+		if (this.apps[app] !== undefined) {
+			this.apps[app] = this.apps[app].filter((t) => t !== token);
+			await this.repositories.appConnection.invalidateConnections(app, token);
+		} else {
+			throw AppTokenNotFound(app);
+		}
+	}
+
+	@Log(AuthenticationService.log)
+	public getAppTokens(app: string) {
+		return this.apps[app] ?? [];
+	}
+
+	@Log(AuthenticationService.log)
+	public validateAppToken(app: string, token: string) {
+		return this.apps[app].some((t) => t === token);
+	}
+
+	// endregion App
+
 	@Log(AuthenticationService.log)
 	private async generateSalt() {
 		return crypto.randomBytes(16).toString("hex");
+	}
+
+	@Log(AuthenticationService.log)
+	private generateToken() {
+		return crypto.randomBytes(64).toString("hex");
 	}
 }

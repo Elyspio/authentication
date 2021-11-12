@@ -1,10 +1,10 @@
 import { AfterRoutesInit, Service } from "@tsed/common";
 import { TypeORMService } from "@tsed/typeorm";
 import { MongoRepository } from "typeorm";
-import { getLogger } from "../../utils/logger";
-import { Log } from "../../utils/decorators/logger";
-import { UserEntity } from "../entities/user/user.entity";
-import { UserTheme } from "../entities/user/settings.entity";
+import { getLogger } from "../../../utils/logger";
+import { Log } from "../../../utils/decorators/logger";
+import { UserEntity } from "../../entities/user/user.entity";
+import { UserTheme } from "../../entities/user/settings.entity";
 
 @Service()
 export class UserRepository implements AfterRoutesInit {
@@ -40,7 +40,6 @@ export class UserRepository implements AfterRoutesInit {
 		const connections = await this.repo.user.findOne({
 			where: { username },
 		});
-		console.log("Loaded connections: ", connections);
 		return connections;
 	}
 }

@@ -1,8 +1,8 @@
 import { Column, Entity, ObjectID, ObjectIdColumn } from "typeorm";
-import { token_expiration } from "../../../config/authentication";
+import { token_expiration } from "../../../../config/authentication";
 
-@Entity("connections")
-export class ConnectionEntity {
+@Entity("user.connection")
+export class UserConnectionEntity {
 	@ObjectIdColumn()
 	id!: ObjectID;
 

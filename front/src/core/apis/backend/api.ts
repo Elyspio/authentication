@@ -16,18 +16,7 @@ import { Configuration } from "./configuration";
 import globalAxios, { AxiosInstance, AxiosPromise } from "axios";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import {
-	assertParamExists,
-	createRequestFunction,
-	DUMMY_BASE_URL,
-	serializeDataIfNeeded,
-	setApiKeyToObject,
-	setBasicAuthToObject,
-	setBearerAuthToObject,
-	setOAuthToObject,
-	setSearchParams,
-	toPathString,
-} from "./common";
+import { assertParamExists, createRequestFunction, DUMMY_BASE_URL, serializeDataIfNeeded, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, toPathString } from "./common";
 // @ts-ignore
 import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "./base";
 

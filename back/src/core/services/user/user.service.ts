@@ -1,28 +1,28 @@
 import { Service } from "@tsed/common";
-import { ConnectionRepository } from "../../database/repositories/connection.repository";
+import { UserConnectionRepository } from "../../database/repositories/connection/user.connection.repository";
 import { getLogger } from "../../utils/logger";
 import { Log } from "../../utils/decorators/logger";
-import { UserRepository } from "../../database/repositories/user.repository";
+import { UserRepository } from "../../database/repositories/user/user.repository";
 import { AuthorizationModel, FrontThemes, SetUserSettingsModel } from "../../../web/controllers/users/users.model";
-import { SettingRepository } from "../../database/repositories/settings.repository";
+import { SettingRepository } from "../../database/repositories/user/settings.repository";
 import { UserNotFound } from "../authentication/authentication.errors";
-import { CredentialsRepository } from "../../database/repositories/credentials.repository";
+import { CredentialsRepository } from "../../database/repositories/user/credentials.repository";
 import { CredentialsEntity } from "../../database/entities/user/credentials/credentials.entity";
-import { AuthorizationsRepository } from "../../database/repositories/authorizations.repository";
+import { AuthorizationsRepository } from "../../database/repositories/user/authorizations.repository";
 
 @Service()
 export class UserService {
 	private static log = getLogger.service(UserService);
 	private repositories: {
 		credentials: CredentialsRepository;
-		connection: ConnectionRepository;
+		connection: UserConnectionRepository;
 		user: UserRepository;
 		setting: SettingRepository;
 		authorization: AuthorizationsRepository;
 	};
 
 	constructor(
-		connectionRepository: ConnectionRepository,
+		connectionRepository: UserConnectionRepository,
 		userRepository: UserRepository,
 		userSettingRepository: SettingRepository,
 		userCredentialRepository: CredentialsRepository,

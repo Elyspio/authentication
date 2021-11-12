@@ -14,36 +14,52 @@ services:
             - "traefik.http.routers.authentication.rule=PathPrefix(`/authentication`)"
             - "traefik.http.services.authentication.loadbalancer.server.port=4000"
             - "traefik.http.routers.authentication.entrypoints=external"
-
         environment:
-            DB_PASSWORD: "Azeqsdwxc123"
-            DB_HOST: authentication-db
-            DB_USERNAME: "root"
-            DB_PORT: 27017
-            DB_DATABASE: admin
-            HTTP_PORT: 4000
+            DB_PASSWORD: ${DB_PASSWORD}
+            DB_HOST: ${DB_HOST}
+            DB_USERNAME: ${DB_USERNAME}
+            DB_PORT: ${DB_PORT}
+            DB_DATABASE: ${DB_DATABASE}
+            HTTP_PORT: ${HTTP_PORT}
         volumes:
-            - ./config/front/conf.js:/front/conf.js
+                - ./config/front/conf.js:/front/conf.js
         depends_on:
             - authentication-db
         networks:
             - authentication
             - external
-
+    authentication-server-redoc:
+        labels:
+            - "traefik.enable=true"
+            - "traefik.docker.network=external"
+            - "traefik.http.middlewares.authentication-redoc-prefix.stripprefix.prefixes=/authentication/redoc"
+            - "traefik.http.routers.authentication-redoc.middlewares=authentication-redoc-prefix@docker"
+            - "traefik.http.routers.authentication-redoc.rule=PathPrefix(`/authentication/redoc`)"
+            - "traefik.http.services.authentication-redoc.loadbalancer.server.port=80"
+            - "traefik.http.routers.authentication-redoc.entrypoints=external"
+        container_name: authentication-server-redoc
+        environment:
+            - 'SPEC_URL=https://elyspio.fr/authentication/swagger/swagger.json'
+        image: redocly/redoc
+        ports:
+            - "51321:80"
+        networks:
+            - external
     # database
     authentication-db:
         image: mongo:latest
-        labels:
-            - "traefik.enable=false"
+        container_name: authentication-db
         restart: always
         environment:
-            MONGO_INITDB_ROOT_USERNAME: root
-            MONGO_INITDB_ROOT_PASSWORD: Azeqsdwxc123
+            MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
         volumes:
             - ./data:/data/db
         networks:
             - internal
             - authentication
+        ports:
+            - "5002:27017"
 
 networks:
     authentication:

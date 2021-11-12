@@ -1,11 +1,11 @@
 import { AfterRoutesInit, Service } from "@tsed/common";
 import { TypeORMService } from "@tsed/typeorm";
 import { MongoRepository } from "typeorm";
-import { getLogger } from "../../utils/logger";
-import { Log } from "../../utils/decorators/logger";
-import { UserEntity } from "../entities/user/user.entity";
-import { UserNotFound } from "../../services/authentication/authentication.errors";
-import { AuthorizationEntity } from "../entities/user/authorization/authorization.entity";
+import { getLogger } from "../../../utils/logger";
+import { Log } from "../../../utils/decorators/logger";
+import { UserEntity } from "../../entities/user/user.entity";
+import { UserNotFound } from "../../../services/authentication/authentication.errors";
+import { AuthorizationEntity } from "../../entities/user/authorization/authorization.entity";
 
 @Service()
 export class AuthorizationsRepository implements AfterRoutesInit {
