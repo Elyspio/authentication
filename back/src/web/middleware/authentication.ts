@@ -1,10 +1,9 @@
-import { Context, Middleware, QueryParams, Req } from "@tsed/common";
+import { Context, IMiddleware, Middleware, QueryParams, Req } from "@tsed/common";
 import { Forbidden, Unauthorized } from "@tsed/exceptions";
 import { Request } from "express";
 import { authorization_cookie_token } from "../../config/authentication";
 import { getLogger } from "../../core/utils/logger";
 import { AuthenticationService } from "../../core/services/authentication/authentication.service";
-import { MiddlewareMethods } from "@tsed/platform-middlewares/lib/domain/MiddlewareMethods";
 import { UserService } from "../../core/services/user/user.service";
 import { Helper } from "../../core/utils/helper";
 import { AuthorizationEntity } from "../../core/database/entities/user/authorization/authorization.entity";
@@ -12,7 +11,7 @@ import { ProtectedOptions } from "../decorators/protected";
 import { Roles } from "../../core/database/entities/user/authorization/authentication.entity";
 
 @Middleware()
-export class RequireLogin implements MiddlewareMethods {
+export class RequireLogin implements IMiddleware {
 	private static log = getLogger.middleware(RequireLogin);
 	private services: { user: UserService; authentication: AuthenticationService };
 
@@ -47,7 +46,7 @@ export class RequireLogin implements MiddlewareMethods {
 			if (this.services.authentication.validateToken(token)) {
 				const userFromToken = this.services.authentication.getUserFromToken(token);
 
-				const userAuthorization = await this.services.user.getUserAuthorisatons(userFromToken.username);
+				const userAuthorization = await this.services.user.getUserAuthorisations(userFromToken.username);
 				if (options.roles) {
 					if (options.required === "all") {
 						if (!options.roles.every((role) => userAuthorization.authentication?.roles.includes(Helper.getEnumValue(Roles, role)))) {
@@ -58,8 +57,12 @@ export class RequireLogin implements MiddlewareMethods {
 							throw new Forbidden(
 								`You must have the one of these roles ${options.roles.join(" ")} to access to this resource see https://elyspio.fr/authentication/`
 							);
+							return;
 						}
-					} else throw new Error("Not supported operation RequireLogin.roles");
+					} else {
+						throw new Error("Not supported operation RequireLogin.roles");
+						return;
+					}
 				}
 
 				req.auth = {

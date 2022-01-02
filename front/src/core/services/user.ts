@@ -21,6 +21,10 @@ export class UserService {
 		set: this.setAuthorizations,
 	};
 
+	public async checkIfSomeUserExist() {
+		return await Apis.users.core.checkIfUsersExist().then((x) => x.data);
+	}
+
 	private async getUsername() {
 		const { data } = await Apis.users.core.getUserInfo("username");
 		return data;

@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { getUserMetadata, logout } from "./authentication.action";
+import { checkIfSomeUserExist, getUserMetadata, logout } from "./authentication.action";
 import { AuthorizationModel, CredentialsModel, UserSettingsModel } from "../../../core/apis/backend";
 import { toast } from "react-toastify";
 
@@ -10,13 +10,19 @@ export interface AuthenticationState {
 	credentials?: CredentialsModel;
 	settings?: UserSettingsModel;
 	authorizations?: AuthorizationModel;
+	canBypass: boolean;
 }
 
 const defaultState: AuthenticationState = {
 	logged: false,
+	canBypass: false,
 };
 
 export const authenticationReducer = createReducer(defaultState, (builder) => {
+	builder.addCase(checkIfSomeUserExist.fulfilled, (state, action) => {
+		state.canBypass = !action.payload.exist;
+	});
+
 	builder.addCase(getUserMetadata.fulfilled, (state, action) => {
 		if (action.payload) {
 			state.logged = true;

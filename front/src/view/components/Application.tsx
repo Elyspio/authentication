@@ -12,7 +12,7 @@ import Login from "./account/Login";
 import { toast, ToastContainer } from "react-toastify";
 import { updateToastTheme } from "./utils/toast";
 import { Services } from "../../core/services";
-import { logout, verifyLogin } from "../../store/module/authentication/authentication.action";
+import { checkIfSomeUserExist, logout, verifyLogin } from "../../store/module/authentication/authentication.action";
 import { AccountCircle, AddCircle, Home, Security, Settings as SettingsIcon } from "@material-ui/icons";
 import { push } from "connected-react-router";
 import { SettingContainer } from "./settings/Settings";
@@ -24,6 +24,7 @@ import Register from "./account/register/Register";
 import { AuthorizationsContainer } from "./authorizations/Authorizations";
 import { AuthorizationAuthenticationModelRolesEnum } from "../../core/apis/backend";
 import { Dashboard } from "./Dashboard";
+import { useDispatch } from "react-redux";
 
 const isValid = async () => {
 	let success = await Services.authentication.isValid();
@@ -35,15 +36,18 @@ const isValid = async () => {
 };
 
 function AppDrawer() {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const theme = useAppSelector((s) => s.theme.current);
 	const isAdmin = useAppSelector((s) => s.authentication.authorizations?.authentication?.roles.includes(AuthorizationAuthenticationModelRolesEnum.Admin));
-	const isLogged = useAppSelector((s) => s.authentication.logged);
+	const { logged: isLogged, canBypass } = useAppSelector((s) => s.authentication);
 	const icon = theme === "dark" ? <Brightness5Icon /> : <Brightness3Icon />;
 	const { pathname } = useAppSelector((s) => s.router.location);
 
 	React.useEffect(() => updateToastTheme(theme), [theme]);
+	React.useEffect(() => {
+		dispatch(checkIfSomeUserExist());
+	}, [dispatch]);
 
 	let actions = [
 		createDrawerAction(theme === "dark" ? "Light Mode" : "Dark Mode", {
@@ -100,7 +104,7 @@ function AppDrawer() {
 		);
 	}
 
-	if (isAdmin) {
+	if (isAdmin || canBypass) {
 		actions.push(createDrawerDivider("Admin"));
 		if (pathname !== applicationPaths.register) {
 			actions.push(
@@ -110,7 +114,7 @@ function AppDrawer() {
 				})
 			);
 		}
-		if (pathname !== applicationPaths.authorizations) {
+		if (isLogged && pathname !== applicationPaths.authorizations) {
 			actions.push(
 				createDrawerAction("Authorizations", {
 					onClick: () => dispatch(push(applicationPaths.authorizations)),

@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppSelector } from "../../../store";
 import { UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select } from "@material-ui/core";
 import { push } from "connected-react-router";
@@ -8,9 +8,10 @@ import Divider from "@material-ui/core/Divider";
 import { Title } from "../utils/title";
 import "./Settings.scss";
 import { setUserSettings } from "../../../store/module/authentication/authentication.action";
+import { useDispatch } from "react-redux";
 
 export function SettingContainer() {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const changePath = (path) => () => dispatch(push(path));
 
@@ -40,7 +41,7 @@ function Settings() {
 		[newSettings]
 	);
 
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const save = React.useCallback(
 		() =>

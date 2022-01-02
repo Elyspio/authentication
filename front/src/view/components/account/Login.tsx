@@ -2,15 +2,15 @@ import React from "react";
 import "./Login.scss";
 import { Button, CircularProgress, Grid, Paper, TextField } from "@material-ui/core";
 import { useAsyncCallback } from "../../hooks/useAsyncCallback";
-import { useAppDispatch } from "../../../store";
 import { login } from "../../../store/module/authentication/authentication.action";
 import { Title } from "../utils/title";
 import Divider from "@material-ui/core/Divider";
+import { useDispatch } from "react-redux";
 
 function Login() {
 	const [password, setPassword] = React.useState("");
 	const [name, setName] = React.useState("");
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 	const [submit, { isExecuting }] = useAsyncCallback(async () => {
 		await dispatch(login({ password, name }));
 		setPassword("");

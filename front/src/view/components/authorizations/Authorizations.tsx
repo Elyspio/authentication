@@ -7,6 +7,7 @@ import Divider from "@material-ui/core/Divider";
 import { Title } from "../utils/title";
 import { AuthorizationAuthentication } from "./AuthorizationAuthentication";
 import { setUserAuthorizations } from "../../../store/module/authentication/authentication.action";
+import { useDispatch } from "react-redux";
 
 export function AuthorizationsContainer() {
 	const dispatch = useAppDispatch();
@@ -34,7 +35,7 @@ function Authorizations() {
 
 	const [authenticationData, setAuthenticationData] = useState(authentication ?? { roles: [] });
 
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const save = React.useCallback(() => {
 		dispatch(setUserAuthorizations({ authorizations: { authentication: authenticationData }, username }));

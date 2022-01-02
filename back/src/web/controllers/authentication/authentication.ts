@@ -3,15 +3,16 @@ import { AuthenticationService } from "../../../core/services/authentication/aut
 import { Unauthorized } from "@tsed/exceptions";
 import { authorization_cookie_token, authorization_cookie_username, token_expiration } from "../../../config/authentication";
 import * as Express from "express";
-import { Description, Required, Returns } from "@tsed/schema";
+import { Description, Name, Required, Returns } from "@tsed/schema";
 import { PostLoginInitRequest, PostLoginModel, PostLoginModelWithSalt, PostLoginRequest } from "./authentication.models";
 import { RequireDevelopmentEnvironment, RequireLogin } from "../../middleware/util";
 import { getLogger } from "../../../core/utils/logger";
 import { Log } from "../../../core/utils/decorators/logger";
 
 @Controller("/authentication")
-export class Authentication {
-	static log = getLogger.controller(Authentication);
+@Name("Authentication")
+export class AuthenticationController {
+	static log = getLogger.controller(AuthenticationController);
 	private services: { authentication: AuthenticationService };
 
 	constructor(authenticationService: AuthenticationService) {
@@ -22,7 +23,7 @@ export class Authentication {
 
 	@Get("/logged")
 	@Use(RequireDevelopmentEnvironment)
-	@Log(Authentication.log)
+	@Log(AuthenticationController.log)
 	@Description("Return all logged users (Not available in production)")
 	async get() {
 		return { users: this.services.authentication.getLoggedUser() };
@@ -33,7 +34,7 @@ export class Authentication {
 	@Post("/login/init")
 	@Returns(200, PostLoginModelWithSalt)
 	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Log(Authentication.log, false)
+	@Log(AuthenticationController.log, false)
 	@Description("Login first step: create a salt from user's name")
 	async loginInit(@Req() { cookies }: Express.Request, @BodyParams(PostLoginInitRequest) { name }: PostLoginInitRequest) {
 		$log.info("cookies", cookies);
@@ -50,7 +51,7 @@ export class Authentication {
 	@Post("/login")
 	@Returns(200, PostLoginModel)
 	@Returns(Unauthorized.STATUS, Unauthorized)
-	@Log(Authentication.log, false)
+	@Log(AuthenticationController.log, false)
 	@Description("Login second step: check if the token provided match with the one computed by the server")
 	async login(@Req() { cookies }: Express.Request, @Required() @BodyParams() { hash, name }: PostLoginRequest, @Res() res: Express.Response): Promise<PostLoginModel> {
 		let token = cookies[authorization_cookie_token];
@@ -77,7 +78,7 @@ export class Authentication {
 	@Delete("/login")
 	@Returns(204)
 	@Use(RequireLogin)
-	@Log(Authentication.log)
+	@Log(AuthenticationController.log)
 	async logout(@Cookies(authorization_cookie_username, String) username: string, @Res() res: Express.Response) {
 		await this.services.authentication.logout(username);
 		res.clearCookie(authorization_cookie_username);
@@ -88,7 +89,7 @@ export class Authentication {
 
 	@Get("/valid")
 	@Returns(200, Boolean)
-	@Log(Authentication.log, [0])
+	@Log(AuthenticationController.log, [0])
 	async validToken(@QueryParams("token") token: string, @Req() { cookies, headers }: Express.Request, @Res() res: Express.Response) {
 		const cookieAuth = cookies[authorization_cookie_token];
 		const headerToken = headers[authorization_cookie_token];

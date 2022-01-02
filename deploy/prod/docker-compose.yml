@@ -28,23 +28,7 @@ services:
         networks:
             - authentication
             - external
-    authentication-server-redoc:
-        labels:
-            - "traefik.enable=true"
-            - "traefik.docker.network=external"
-            - "traefik.http.middlewares.authentication-redoc-prefix.stripprefix.prefixes=/authentication/redoc"
-            - "traefik.http.routers.authentication-redoc.middlewares=authentication-redoc-prefix@docker"
-            - "traefik.http.routers.authentication-redoc.rule=PathPrefix(`/authentication/redoc`)"
-            - "traefik.http.services.authentication-redoc.loadbalancer.server.port=80"
-            - "traefik.http.routers.authentication-redoc.entrypoints=external"
-        container_name: authentication-server-redoc
-        environment:
-            - 'SPEC_URL=https://elyspio.fr/authentication/swagger/swagger.json'
-        image: redocly/redoc
-        ports:
-            - "51321:80"
-        networks:
-            - external
+
     # database
     authentication-db:
         image: mongo:latest

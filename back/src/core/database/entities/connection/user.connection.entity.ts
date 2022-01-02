@@ -36,6 +36,7 @@ export class UserConnectionEntity {
 		this.salt = salt;
 		this.created = new Date();
 		this.expire = new Date(Date.now() + token_expiration);
-		this.invalidated = false;
+		this.invalidated = false
+
 	}
 }

@@ -75,7 +75,7 @@ export class UserService {
 	}
 
 	@Log(UserService.log)
-	async getUserAuthorisatons(username: string) {
+	async getUserAuthorisations(username: string) {
 		const user = await this.repositories.user.findByUsername(username);
 		if (!user) throw UserNotFound(username);
 		else return user.authorizations;
@@ -84,5 +84,10 @@ export class UserService {
 	@Log(UserService.log)
 	public async setUserAuthorisation(username: string, authorization: AuthorizationModel) {
 		return await this.repositories.authorization.updateByUsername(username, authorization);
+	}
+
+	@Log(UserService.log)
+	public async checkIfUsersExist() {
+		return await this.repositories.user.checkIfUsersExist();
 	}
 }

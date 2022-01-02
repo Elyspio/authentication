@@ -6,7 +6,7 @@ import { Protected } from "../../decorators/protected";
 import { Roles } from "../../../core/database/entities/user/authorization/authentication.entity";
 
 @Controller("/users/:username/authorisations")
-@Name("Users.Authorisations")
+@Name("AuthorisationsUsers")
 export class AuthorisationsUsersController {
 	private services: { user: UserService };
 
@@ -20,7 +20,7 @@ export class AuthorisationsUsersController {
 	@Returns(200, AuthorizationModel)
 	@Protected()
 	async get(@Required() @PathParams("username") username: string) {
-		return this.services.user.getUserAuthorisatons(username);
+		return this.services.user.getUserAuthorisations(username);
 	}
 
 	@Patch("/")

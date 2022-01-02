@@ -2,5 +2,5 @@ front/build
 back/build
 node_modules
 .idea
-deploy/dev/data/db
 deploy/dev/data
+!/deploy/prod/.env

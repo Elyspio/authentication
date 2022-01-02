@@ -6,7 +6,7 @@ import { Protected } from "../../decorators/protected";
 import { Helper } from "../../../core/utils/helper";
 
 @Controller("/users/:username/settings")
-@Name("Users.Settings")
+@Name("SettingsUsers")
 export class SettingsUsersController {
 	private services: { user: UserService };
 

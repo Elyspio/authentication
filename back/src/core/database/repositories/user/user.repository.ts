@@ -5,6 +5,7 @@ import { getLogger } from "../../../utils/logger";
 import { Log } from "../../../utils/decorators/logger";
 import { UserEntity } from "../../entities/user/user.entity";
 import { UserTheme } from "../../entities/user/settings.entity";
+import { Roles } from "../../entities/user/authorization/authentication.entity";
 
 @Service()
 export class UserRepository implements AfterRoutesInit {
@@ -29,7 +30,11 @@ export class UserRepository implements AfterRoutesInit {
 				theme: UserTheme.System,
 			},
 			credentials: {},
-			authorizations: {},
+			authorizations: {
+				authentication: {
+					roles: [Roles.User],
+				},
+			},
 		});
 
 		return user;
@@ -41,5 +46,11 @@ export class UserRepository implements AfterRoutesInit {
 			where: { username },
 		});
 		return connections;
+	}
+
+	@Log(UserRepository.log)
+	public async checkIfUsersExist() {
+		const users = await this.repo.user.findOne();
+		return users !== null;
 	}
 }

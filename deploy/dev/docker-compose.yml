@@ -22,6 +22,14 @@ services:
             - authentication-db-data:/data/db
         ports:
             - "6001:27017"
+        labels:
+        - traefik.enable=true
+        - traefik.tcp.services.my-mongodb1.loadbalancer.server.port=27017
+        - traefik.tcp.routers.my-mongodb1.entrypoints=internal-tcp
+        - traefik.tcp.routers.my-mongodb1.rule=HostSNI(`my-mongodb1.company.net`)
+        - traefik.tcp.routers.my-mongodb1.tls=true
+        - traefik.tcp.routers.my-mongodb1.tls.certresolver=letsencrypt
+
 
 
 volumes:

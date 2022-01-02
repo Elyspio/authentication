@@ -87,6 +87,12 @@ export const setUserAuthorizations = createAsyncThunk(
 	}
 );
 
+export const checkIfSomeUserExist = createAsyncThunk("authentication/checkIfSomeUserExist", async () => {
+	return {
+		exist: await Services.user.checkIfSomeUserExist(),
+	};
+});
+
 function updateTheme(dispatch: Dispatch, theme: UserSettingsModel["theme"]) {
 	let themeStr: Themes;
 	if (theme === UserSettingsModelThemeEnum.System) themeStr = Services.theme.getThemeFromSystem();

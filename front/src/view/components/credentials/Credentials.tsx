@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../store";
+import { useAppSelector } from "../../../store";
 import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
 import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
@@ -8,9 +8,10 @@ import { Title } from "../utils/title";
 import { CredentialGithub } from "./CredentialGithub";
 import { CredentialDocker } from "./CredentialDocker";
 import { setUserCredentials } from "../../../store/module/authentication/authentication.action";
+import { useDispatch } from "react-redux";
 
 export function CredentialContainer() {
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const changePath = (path) => () => dispatch(push(path));
 
@@ -34,7 +35,7 @@ function Credentials() {
 	const [githubData, setGithubData] = useState(github ?? { user: username, token: "" });
 	const [dockerData, setDockerData] = useState(docker ?? { username: username, password: "" });
 
-	const dispatch = useAppDispatch();
+	const dispatch = useDispatch();
 
 	const save = React.useCallback(() => {
 		dispatch(setUserCredentials({ credential: { github: githubData, docker: dockerData }, username }));

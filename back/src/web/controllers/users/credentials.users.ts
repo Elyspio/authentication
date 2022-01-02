@@ -5,7 +5,7 @@ import { UserService } from "../../../core/services/user/user.service";
 import { Protected } from "../../decorators/protected";
 
 @Controller("/users/:username/credentials")
-@Name("Users.Credentials")
+@Name("CredentialsUsers")
 export class CredentialsUsersController {
 	private services: { user: UserService };
 
