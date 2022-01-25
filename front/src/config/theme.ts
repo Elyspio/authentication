@@ -51,7 +51,7 @@ export const getUrlTheme = (): Themes => {
 			return Services.theme.getThemeFromSystem();
 		} else return fromSession.theme;
 	}
-	return "light";
+	return Services.theme.getThemeFromSystem();
 };
 
 export const getCurrentTheme = (theme: Themes): Theme => {
