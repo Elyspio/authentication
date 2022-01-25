@@ -22,7 +22,7 @@ services:
             DB_DATABASE: ${DB_DATABASE}
             HTTP_PORT: ${HTTP_PORT}
         volumes:
-                - ./config/front/conf.js:/front/conf.js
+            - ./config/front/conf.js:/front/conf.js
         depends_on:
             - authentication-db
         networks:

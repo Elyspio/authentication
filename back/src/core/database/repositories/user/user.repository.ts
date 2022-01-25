@@ -51,6 +51,6 @@ export class UserRepository implements AfterRoutesInit {
 	@Log(UserRepository.log)
 	public async checkIfUsersExist() {
 		const users = await this.repo.user.findOne();
-		return users !== null;
+		return Boolean(users);
 	}
 }

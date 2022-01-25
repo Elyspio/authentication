@@ -43,5 +43,5 @@ export const webConfig: Partial<Configuration> = {
 			specVersion: "3.0.1",
 			operationIdPattern: "%m",
 		},
-	]
+	],
 };

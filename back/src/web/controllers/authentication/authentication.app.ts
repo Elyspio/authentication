@@ -44,7 +44,7 @@ export class AuthenticationAppController {
 	}
 
 	@Get("/:app")
-	@Returns(200, Array).Of(String)
+	@(Returns(200, Array).Of(String))
 	@Protected()
 	@Log(AuthenticationAppController.log, [0, 1])
 	async getTokens(@PathParams("app") app: string) {

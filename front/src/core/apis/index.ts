@@ -1,4 +1,4 @@
-import { UsersApi, AuthenticationApi, AuthorisationsUsersApi, CredentialsUsersApi, SettingsUsersApi } from "./backend";
+import { AuthenticationApi, AuthorisationsUsersApi, CredentialsUsersApi, SettingsUsersApi, UsersApi } from "./backend";
 import axios from "axios";
 
 const instance = axios.create({ withCredentials: true });
