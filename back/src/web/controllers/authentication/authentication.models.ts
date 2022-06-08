@@ -33,3 +33,8 @@ export class PostLoginModelWithSalt {
 	@Required()
 	salt!: string;
 }
+
+
+export enum App {
+	CICD = "CICD"
+}

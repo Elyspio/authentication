@@ -144,7 +144,7 @@ export class AuthenticationService implements AfterRoutesInit {
 
 	@Log(AuthenticationService.log)
 	public validateAppToken(app: string, token: string) {
-		return this.apps[app].some((t) => t === token);
+		return this.apps[app]?.some((t) => t === token) ?? false;
 	}
 
 	// endregion App
