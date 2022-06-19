@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import React from "react";
 
 export function TabPanel(props: { children: React.ReactChild; index: number; value: number }) {

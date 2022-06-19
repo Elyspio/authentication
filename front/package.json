@@ -12,10 +12,11 @@
 		"docker": "cd ../back && yarn docker"
 	},
 	"dependencies": {
-		"@material-ui/core": "^4.12.3",
-		"@material-ui/data-grid": "^4.0.0-alpha.37",
-		"@material-ui/icons": "^4.11.2",
-		"@material-ui/styles": "^4.11.4",
+		"@emotion/react": "^11.9.3",
+		"@emotion/styled": "^11.9.3",
+		"@mui/icons-material": "^5.8.4",
+		"@mui/material": "^5.8.4",
+		"@mui/styles": "^5.8.4",
 		"@reduxjs/toolkit": "^1.7.1",
 		"axios": "^0.24.0",
 		"connected-react-router": "^6.9.2",

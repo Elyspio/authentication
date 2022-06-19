@@ -1,5 +1,6 @@
 export class LocalStorageService {
-	constructor(private base: string) {}
+	constructor(private base: string) {
+	}
 
 	store(key: string | undefined, value: number | string | object) {
 		let name = this.base;

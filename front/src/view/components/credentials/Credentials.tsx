@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useAppSelector } from "../../../store";
-import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
-import Divider from "@material-ui/core/Divider";
+import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
 import { CredentialGithub } from "./CredentialGithub";
 import { CredentialDocker } from "./CredentialDocker";
@@ -35,7 +35,7 @@ function Credentials() {
 	const [githubData, setGithubData] = useState(github ?? { user: username, token: "" });
 	const [dockerData, setDockerData] = useState(docker ?? { username: username, password: "" });
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const save = React.useCallback(() => {
 		dispatch(setUserCredentials({ credential: { github: githubData, docker: dockerData }, username }));

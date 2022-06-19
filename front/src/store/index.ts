@@ -1,13 +1,11 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { AnyAction, combineReducers, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authenticationReducer } from "./module/authentication/authentication.reducer";
 import { themeReducer } from "./module/theme/theme.reducer";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 
-export const history = createBrowserHistory({
-	basename: "/authentication",
-});
+export const history = createBrowserHistory({ basename: "/authentication" });
 
 const createRootReducer = (history) =>
 	combineReducers({
@@ -24,7 +22,7 @@ const store = configureStore({
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

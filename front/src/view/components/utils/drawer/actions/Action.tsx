@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { IconButton, Typography } from "@material-ui/core";
+import { IconButton, Typography } from "@mui/material";
 
 export type ActionComponentProps = {
 	icon: React.ReactNode;

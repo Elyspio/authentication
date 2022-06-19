@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Button, CircularProgress, Grid, Paper, TextField } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
+import { Box, Button, CircularProgress, Grid, Paper, TextField } from "@mui/material";
+import Divider from "@mui/material/Divider";
 import { useAppDispatch } from "../../../../store";
 import { create } from "../../../../store/module/authentication/authentication.action";
 import { useAsyncCallback } from "../../../hooks/useAsyncCallback";

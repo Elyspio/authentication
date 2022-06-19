@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, ButtonProps, Grid, Paper } from "@material-ui/core";
+import { Button, ButtonProps, Grid, Paper } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { AuthorizationAuthenticationModelRolesEnum } from "../../core/apis/backend";
 import { applicationPaths } from "../../config/routes";
@@ -14,10 +14,10 @@ export function Dashboard() {
 	});
 
 	const btns = React.useMemo(() => {
-		const arr: { label: string; color: ButtonProps["color"]; path: string }[] = [];
+		const arr: { label: string; color?: ButtonProps["color"]; path: string }[] = [];
 		if (logged) {
-			arr.push({ label: "Settings", color: "default", path: applicationPaths.settings });
-			arr.push({ label: "Credentials", color: "default", path: applicationPaths.credentials });
+			arr.push({ label: "Settings", path: applicationPaths.settings });
+			arr.push({ label: "Credentials", path: applicationPaths.credentials });
 		}
 		if (isAdmin) {
 			arr.push({ label: "Authorizations", color: "primary", path: applicationPaths.authorizations });

@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Box } from "@material-ui/core";
+import { Box } from "@mui/material";
 import "./Application.scss";
-import Brightness5Icon from "@material-ui/icons/Brightness5";
-import Brightness3Icon from "@material-ui/icons/Brightness3";
-import BuildIcon from "@material-ui/icons/Build";
+import Brightness5Icon from "@mui/icons-material/Brightness5";
+import Brightness3Icon from "@mui/icons-material/Brightness3";
+import BuildIcon from "@mui/icons-material/Build";
 import { Route, Switch as SwitchRouter } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/module/theme/theme.action";
@@ -13,7 +13,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { updateToastTheme } from "./utils/toast";
 import { Services } from "../../core/services";
 import { checkIfSomeUserExist, logout, verifyLogin } from "../../store/module/authentication/authentication.action";
-import { AccountCircle, AddCircle, Home, Security, Settings as SettingsIcon } from "@material-ui/icons";
+import { AccountCircle, AddCircle, Home, Security, Settings as SettingsIcon } from "@mui/icons-material";
 import { push } from "connected-react-router";
 import { SettingContainer } from "./settings/Settings";
 import { CredentialContainer } from "./credentials/Credentials";
@@ -24,7 +24,6 @@ import Register from "./account/register/Register";
 import { AuthorizationsContainer } from "./authorizations/Authorizations";
 import { AuthorizationAuthenticationModelRolesEnum } from "../../core/apis/backend";
 import { Dashboard } from "./Dashboard";
-import { useDispatch } from "react-redux";
 
 const isValid = async () => {
 	let success = await Services.authentication.isValid();
@@ -36,7 +35,7 @@ const isValid = async () => {
 };
 
 function AppDrawer() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const theme = useAppSelector((s) => s.theme.current);
 	const isAdmin = useAppSelector((s) => s.authentication.authorizations?.authentication?.roles.includes(AuthorizationAuthenticationModelRolesEnum.Admin));
@@ -65,7 +64,7 @@ function AppDrawer() {
 			createDrawerAction("Home", {
 				onClick: () => dispatch(push(applicationPaths.dashboard)),
 				icon: <Home />,
-			})
+			}),
 		);
 	}
 
@@ -74,7 +73,7 @@ function AppDrawer() {
 			createDrawerAction("Logout", {
 				onClick: () => dispatch(logout()),
 				icon: <Logout fill={"currentColor"} />,
-			})
+			}),
 		);
 		actions.push(createDrawerDivider("User"));
 
@@ -83,7 +82,7 @@ function AppDrawer() {
 				createDrawerAction("Settings", {
 					onClick: () => dispatch(push(applicationPaths.settings)),
 					icon: <SettingsIcon />,
-				})
+				}),
 			);
 		}
 
@@ -92,7 +91,7 @@ function AppDrawer() {
 				createDrawerAction("Credentials", {
 					onClick: () => dispatch(push(applicationPaths.credentials)),
 					icon: <AccountCircle />,
-				})
+				}),
 			);
 		}
 	} else {
@@ -100,7 +99,7 @@ function AppDrawer() {
 			createDrawerAction("Login", {
 				onClick: () => dispatch(push(applicationPaths.login)),
 				icon: <Logout fill={"currentColor"} />,
-			})
+			}),
 		);
 	}
 
@@ -111,7 +110,7 @@ function AppDrawer() {
 				createDrawerAction("Register", {
 					icon: <AddCircle />,
 					onClick: () => dispatch(push(applicationPaths.register)),
-				})
+				}),
 			);
 		}
 		if (isLogged && pathname !== applicationPaths.authorizations) {
@@ -119,7 +118,7 @@ function AppDrawer() {
 				createDrawerAction("Authorizations", {
 					onClick: () => dispatch(push(applicationPaths.authorizations)),
 					icon: <Security />,
-				})
+				}),
 			);
 		}
 	}

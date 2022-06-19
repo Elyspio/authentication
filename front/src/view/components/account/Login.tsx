@@ -1,16 +1,16 @@
 import React from "react";
 import "./Login.scss";
-import { Button, CircularProgress, Grid, Paper, TextField } from "@material-ui/core";
+import { Button, CircularProgress, Grid, Paper, TextField } from "@mui/material";
 import { useAsyncCallback } from "../../hooks/useAsyncCallback";
 import { login } from "../../../store/module/authentication/authentication.action";
 import { Title } from "../utils/title";
-import Divider from "@material-ui/core/Divider";
-import { useDispatch } from "react-redux";
+import Divider from "@mui/material/Divider";
+import { useAppDispatch } from "../../../store";
 
 function Login() {
 	const [password, setPassword] = React.useState("");
 	const [name, setName] = React.useState("");
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const [submit, { isExecuting }] = useAsyncCallback(async () => {
 		await dispatch(login({ password, name }));
 		setPassword("");

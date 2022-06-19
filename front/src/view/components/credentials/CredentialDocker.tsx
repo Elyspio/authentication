@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, FormControl, Grid, Paper, TextField } from "@material-ui/core";
+import { Box, FormControl, Grid, Paper, TextField } from "@mui/material";
 import { CredentialsModel } from "../../../core/apis/backend";
 
 type Model = Required<CredentialsModel>["docker"];
@@ -14,7 +14,7 @@ export function CredentialDocker({ data, setData }: Props) {
 		(key: keyof Model) => (event: React.ChangeEvent<{ name?: string; value: string }>) => {
 			setData({ ...data, [key]: event.target.value });
 		},
-		[data, setData]
+		[data, setData],
 	);
 
 	return (

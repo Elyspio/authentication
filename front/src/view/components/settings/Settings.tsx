@@ -1,17 +1,16 @@
 import React from "react";
-import { useAppSelector } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
-import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select } from "@material-ui/core";
+import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select } from "@mui/material";
 import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
-import Divider from "@material-ui/core/Divider";
+import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
 import "./Settings.scss";
 import { setUserSettings } from "../../../store/module/authentication/authentication.action";
-import { useDispatch } from "react-redux";
 
 export function SettingContainer() {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const changePath = (path) => () => dispatch(push(path));
 
@@ -38,10 +37,10 @@ function Settings() {
 					[key]: val.target.value,
 				});
 			},
-		[newSettings]
+		[newSettings],
 	);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const save = React.useCallback(
 		() =>
@@ -52,9 +51,9 @@ function Settings() {
 						theme: newSettings.theme as any,
 					},
 					username,
-				})
+				}),
 			),
-		[newSettings, dispatch, username]
+		[newSettings, dispatch, username],
 	);
 
 	return (

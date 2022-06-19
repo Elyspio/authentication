@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
-import Divider from "@material-ui/core/Divider";
+import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
 import { AuthorizationAuthentication } from "./AuthorizationAuthentication";
 import { setUserAuthorizations } from "../../../store/module/authentication/authentication.action";
-import { useDispatch } from "react-redux";
 
 export function AuthorizationsContainer() {
 	const dispatch = useAppDispatch();
@@ -35,7 +34,7 @@ function Authorizations() {
 
 	const [authenticationData, setAuthenticationData] = useState(authentication ?? { roles: [] });
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const save = React.useCallback(() => {
 		dispatch(setUserAuthorizations({ authorizations: { authentication: authenticationData }, username }));

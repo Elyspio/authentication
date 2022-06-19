@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import React, { ReactChild } from "react";
 
 export function Title(props: { children: ReactChild }) {

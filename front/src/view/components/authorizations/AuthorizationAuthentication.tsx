@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, FormControl, Grid, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { AuthorizationAuthenticationModelRolesEnum, AuthorizationModel } from "../../../core/apis/backend";
 
 type Model = Required<AuthorizationModel>["authentication"];
@@ -11,10 +11,10 @@ type Props = {
 
 export function AuthorizationAuthentication({ data, setData }: Props) {
 	const setProperty = React.useCallback(
-		(key: keyof Model) => (event: React.ChangeEvent<{ name?: string; value: any }>) => {
+		(key: keyof Model) => (event: SelectChangeEvent<any>) => {
 			setData({ ...data, [key]: event.target.value });
 		},
-		[data, setData]
+		[data, setData],
 	);
 
 	return (

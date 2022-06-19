@@ -1,11 +1,11 @@
-import { createTheme, Theme } from "@material-ui/core";
-import * as colors from "@material-ui/core/colors";
+import { adaptV4Theme, createTheme, Theme } from "@mui/material";
+import * as colors from "@mui/material/colors";
 import { Services } from "../core/services";
 import { UserSettingsModel } from "../core/apis/backend";
 
-const darkTheme = createTheme({
+const darkTheme = createTheme(adaptV4Theme({
 	palette: {
-		type: "dark",
+		mode: "dark",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["500"],
@@ -19,11 +19,11 @@ const darkTheme = createTheme({
 			default: "#181818",
 		},
 	},
-});
+}));
 
-const lightTheme = createTheme({
+const lightTheme = createTheme(adaptV4Theme({
 	palette: {
-		type: "light",
+		mode: "light",
 		secondary: {
 			...colors.grey,
 			main: colors.grey["900"],
@@ -33,7 +33,7 @@ const lightTheme = createTheme({
 			main: colors.blue["400"],
 		},
 	},
-});
+}));
 
 export const themes = {
 	dark: darkTheme,

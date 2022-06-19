@@ -84,7 +84,7 @@ export const setUserAuthorizations = createAsyncThunk(
 		} catch {
 			toast.error("Could not set User authorizations");
 		}
-	}
+	},
 );
 
 export const checkIfSomeUserExist = createAsyncThunk("authentication/checkIfSomeUserExist", async () => {
