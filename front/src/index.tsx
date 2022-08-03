@@ -1,22 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./index.scss";
 import { Provider } from "react-redux";
 import store, { history, useAppSelector } from "./store";
 import Application from "./view/components/Application";
-import { CssBaseline, StyledEngineProvider, Theme, ThemeProvider } from "@mui/material";
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { themes } from "./config/theme";
 import { Config } from "./config/window";
+import { HistoryRouter } from "redux-first-history/rr6";
+import { createRoot } from "react-dom/client";
+
 import "react-toastify/dist/ReactToastify.css";
-import { ConnectedRouter } from "connected-react-router";
-
-
-declare module "@mui/styles/defaultTheme" {
-	// eslint-disable-next-line @typescript-eslint/no-empty-interface
-	interface DefaultTheme extends Theme {
-	}
-}
-
 
 declare global {
 	interface Window {
@@ -40,14 +33,16 @@ function Wrapper() {
 function App() {
 	return (
 		<Provider store={store}>
-			<ConnectedRouter history={history}>
+			<HistoryRouter history={history} basename={"/authentication"}>
 				<Wrapper />
-			</ConnectedRouter>
+			</HistoryRouter>
 		</Provider>
 	);
 }
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root")!);
+
+root.render(<App />);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

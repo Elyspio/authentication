@@ -65,8 +65,7 @@ export function createDrawerDivider(name: string): WithDrawerProps["actions"][nu
 		key: name,
 		component: {
 			icon: null,
-			onClick: () => {
-			},
+			onClick: () => {},
 		},
 	};
 }

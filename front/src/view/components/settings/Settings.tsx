@@ -2,17 +2,17 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { UserSettingsModel, UserSettingsModelThemeEnum } from "../../../core/apis/backend";
 import { Button, FormControl, Grid, InputLabel, MenuItem, Paper, Select } from "@mui/material";
-import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
 import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
 import "./Settings.scss";
 import { setUserSettings } from "../../../store/module/authentication/authentication.action";
+import { changeLocation } from "../../../core/services/router.service";
 
 export function SettingContainer() {
 	const dispatch = useAppDispatch();
 
-	const changePath = (path) => () => dispatch(push(path));
+	const changePath = (path) => () => dispatch(changeLocation(path));
 
 	const { logged, settings } = useAppSelector((s) => s.authentication);
 
@@ -37,7 +37,7 @@ function Settings() {
 					[key]: val.target.value,
 				});
 			},
-		[newSettings],
+		[newSettings]
 	);
 
 	const dispatch = useAppDispatch();
@@ -51,9 +51,9 @@ function Settings() {
 						theme: newSettings.theme as any,
 					},
 					username,
-				}),
+				})
 			),
-		[newSettings, dispatch, username],
+		[newSettings, dispatch, username]
 	);
 
 	return (

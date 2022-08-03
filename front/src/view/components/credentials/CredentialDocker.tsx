@@ -14,7 +14,7 @@ export function CredentialDocker({ data, setData }: Props) {
 		(key: keyof Model) => (event: React.ChangeEvent<{ name?: string; value: string }>) => {
 			setData({ ...data, [key]: event.target.value });
 		},
-		[data, setData],
+		[data, setData]
 	);
 
 	return (

@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
-import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
 import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
 import { AuthorizationAuthentication } from "./AuthorizationAuthentication";
 import { setUserAuthorizations } from "../../../store/module/authentication/authentication.action";
+import { changeLocation } from "../../../core/services/router.service";
 
 export function AuthorizationsContainer() {
 	const dispatch = useAppDispatch();
 
-	const changePath = (path) => () => dispatch(push(path));
+	const changePath = (path) => () => dispatch(changeLocation(path));
 
 	const { logged, credentials } = useAppSelector((s) => s.authentication);
 
@@ -30,7 +30,10 @@ function Authorizations() {
 	const {
 		authorizations: { authentication },
 		username,
-	} = useAppSelector((s) => ({ authorizations: s.authentication.authorizations!, username: s.authentication.username! }));
+	} = useAppSelector((s) => ({
+		authorizations: s.authentication.authorizations!,
+		username: s.authentication.username!,
+	}));
 
 	const [authenticationData, setAuthenticationData] = useState(authentication ?? { roles: [] });
 

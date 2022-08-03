@@ -28,22 +28,7 @@ services:
         networks:
             - authentication
             - external
-
-    # database
-    authentication-db:
-        image: mongo:latest
-        container_name: authentication-db
-        restart: always
-        environment:
-            MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
-            MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
-        volumes:
-            - ./data:/data/db
-        networks:
             - internal
-            - authentication
-        ports:
-            - "5002:27017"
 
 networks:
     authentication:
@@ -52,4 +37,5 @@ networks:
         external: true
     internal:
         external: true
+
 

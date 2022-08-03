@@ -3,7 +3,7 @@ import { Button, ButtonProps, Grid, Paper } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { AuthorizationAuthenticationModelRolesEnum } from "../../core/apis/backend";
 import { applicationPaths } from "../../config/routes";
-import { push } from "connected-react-router";
+import { changeLocation } from "../../core/services/router.service";
 
 export function Dashboard() {
 	const { logged, isAdmin } = useAppSelector((state) => {
@@ -33,7 +33,7 @@ export function Dashboard() {
 			<Grid container justifyContent={"center"} alignItems={"center"}>
 				{btns.map((btn) => (
 					<Grid item key={btn.label}>
-						<Button color={btn.color} onClick={() => dispatch(push(btn.path))}>
+						<Button color={btn.color} onClick={() => dispatch(changeLocation(btn.path))}>
 							{btn.label}
 						</Button>
 					</Grid>

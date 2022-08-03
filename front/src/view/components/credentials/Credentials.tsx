@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
-import { push } from "connected-react-router";
 import { applicationPaths } from "../../../config/routes";
 import Divider from "@mui/material/Divider";
 import { Title } from "../utils/title";
@@ -9,11 +8,12 @@ import { CredentialGithub } from "./CredentialGithub";
 import { CredentialDocker } from "./CredentialDocker";
 import { setUserCredentials } from "../../../store/module/authentication/authentication.action";
 import { useDispatch } from "react-redux";
+import { changeLocation } from "../../../core/services/router.service";
 
 export function CredentialContainer() {
 	const dispatch = useDispatch();
 
-	const changePath = (path) => () => dispatch(push(path));
+	const changePath = (path) => () => dispatch(changeLocation(path));
 
 	const { logged, credentials } = useAppSelector((s) => s.authentication);
 

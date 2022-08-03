@@ -14,7 +14,7 @@ export function AuthorizationAuthentication({ data, setData }: Props) {
 		(key: keyof Model) => (event: SelectChangeEvent<any>) => {
 			setData({ ...data, [key]: event.target.value });
 		},
-		[data, setData],
+		[data, setData]
 	);
 
 	return (

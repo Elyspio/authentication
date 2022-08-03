@@ -1,7 +1,7 @@
-import { AuthenticationService } from "./authentication";
-import { LocalStorageService } from "./localStorage";
-import { ThemeService } from "./theme";
-import { UserService } from "./user";
+import { AuthenticationService } from "./authentication.service";
+import { LocalStorageService } from "./localStorage.service";
+import { ThemeService } from "./theme.service";
+import { UserService } from "./user.service";
 
 export const Services = {
 	authentication: new AuthenticationService(),

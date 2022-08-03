@@ -12,12 +12,22 @@
  * Do not edit the class manually.
  */
 
-
 import { Configuration } from "./configuration";
 import globalAxios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from "axios";
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { assertParamExists, createRequestFunction, DUMMY_BASE_URL, serializeDataIfNeeded, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, toPathString } from "./common";
+import {
+	assertParamExists,
+	createRequestFunction,
+	DUMMY_BASE_URL,
+	serializeDataIfNeeded,
+	setApiKeyToObject,
+	setBasicAuthToObject,
+	setBearerAuthToObject,
+	setOAuthToObject,
+	setSearchParams,
+	toPathString,
+} from "./common";
 // @ts-ignore
 import { BASE_PATH, BaseAPI, COLLECTION_FORMATS, RequestArgs, RequiredError } from "./base";
 
@@ -32,13 +42,13 @@ export interface AddUserModel {
 	 * @type {string}
 	 * @memberof AddUserModel
 	 */
-	"hash": string;
+	hash: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof AddUserModel
 	 */
-	"username": string;
+	username: string;
 }
 
 /**
@@ -52,7 +62,7 @@ export interface AuthorizationAuthenticationModel {
 	 * @type {Array<string>}
 	 * @memberof AuthorizationAuthenticationModel
 	 */
-	"roles": Array<AuthorizationAuthenticationModelRolesEnum>;
+	roles: Array<AuthorizationAuthenticationModelRolesEnum>;
 }
 
 /**
@@ -61,7 +71,7 @@ export interface AuthorizationAuthenticationModel {
  */
 export enum AuthorizationAuthenticationModelRolesEnum {
 	User = "User",
-	Admin = "Admin"
+	Admin = "Admin",
 }
 
 /**
@@ -75,7 +85,7 @@ export interface AuthorizationModel {
 	 * @type {AuthorizationAuthenticationModel}
 	 * @memberof AuthorizationModel
 	 */
-	"authentication"?: AuthorizationAuthenticationModel;
+	authentication?: AuthorizationAuthenticationModel;
 }
 
 /**
@@ -89,13 +99,13 @@ export interface CredentialsModel {
 	 * @type {DockerModel}
 	 * @memberof CredentialsModel
 	 */
-	"docker"?: DockerModel;
+	docker?: DockerModel;
 	/**
 	 *
 	 * @type {GithubModel}
 	 * @memberof CredentialsModel
 	 */
-	"github"?: GithubModel;
+	github?: GithubModel;
 }
 
 /**
@@ -109,13 +119,13 @@ export interface DockerModel {
 	 * @type {string}
 	 * @memberof DockerModel
 	 */
-	"password": string;
+	password: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof DockerModel
 	 */
-	"username": string;
+	username: string;
 }
 
 /**
@@ -129,31 +139,31 @@ export interface Forbidden {
 	 * @type {string}
 	 * @memberof Forbidden
 	 */
-	"name": string;
+	name: string;
 	/**
 	 * An error message
 	 * @type {string}
 	 * @memberof Forbidden
 	 */
-	"message": string;
+	message: string;
 	/**
 	 * The status code of the exception
 	 * @type {number}
 	 * @memberof Forbidden
 	 */
-	"status": number;
+	status: number;
 	/**
 	 * A list of related errors
 	 * @type {Array<GenericError>}
 	 * @memberof Forbidden
 	 */
-	"errors"?: Array<GenericError>;
+	errors?: Array<GenericError>;
 	/**
 	 * The stack trace (only in development mode)
 	 * @type {string}
 	 * @memberof Forbidden
 	 */
-	"stack"?: string;
+	stack?: string;
 }
 
 /**
@@ -167,7 +177,7 @@ export interface FrontThemeReturnModel {
 	 * @type {string}
 	 * @memberof FrontThemeReturnModel
 	 */
-	"theme": FrontThemeReturnModelThemeEnum;
+	theme: FrontThemeReturnModelThemeEnum;
 }
 
 /**
@@ -176,7 +186,7 @@ export interface FrontThemeReturnModel {
  */
 export enum FrontThemeReturnModelThemeEnum {
 	Dark = "dark",
-	Light = "light"
+	Light = "light",
 }
 
 /**
@@ -190,13 +200,13 @@ export interface GenericError {
 	 * @type {string}
 	 * @memberof GenericError
 	 */
-	"name": string;
+	name: string;
 	/**
 	 * An error message
 	 * @type {string}
 	 * @memberof GenericError
 	 */
-	"message": string;
+	message: string;
 
 	[key: string]: object | any;
 }
@@ -212,13 +222,13 @@ export interface GithubModel {
 	 * @type {string}
 	 * @memberof GithubModel
 	 */
-	"token": string;
+	token: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof GithubModel
 	 */
-	"user": string;
+	user: string;
 }
 
 /**
@@ -232,7 +242,7 @@ export interface InlineObject {
 	 * @type {string}
 	 * @memberof InlineObject
 	 */
-	"token": string;
+	token: string;
 }
 
 /**
@@ -246,7 +256,7 @@ export interface InlineObject1 {
 	 * @type {string}
 	 * @memberof InlineObject1
 	 */
-	"token": string;
+	token: string;
 }
 
 /**
@@ -260,13 +270,13 @@ export interface PostLoginInitRequest {
 	 * @type {string}
 	 * @memberof PostLoginInitRequest
 	 */
-	"hash"?: string;
+	hash?: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof PostLoginInitRequest
 	 */
-	"name": string;
+	name: string;
 }
 
 /**
@@ -280,13 +290,13 @@ export interface PostLoginModel {
 	 * @type {string}
 	 * @memberof PostLoginModel
 	 */
-	"token": string;
+	token: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof PostLoginModel
 	 */
-	"comment"?: string;
+	comment?: string;
 }
 
 /**
@@ -300,7 +310,7 @@ export interface PostLoginModelWithSalt {
 	 * @type {string}
 	 * @memberof PostLoginModelWithSalt
 	 */
-	"salt": string;
+	salt: string;
 }
 
 /**
@@ -314,13 +324,13 @@ export interface PostLoginRequest {
 	 * @type {string}
 	 * @memberof PostLoginRequest
 	 */
-	"hash": string;
+	hash: string;
 	/**
 	 *
 	 * @type {string}
 	 * @memberof PostLoginRequest
 	 */
-	"name": string;
+	name: string;
 }
 
 /**
@@ -334,7 +344,7 @@ export interface SetUserSettingsModel {
 	 * @type {string}
 	 * @memberof SetUserSettingsModel
 	 */
-	"theme"?: SetUserSettingsModelThemeEnum;
+	theme?: SetUserSettingsModelThemeEnum;
 }
 
 /**
@@ -344,7 +354,7 @@ export interface SetUserSettingsModel {
 export enum SetUserSettingsModelThemeEnum {
 	Light = "light",
 	System = "system",
-	Dark = "dark"
+	Dark = "dark",
 }
 
 /**
@@ -358,31 +368,31 @@ export interface Unauthorized {
 	 * @type {string}
 	 * @memberof Unauthorized
 	 */
-	"name": string;
+	name: string;
 	/**
 	 * An error message
 	 * @type {string}
 	 * @memberof Unauthorized
 	 */
-	"message": string;
+	message: string;
 	/**
 	 * The status code of the exception
 	 * @type {number}
 	 * @memberof Unauthorized
 	 */
-	"status": number;
+	status: number;
 	/**
 	 * A list of related errors
 	 * @type {Array<GenericError>}
 	 * @memberof Unauthorized
 	 */
-	"errors"?: Array<GenericError>;
+	errors?: Array<GenericError>;
 	/**
 	 * The stack trace (only in development mode)
 	 * @type {string}
 	 * @memberof Unauthorized
 	 */
-	"stack"?: string;
+	stack?: string;
 }
 
 /**
@@ -396,7 +406,7 @@ export interface UserSettingsModel {
 	 * @type {string}
 	 * @memberof UserSettingsModel
 	 */
-	"theme": UserSettingsModelThemeEnum;
+	theme: UserSettingsModelThemeEnum;
 }
 
 /**
@@ -406,15 +416,14 @@ export interface UserSettingsModel {
 export enum UserSettingsModelThemeEnum {
 	Light = "light",
 	System = "system",
-	Dark = "dark"
+	Dark = "dark",
 }
-
 
 /**
  * AuthenticationApi - axios parameter creator
  * @export
  */
-export const AuthenticationApiAxiosParamCreator = function(configuration?: Configuration) {
+export const AuthenticationApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 * Return all logged users (Not available in production)
@@ -433,7 +442,6 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
 			const localVarRequestOptions = { method: "GET", ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -464,7 +472,6 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
 			const localVarRequestOptions = { method: "POST", ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -497,7 +504,6 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -528,7 +534,6 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
 			const localVarRequestOptions = { method: "DELETE", ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -562,7 +567,6 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
 				localVarQueryParameter["token"] = token;
 			}
 
-
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
@@ -579,7 +583,7 @@ export const AuthenticationApiAxiosParamCreator = function(configuration?: Confi
  * AuthenticationApi - functional programming interface
  * @export
  */
-export const AuthenticationApiFp = function(configuration?: Configuration) {
+export const AuthenticationApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = AuthenticationApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -607,7 +611,10 @@ export const AuthenticationApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async loginInit(postLoginInitRequest?: PostLoginInitRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModelWithSalt>> {
+		async loginInit(
+			postLoginInitRequest?: PostLoginInitRequest,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostLoginModelWithSalt>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.loginInit(postLoginInitRequest, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -638,7 +645,7 @@ export const AuthenticationApiFp = function(configuration?: Configuration) {
  * AuthenticationApi - factory interface
  * @export
  */
-export const AuthenticationApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const AuthenticationApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = AuthenticationApiFp(configuration);
 	return {
 		/**
@@ -702,7 +709,9 @@ export class AuthenticationApi extends BaseAPI {
 	 * @memberof AuthenticationApi
 	 */
 	public get(options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).get(options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationApiFp(this.configuration)
+			.get(options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -713,7 +722,9 @@ export class AuthenticationApi extends BaseAPI {
 	 * @memberof AuthenticationApi
 	 */
 	public login(postLoginRequest: PostLoginRequest, options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).login(postLoginRequest, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationApiFp(this.configuration)
+			.login(postLoginRequest, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -724,7 +735,9 @@ export class AuthenticationApi extends BaseAPI {
 	 * @memberof AuthenticationApi
 	 */
 	public loginInit(postLoginInitRequest?: PostLoginInitRequest, options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).loginInit(postLoginInitRequest, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationApiFp(this.configuration)
+			.loginInit(postLoginInitRequest, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -735,7 +748,9 @@ export class AuthenticationApi extends BaseAPI {
 	 * @memberof AuthenticationApi
 	 */
 	public logout(authenticationLogin?: string, options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).logout(authenticationLogin, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationApiFp(this.configuration)
+			.logout(authenticationLogin, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -746,16 +761,17 @@ export class AuthenticationApi extends BaseAPI {
 	 * @memberof AuthenticationApi
 	 */
 	public validToken(token?: string, options?: AxiosRequestConfig) {
-		return AuthenticationApiFp(this.configuration).validToken(token, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationApiFp(this.configuration)
+			.validToken(token, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
 
 /**
  * AuthenticationAppApi - axios parameter creator
  * @export
  */
-export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Configuration) {
+export const AuthenticationAppApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
@@ -768,8 +784,7 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 		createAppToken: async (app: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'app' is not null or undefined
 			assertParamExists("createAppToken", "app", app);
-			const localVarPath = `/api/authentication/app/{app}`
-				.replace(`{${"app"}}`, encodeURIComponent(String(app)));
+			const localVarPath = `/api/authentication/app/{app}`.replace(`{${"app"}}`, encodeURIComponent(String(app)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -784,7 +799,6 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -806,8 +820,7 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 		createPermanentAppToken: async (app: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'app' is not null or undefined
 			assertParamExists("createPermanentAppToken", "app", app);
-			const localVarPath = `/api/authentication/app/{app}/permanent`
-				.replace(`{${"app"}}`, encodeURIComponent(String(app)));
+			const localVarPath = `/api/authentication/app/{app}/permanent`.replace(`{${"app"}}`, encodeURIComponent(String(app)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -822,7 +835,6 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -842,13 +854,18 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		deleteAppToken: async (app: string, inlineObject: InlineObject, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		deleteAppToken: async (
+			app: string,
+			inlineObject: InlineObject,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options: AxiosRequestConfig = {}
+		): Promise<RequestArgs> => {
 			// verify required parameter 'app' is not null or undefined
 			assertParamExists("deleteAppToken", "app", app);
 			// verify required parameter 'inlineObject' is not null or undefined
 			assertParamExists("deleteAppToken", "inlineObject", inlineObject);
-			const localVarPath = `/api/authentication/app/{app}`
-				.replace(`{${"app"}}`, encodeURIComponent(String(app)));
+			const localVarPath = `/api/authentication/app/{app}`.replace(`{${"app"}}`, encodeURIComponent(String(app)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -863,7 +880,6 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -888,8 +904,7 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 		getTokens: async (app: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'app' is not null or undefined
 			assertParamExists("getTokens", "app", app);
-			const localVarPath = `/api/authentication/app/{app}`
-				.replace(`{${"app"}}`, encodeURIComponent(String(app)));
+			const localVarPath = `/api/authentication/app/{app}`.replace(`{${"app"}}`, encodeURIComponent(String(app)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -904,7 +919,6 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -927,8 +941,7 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			assertParamExists("validToken", "app", app);
 			// verify required parameter 'inlineObject1' is not null or undefined
 			assertParamExists("validToken", "inlineObject1", inlineObject1);
-			const localVarPath = `/api/authentication/app/{app}/valid`
-				.replace(`{${"app"}}`, encodeURIComponent(String(app)));
+			const localVarPath = `/api/authentication/app/{app}/valid`.replace(`{${"app"}}`, encodeURIComponent(String(app)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -939,7 +952,6 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
 			const localVarRequestOptions = { method: "GET", ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -960,7 +972,7 @@ export const AuthenticationAppApiAxiosParamCreator = function(configuration?: Co
  * AuthenticationAppApi - functional programming interface
  * @export
  */
-export const AuthenticationAppApiFp = function(configuration?: Configuration) {
+export const AuthenticationAppApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = AuthenticationAppApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -971,7 +983,12 @@ export const AuthenticationAppApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async createAppToken(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+		async createAppToken(
+			app: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.createAppToken(app, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -983,7 +1000,12 @@ export const AuthenticationAppApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async createPermanentAppToken(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+		async createPermanentAppToken(
+			app: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.createPermanentAppToken(app, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -996,7 +1018,13 @@ export const AuthenticationAppApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async deleteAppToken(app: string, inlineObject: InlineObject, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async deleteAppToken(
+			app: string,
+			inlineObject: InlineObject,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAppToken(app, inlineObject, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1008,7 +1036,12 @@ export const AuthenticationAppApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async getTokens(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
+		async getTokens(
+			app: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<string>>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.getTokens(app, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1030,7 +1063,7 @@ export const AuthenticationAppApiFp = function(configuration?: Configuration) {
  * AuthenticationAppApi - factory interface
  * @export
  */
-export const AuthenticationAppApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const AuthenticationAppApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = AuthenticationAppApiFp(configuration);
 	return {
 		/**
@@ -1108,7 +1141,9 @@ export class AuthenticationAppApi extends BaseAPI {
 	 * @memberof AuthenticationAppApi
 	 */
 	public createAppToken(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthenticationAppApiFp(this.configuration).createAppToken(app, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationAppApiFp(this.configuration)
+			.createAppToken(app, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1121,7 +1156,9 @@ export class AuthenticationAppApi extends BaseAPI {
 	 * @memberof AuthenticationAppApi
 	 */
 	public createPermanentAppToken(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthenticationAppApiFp(this.configuration).createPermanentAppToken(app, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationAppApiFp(this.configuration)
+			.createPermanentAppToken(app, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1135,7 +1172,9 @@ export class AuthenticationAppApi extends BaseAPI {
 	 * @memberof AuthenticationAppApi
 	 */
 	public deleteAppToken(app: string, inlineObject: InlineObject, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthenticationAppApiFp(this.configuration).deleteAppToken(app, inlineObject, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationAppApiFp(this.configuration)
+			.deleteAppToken(app, inlineObject, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1148,7 +1187,9 @@ export class AuthenticationAppApi extends BaseAPI {
 	 * @memberof AuthenticationAppApi
 	 */
 	public getTokens(app: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthenticationAppApiFp(this.configuration).getTokens(app, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationAppApiFp(this.configuration)
+			.getTokens(app, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1160,16 +1201,17 @@ export class AuthenticationAppApi extends BaseAPI {
 	 * @memberof AuthenticationAppApi
 	 */
 	public validToken(app: string, inlineObject1: InlineObject1, options?: AxiosRequestConfig) {
-		return AuthenticationAppApiFp(this.configuration).validToken(app, inlineObject1, options).then((request) => request(this.axios, this.basePath));
+		return AuthenticationAppApiFp(this.configuration)
+			.validToken(app, inlineObject1, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
 
 /**
  * AuthorisationsUsersApi - axios parameter creator
  * @export
  */
-export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: Configuration) {
+export const AuthorisationsUsersApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
@@ -1182,8 +1224,7 @@ export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: 
 		get: async (username: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("get", "username", username);
-			const localVarPath = `/api/users/{username}/authorisations`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/authorisations`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1198,7 +1239,6 @@ export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1218,13 +1258,18 @@ export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: 
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		set: async (username: string, authorizationModel: AuthorizationModel, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		set: async (
+			username: string,
+			authorizationModel: AuthorizationModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options: AxiosRequestConfig = {}
+		): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("set", "username", username);
 			// verify required parameter 'authorizationModel' is not null or undefined
 			assertParamExists("set", "authorizationModel", authorizationModel);
-			const localVarPath = `/api/users/{username}/authorisations`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/authorisations`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1239,7 +1284,6 @@ export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: 
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -1260,7 +1304,7 @@ export const AuthorisationsUsersApiAxiosParamCreator = function(configuration?: 
  * AuthorisationsUsersApi - functional programming interface
  * @export
  */
-export const AuthorisationsUsersApiFp = function(configuration?: Configuration) {
+export const AuthorisationsUsersApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = AuthorisationsUsersApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -1271,7 +1315,12 @@ export const AuthorisationsUsersApiFp = function(configuration?: Configuration) 
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorizationModel>> {
+		async get(
+			username: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuthorizationModel>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.get(username, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1284,7 +1333,13 @@ export const AuthorisationsUsersApiFp = function(configuration?: Configuration) 
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async set(username: string, authorizationModel: AuthorizationModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async set(
+			username: string,
+			authorizationModel: AuthorizationModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.set(username, authorizationModel, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1295,7 +1350,7 @@ export const AuthorisationsUsersApiFp = function(configuration?: Configuration) 
  * AuthorisationsUsersApi - factory interface
  * @export
  */
-export const AuthorisationsUsersApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const AuthorisationsUsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = AuthorisationsUsersApiFp(configuration);
 	return {
 		/**
@@ -1341,7 +1396,9 @@ export class AuthorisationsUsersApi extends BaseAPI {
 	 * @memberof AuthorisationsUsersApi
 	 */
 	public get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthorisationsUsersApiFp(this.configuration).get(username, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthorisationsUsersApiFp(this.configuration)
+			.get(username, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1355,16 +1412,17 @@ export class AuthorisationsUsersApi extends BaseAPI {
 	 * @memberof AuthorisationsUsersApi
 	 */
 	public set(username: string, authorizationModel: AuthorizationModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return AuthorisationsUsersApiFp(this.configuration).set(username, authorizationModel, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return AuthorisationsUsersApiFp(this.configuration)
+			.set(username, authorizationModel, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
 
 /**
  * CredentialsUsersApi - axios parameter creator
  * @export
  */
-export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Configuration) {
+export const CredentialsUsersApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
@@ -1377,8 +1435,7 @@ export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Con
 		get: async (username: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("get", "username", username);
-			const localVarPath = `/api/users/{username}/credentials`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/credentials`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1393,7 +1450,6 @@ export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Con
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1413,13 +1469,18 @@ export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Con
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		set: async (username: string, credentialsModel: CredentialsModel, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		set: async (
+			username: string,
+			credentialsModel: CredentialsModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options: AxiosRequestConfig = {}
+		): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("set", "username", username);
 			// verify required parameter 'credentialsModel' is not null or undefined
 			assertParamExists("set", "credentialsModel", credentialsModel);
-			const localVarPath = `/api/users/{username}/credentials`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/credentials`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1434,7 +1495,6 @@ export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Con
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -1455,7 +1515,7 @@ export const CredentialsUsersApiAxiosParamCreator = function(configuration?: Con
  * CredentialsUsersApi - functional programming interface
  * @export
  */
-export const CredentialsUsersApiFp = function(configuration?: Configuration) {
+export const CredentialsUsersApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = CredentialsUsersApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -1466,7 +1526,12 @@ export const CredentialsUsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CredentialsModel>> {
+		async get(
+			username: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CredentialsModel>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.get(username, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1479,7 +1544,13 @@ export const CredentialsUsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async set(username: string, credentialsModel: CredentialsModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+		async set(
+			username: string,
+			credentialsModel: CredentialsModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.set(username, credentialsModel, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1490,7 +1561,7 @@ export const CredentialsUsersApiFp = function(configuration?: Configuration) {
  * CredentialsUsersApi - factory interface
  * @export
  */
-export const CredentialsUsersApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const CredentialsUsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = CredentialsUsersApiFp(configuration);
 	return {
 		/**
@@ -1536,7 +1607,9 @@ export class CredentialsUsersApi extends BaseAPI {
 	 * @memberof CredentialsUsersApi
 	 */
 	public get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return CredentialsUsersApiFp(this.configuration).get(username, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return CredentialsUsersApiFp(this.configuration)
+			.get(username, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1550,16 +1623,17 @@ export class CredentialsUsersApi extends BaseAPI {
 	 * @memberof CredentialsUsersApi
 	 */
 	public set(username: string, credentialsModel: CredentialsModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return CredentialsUsersApiFp(this.configuration).set(username, credentialsModel, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return CredentialsUsersApiFp(this.configuration)
+			.set(username, credentialsModel, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
 
 /**
  * SettingsUsersApi - axios parameter creator
  * @export
  */
-export const SettingsUsersApiAxiosParamCreator = function(configuration?: Configuration) {
+export const SettingsUsersApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 *
@@ -1572,8 +1646,7 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 		get: async (username: string, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("get", "username", username);
-			const localVarPath = `/api/users/{username}/settings`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/settings`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1588,7 +1661,6 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1608,13 +1680,18 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		getTheme: async (username: string, windowsTheme: "dark" | "light", authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		getTheme: async (
+			username: string,
+			windowsTheme: "dark" | "light",
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options: AxiosRequestConfig = {}
+		): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("getTheme", "username", username);
 			// verify required parameter 'windowsTheme' is not null or undefined
 			assertParamExists("getTheme", "windowsTheme", windowsTheme);
-			const localVarPath = `/api/users/{username}/settings/theme`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/settings/theme`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1634,7 +1711,6 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
 
-
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
@@ -1653,13 +1729,18 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		set: async (username: string, setUserSettingsModel: SetUserSettingsModel, authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+		set: async (
+			username: string,
+			setUserSettingsModel: SetUserSettingsModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options: AxiosRequestConfig = {}
+		): Promise<RequestArgs> => {
 			// verify required parameter 'username' is not null or undefined
 			assertParamExists("set", "username", username);
 			// verify required parameter 'setUserSettingsModel' is not null or undefined
 			assertParamExists("set", "setUserSettingsModel", setUserSettingsModel);
-			const localVarPath = `/api/users/{username}/settings`
-				.replace(`{${"username"}}`, encodeURIComponent(String(username)));
+			const localVarPath = `/api/users/{username}/settings`.replace(`{${"username"}}`, encodeURIComponent(String(username)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1674,7 +1755,6 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -1695,7 +1775,7 @@ export const SettingsUsersApiAxiosParamCreator = function(configuration?: Config
  * SettingsUsersApi - functional programming interface
  * @export
  */
-export const SettingsUsersApiFp = function(configuration?: Configuration) {
+export const SettingsUsersApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = SettingsUsersApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -1706,7 +1786,12 @@ export const SettingsUsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSettingsModel>> {
+		async get(
+			username: string,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserSettingsModel>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.get(username, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1719,7 +1804,13 @@ export const SettingsUsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async getTheme(username: string, windowsTheme: "dark" | "light", authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FrontThemeReturnModel>> {
+		async getTheme(
+			username: string,
+			windowsTheme: "dark" | "light",
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FrontThemeReturnModel>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.getTheme(username, windowsTheme, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1732,7 +1823,13 @@ export const SettingsUsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async set(username: string, setUserSettingsModel: SetUserSettingsModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+		async set(
+			username: string,
+			setUserSettingsModel: SetUserSettingsModel,
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.set(username, setUserSettingsModel, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1743,7 +1840,7 @@ export const SettingsUsersApiFp = function(configuration?: Configuration) {
  * SettingsUsersApi - factory interface
  * @export
  */
-export const SettingsUsersApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const SettingsUsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = SettingsUsersApiFp(configuration);
 	return {
 		/**
@@ -1766,7 +1863,13 @@ export const SettingsUsersApiFactory = function(configuration?: Configuration, b
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		getTheme(username: string, windowsTheme: "dark" | "light", authenticationToken?: string, authenticationToken2?: string, options?: any): AxiosPromise<FrontThemeReturnModel> {
+		getTheme(
+			username: string,
+			windowsTheme: "dark" | "light",
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: any
+		): AxiosPromise<FrontThemeReturnModel> {
 			return localVarFp.getTheme(username, windowsTheme, authenticationToken, authenticationToken2, options).then((request) => request(axios, basePath));
 		},
 		/**
@@ -1801,7 +1904,9 @@ export class SettingsUsersApi extends BaseAPI {
 	 * @memberof SettingsUsersApi
 	 */
 	public get(username: string, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return SettingsUsersApiFp(this.configuration).get(username, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return SettingsUsersApiFp(this.configuration)
+			.get(username, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1815,7 +1920,9 @@ export class SettingsUsersApi extends BaseAPI {
 	 * @memberof SettingsUsersApi
 	 */
 	public getTheme(username: string, windowsTheme: "dark" | "light", authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return SettingsUsersApiFp(this.configuration).getTheme(username, windowsTheme, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return SettingsUsersApiFp(this.configuration)
+			.getTheme(username, windowsTheme, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -1829,16 +1936,17 @@ export class SettingsUsersApi extends BaseAPI {
 	 * @memberof SettingsUsersApi
 	 */
 	public set(username: string, setUserSettingsModel: SetUserSettingsModel, authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return SettingsUsersApiFp(this.configuration).set(username, setUserSettingsModel, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return SettingsUsersApiFp(this.configuration)
+			.set(username, setUserSettingsModel, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
 
 /**
  * UsersApi - axios parameter creator
  * @export
  */
-export const UsersApiAxiosParamCreator = function(configuration?: Configuration) {
+export const UsersApiAxiosParamCreator = function (configuration?: Configuration) {
 	return {
 		/**
 		 * Create an user
@@ -1860,7 +1968,6 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
 			const localVarRequestOptions = { method: "POST", ...baseOptions, ...options };
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
-
 
 			localVarHeaderParameter["Content-Type"] = "application/json";
 
@@ -1892,7 +1999,6 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
 			const localVarHeaderParameter = {} as any;
 			const localVarQueryParameter = {} as any;
 
-
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
 			localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
@@ -1913,8 +2019,7 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
 		getUserInfo: async (kind: "username" | "token", authenticationToken?: string, authenticationToken2?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
 			// verify required parameter 'kind' is not null or undefined
 			assertParamExists("getUserInfo", "kind", kind);
-			const localVarPath = `/api/users/{kind}`
-				.replace(`{${"kind"}}`, encodeURIComponent(String(kind)));
+			const localVarPath = `/api/users/{kind}`.replace(`{${"kind"}}`, encodeURIComponent(String(kind)));
 			// use dummy base URL string because the URL constructor only accepts absolute URLs.
 			const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
 			let baseOptions;
@@ -1929,7 +2034,6 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
 			if (authenticationToken !== undefined && authenticationToken !== null) {
 				localVarHeaderParameter["authentication-token"] = String(authenticationToken);
 			}
-
 
 			setSearchParams(localVarUrlObj, localVarQueryParameter);
 			let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1947,7 +2051,7 @@ export const UsersApiAxiosParamCreator = function(configuration?: Configuration)
  * UsersApi - functional programming interface
  * @export
  */
-export const UsersApiFp = function(configuration?: Configuration) {
+export const UsersApiFp = function (configuration?: Configuration) {
 	const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration);
 	return {
 		/**
@@ -1977,7 +2081,12 @@ export const UsersApiFp = function(configuration?: Configuration) {
 		 * @param {*} [options] Override http request option.
 		 * @throws {RequiredError}
 		 */
-		async getUserInfo(kind: "username" | "token", authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
+		async getUserInfo(
+			kind: "username" | "token",
+			authenticationToken?: string,
+			authenticationToken2?: string,
+			options?: AxiosRequestConfig
+		): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<string>> {
 			const localVarAxiosArgs = await localVarAxiosParamCreator.getUserInfo(kind, authenticationToken, authenticationToken2, options);
 			return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
 		},
@@ -1988,7 +2097,7 @@ export const UsersApiFp = function(configuration?: Configuration) {
  * UsersApi - factory interface
  * @export
  */
-export const UsersApiFactory = function(configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const UsersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
 	const localVarFp = UsersApiFp(configuration);
 	return {
 		/**
@@ -2037,7 +2146,9 @@ export class UsersApi extends BaseAPI {
 	 * @memberof UsersApi
 	 */
 	public addUser(addUserModel: AddUserModel, options?: AxiosRequestConfig) {
-		return UsersApiFp(this.configuration).addUser(addUserModel, options).then((request) => request(this.axios, this.basePath));
+		return UsersApiFp(this.configuration)
+			.addUser(addUserModel, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -2047,7 +2158,9 @@ export class UsersApi extends BaseAPI {
 	 * @memberof UsersApi
 	 */
 	public checkIfUsersExist(options?: AxiosRequestConfig) {
-		return UsersApiFp(this.configuration).checkIfUsersExist(options).then((request) => request(this.axios, this.basePath));
+		return UsersApiFp(this.configuration)
+			.checkIfUsersExist(options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 
 	/**
@@ -2060,8 +2173,8 @@ export class UsersApi extends BaseAPI {
 	 * @memberof UsersApi
 	 */
 	public getUserInfo(kind: "username" | "token", authenticationToken?: string, authenticationToken2?: string, options?: AxiosRequestConfig) {
-		return UsersApiFp(this.configuration).getUserInfo(kind, authenticationToken, authenticationToken2, options).then((request) => request(this.axios, this.basePath));
+		return UsersApiFp(this.configuration)
+			.getUserInfo(kind, authenticationToken, authenticationToken2, options)
+			.then((request) => request(this.axios, this.basePath));
 	}
 }
-
-

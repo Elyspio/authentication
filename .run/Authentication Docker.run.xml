@@ -1,5 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Authentication Docker" type="NodeJSConfigurationType" path-to-js-file="build.js" working-dir="$PROJECT_DIR$/../authentication/deploy/build">
-        <method v="2"/>
-    </configuration>
-</component>

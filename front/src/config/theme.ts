@@ -1,9 +1,9 @@
-import { adaptV4Theme, createTheme, Theme } from "@mui/material";
+import { createTheme, Theme } from "@mui/material";
 import * as colors from "@mui/material/colors";
 import { Services } from "../core/services";
 import { UserSettingsModel } from "../core/apis/backend";
 
-const darkTheme = createTheme(adaptV4Theme({
+const darkTheme = createTheme({
 	palette: {
 		mode: "dark",
 		secondary: {
@@ -19,9 +19,20 @@ const darkTheme = createTheme(adaptV4Theme({
 			default: "#181818",
 		},
 	},
-}));
+	components: {
+		MuiPaper: {
+			styleOverrides: {
+				root: {
+					"&.MuiPaper-root": {
+						backgroundImage: "unset !important",
+					},
+				},
+			},
+		},
+	},
+});
 
-const lightTheme = createTheme(adaptV4Theme({
+const lightTheme = createTheme({
 	palette: {
 		mode: "light",
 		secondary: {
@@ -32,8 +43,23 @@ const lightTheme = createTheme(adaptV4Theme({
 			...colors.blue,
 			main: colors.blue["400"],
 		},
+		background: {
+			paper: "#ffffff",
+			default: "rgba(250,250,250,1)",
+		},
 	},
-}));
+	components: {
+		MuiPaper: {
+			styleOverrides: {
+				root: {
+					"&.MuiPaper-root": {
+						backgroundImage: "unset !important",
+					},
+				},
+			},
+		},
+	},
+});
 
 export const themes = {
 	dark: darkTheme,

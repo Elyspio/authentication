@@ -4,3 +4,5 @@ node_modules
 .idea
 deploy/dev/data
 !/deploy/prod/.env
+deploy/prod/.env
+deploy/prod/.env

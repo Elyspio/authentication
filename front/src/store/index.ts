@@ -1,30 +1,32 @@
-import { AnyAction, combineReducers, configureStore, ThunkDispatch } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authenticationReducer } from "./module/authentication/authentication.reducer";
 import { themeReducer } from "./module/theme/theme.reducer";
-import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
+import { createReduxHistoryContext } from "redux-first-history";
 
-export const history = createBrowserHistory({ basename: "/authentication" });
-
-const createRootReducer = (history) =>
-	combineReducers({
-		router: connectRouter(history),
-		theme: themeReducer,
-		authentication: authenticationReducer,
-		// rest of your reducers
-	});
+const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({ history: createBrowserHistory() });
 
 const store = configureStore({
-	reducer: createRootReducer(history),
+	reducer: {
+		router: routerReducer,
+		theme: themeReducer,
+		authentication: authenticationReducer,
+	},
 	devTools: process.env.NODE_ENV !== "production",
-	middleware: (getDefaultMiddleware) => [routerMiddleware(history), ...getDefaultMiddleware()],
-});
+	middleware: (getDefaultMiddleware) => {
+		const arr = getDefaultMiddleware();
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
+		arr.push(routerMiddleware);
+		return arr;
+	},
+});
+export type StoreState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector;
 
 export default store;
+
+export const history = createReduxHistory(store);

@@ -4,7 +4,7 @@ import "./Application.scss";
 import Brightness5Icon from "@mui/icons-material/Brightness5";
 import Brightness3Icon from "@mui/icons-material/Brightness3";
 import BuildIcon from "@mui/icons-material/Build";
-import { Route, Switch as SwitchRouter } from "react-router";
+import { Route, Routes } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/module/theme/theme.action";
 import { createDrawerAction, createDrawerDivider, withDrawer } from "./utils/drawer/Drawer.hoc";
@@ -14,7 +14,6 @@ import { updateToastTheme } from "./utils/toast";
 import { Services } from "../../core/services";
 import { checkIfSomeUserExist, logout, verifyLogin } from "../../store/module/authentication/authentication.action";
 import { AccountCircle, AddCircle, Home, Security, Settings as SettingsIcon } from "@mui/icons-material";
-import { push } from "connected-react-router";
 import { SettingContainer } from "./settings/Settings";
 import { CredentialContainer } from "./credentials/Credentials";
 import { useAsyncEffect } from "../hooks/useAsyncEffect";
@@ -24,6 +23,7 @@ import Register from "./account/register/Register";
 import { AuthorizationsContainer } from "./authorizations/Authorizations";
 import { AuthorizationAuthenticationModelRolesEnum } from "../../core/apis/backend";
 import { Dashboard } from "./Dashboard";
+import { changeLocation } from "../../core/services/router.service";
 
 const isValid = async () => {
 	let success = await Services.authentication.isValid();
@@ -41,7 +41,7 @@ function AppDrawer() {
 	const isAdmin = useAppSelector((s) => s.authentication.authorizations?.authentication?.roles.includes(AuthorizationAuthenticationModelRolesEnum.Admin));
 	const { logged: isLogged, canBypass } = useAppSelector((s) => s.authentication);
 	const icon = theme === "dark" ? <Brightness5Icon /> : <Brightness3Icon />;
-	const { pathname } = useAppSelector((s) => s.router.location);
+	const { pathname } = useAppSelector((s) => s.router.location!);
 
 	React.useEffect(() => updateToastTheme(theme), [theme]);
 	React.useEffect(() => {
@@ -62,9 +62,9 @@ function AppDrawer() {
 	if (pathname !== applicationPaths.dashboard) {
 		actions.push(
 			createDrawerAction("Home", {
-				onClick: () => dispatch(push(applicationPaths.dashboard)),
+				onClick: () => dispatch(changeLocation(applicationPaths.dashboard)),
 				icon: <Home />,
-			}),
+			})
 		);
 	}
 
@@ -73,33 +73,33 @@ function AppDrawer() {
 			createDrawerAction("Logout", {
 				onClick: () => dispatch(logout()),
 				icon: <Logout fill={"currentColor"} />,
-			}),
+			})
 		);
 		actions.push(createDrawerDivider("User"));
 
 		if (pathname !== applicationPaths.settings) {
 			actions.push(
 				createDrawerAction("Settings", {
-					onClick: () => dispatch(push(applicationPaths.settings)),
+					onClick: () => dispatch(changeLocation(applicationPaths.settings)),
 					icon: <SettingsIcon />,
-				}),
+				})
 			);
 		}
 
 		if (pathname !== applicationPaths.credentials) {
 			actions.push(
 				createDrawerAction("Credentials", {
-					onClick: () => dispatch(push(applicationPaths.credentials)),
+					onClick: () => dispatch(changeLocation(applicationPaths.credentials)),
 					icon: <AccountCircle />,
-				}),
+				})
 			);
 		}
 	} else {
 		actions.push(
 			createDrawerAction("Login", {
-				onClick: () => dispatch(push(applicationPaths.login)),
+				onClick: () => dispatch(changeLocation(applicationPaths.login)),
 				icon: <Logout fill={"currentColor"} />,
-			}),
+			})
 		);
 	}
 
@@ -109,34 +109,34 @@ function AppDrawer() {
 			actions.push(
 				createDrawerAction("Register", {
 					icon: <AddCircle />,
-					onClick: () => dispatch(push(applicationPaths.register)),
-				}),
+					onClick: () => dispatch(changeLocation(applicationPaths.register)),
+				})
 			);
 		}
 		if (isLogged && pathname !== applicationPaths.authorizations) {
 			actions.push(
 				createDrawerAction("Authorizations", {
-					onClick: () => dispatch(push(applicationPaths.authorizations)),
+					onClick: () => dispatch(changeLocation(applicationPaths.authorizations)),
 					icon: <Security />,
-				}),
+				})
 			);
 		}
 	}
 
 	React.useEffect(() => {
-		if (!isLogged) dispatch(push(applicationPaths.login));
+		if (!isLogged) dispatch(changeLocation(applicationPaths.login));
 	}, [dispatch, isLogged]);
 
 	return withDrawer({
 		component: (
-			<SwitchRouter>
-				<Route exact path={applicationPaths.dashboard} component={Dashboard} />
-				<Route exact path={applicationPaths.login} component={Login} />
-				<Route exact path={applicationPaths.settings} component={SettingContainer} />
-				<Route exact path={applicationPaths.register} component={Register} />
-				<Route exact path={applicationPaths.credentials} component={CredentialContainer} />
-				<Route exact path={applicationPaths.authorizations} component={AuthorizationsContainer} />
-			</SwitchRouter>
+			<Routes>
+				<Route path={applicationPaths.dashboard} element={<Dashboard />} />
+				<Route path={applicationPaths.login} element={<Login />} />
+				<Route path={applicationPaths.settings} element={<SettingContainer />} />
+				<Route path={applicationPaths.register} element={<Register />} />
+				<Route path={applicationPaths.credentials} element={<CredentialContainer />} />
+				<Route path={applicationPaths.authorizations} element={<AuthorizationsContainer />} />
+			</Routes>
 		),
 		actions: actions,
 		title: "Authentication",
@@ -144,6 +144,8 @@ function AppDrawer() {
 }
 
 function Application() {
+	const theme = useAppSelector((s) => s.theme.current);
+
 	const dispatch = useAppDispatch();
 
 	useAsyncEffect(async () => {
@@ -152,7 +154,7 @@ function Application() {
 
 	return (
 		<Box className={"Application"} bgcolor={"background.default"}>
-			<ToastContainer position={"top-left"} />
+			<ToastContainer position={"top-left"} theme={theme} />
 			<AppDrawer />
 		</Box>
 	);
