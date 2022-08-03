@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+    reverse-proxy:
+        image: nginx:alpine
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        ports:
+            - "80:80"
+        container_name: authentication-local-proxy
+        restart: always
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        networks:
+            authentication:
+    back:
+        container_name: authentication-local-back
+        image: elyspio/authentication:back-local
+        build:
+            context: ../../../
+            dockerfile: deploy/build/local.dockerfile
+            args:
+                folder: back
+        ports:
+            - "4001:4001"
+        volumes:
+            - "../../../back:/back"
+            - /back/node_modules
+        networks:
+            cicd-network:
+            authentication:
+    
+    front:
+        image: elyspio/authentication:front-local
+        container_name: authentication-local-front
+        build:
+            context: ../../../
+            dockerfile: deploy/build/local.dockerfile
+            args:
+                folder: front
+        ports:
+            - "3001:3001"
+        volumes:
+            - "../../../front:/front"
+            - /front/node_modules
+        networks:
+            authentication:
+
+networks:
+    cicd-network:
+        external: true
+        name: cicd-network
+    
+    
+    authentication:
+        name: authentication
