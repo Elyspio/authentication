@@ -3,7 +3,7 @@ import * as process from "process";
 import { Configuration } from "@tsed/common";
 import { Helper } from "../core/utils/helper";
 import isDev = Helper.isDev;
-
+import {server} from "./external.json"
 export const rootDir = path.resolve(__dirname, "..");
 
 export let frontPath = process.env.FRONT_PATH ?? path.resolve(rootDir, "..", "..", "..", "front", "build");
@@ -11,7 +11,7 @@ export let frontPath = process.env.FRONT_PATH ?? path.resolve(rootDir, "..", "..
 export const webConfig: Partial<Configuration> = {
 	rootDir,
 	acceptMimes: ["application/json", "text/plain "],
-	httpPort: process.env.HTTP_PORT || 4000,
+	httpPort: server.port,
 	httpsPort: false, // CHANGE
 	mount: {
 		"/api": [`${rootDir}/web/controllers/**/*.ts`],
