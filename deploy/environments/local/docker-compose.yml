@@ -11,8 +11,7 @@ services:
         restart: always
         extra_hosts:
             - "host.docker.internal:host-gateway"
-        networks:
-            authentication:
+
     back:
         container_name: authentication-local-back
         image: elyspio/authentication:back-local
@@ -28,7 +27,6 @@ services:
             - /back/node_modules
         networks:
             cicd-network:
-            authentication:
     
     front:
         image: elyspio/authentication:front-local
@@ -43,14 +41,8 @@ services:
         volumes:
             - "../../../front:/front"
             - /front/node_modules
-        networks:
-            authentication:
 
 networks:
     cicd-network:
         external: true
         name: cicd-network
-    
-    
-    authentication:
-        name: authentication
