@@ -15,15 +15,16 @@ services:
     back:
         container_name: authentication-local-back
         image: elyspio/authentication:back-local
+        restart: always
         build:
             context: ../../../
             dockerfile: deploy/build/local.dockerfile
             args:
-                folder: back
+                folder: app/back
         ports:
             - "4001:4001"
         volumes:
-            - "../../../back:/back"
+            - "../../../app/back:/app"
             - /back/node_modules
         networks:
             cicd-network:
@@ -31,15 +32,16 @@ services:
     front:
         image: elyspio/authentication:front-local
         container_name: authentication-local-front
+        restart: always
         build:
             context: ../../../
             dockerfile: deploy/build/local.dockerfile
             args:
-                folder: front
+                folder: app/front
         ports:
             - "3001:3001"
         volumes:
-            - "../../../front:/front"
+            - "../../../app/front:/app"
             - /front/node_modules
 
 networks:

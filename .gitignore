@@ -1,6 +1,10 @@
-front/build
-back/build
+app/front/build
+app/back/build
 node_modules
 .idea
 deploy/environments/local/data
 deploy/environments/prod/.env
+.vs
+packages/cli/Authentication.CLI/obj
+packages/cli/Authentication.CLI/bin
+packages/cli/nuget.config
