@@ -8,3 +8,4 @@ deploy/environments/prod/.env
 packages/cli/Authentication.CLI/obj
 packages/cli/Authentication.CLI/bin
 packages/cli/nuget.config
+deploy/environments/prod/config/back/external.json

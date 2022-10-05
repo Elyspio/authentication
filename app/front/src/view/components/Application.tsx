@@ -4,6 +4,10 @@ import "./Application.scss";
 import Brightness5Icon from "@mui/icons-material/Brightness5";
 import Brightness3Icon from "@mui/icons-material/Brightness3";
 import BuildIcon from "@mui/icons-material/Build";
+import Home from "@mui/icons-material/Home";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import AddCircle from "@mui/icons-material/AddCircle";
+import Security from "@mui/icons-material/Security";
 import { Route, Routes } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/module/theme/theme.action";
@@ -13,7 +17,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { updateToastTheme } from "./utils/toast";
 import { Services } from "../../core/services";
 import { checkIfSomeUserExist, logout, verifyLogin } from "../../store/module/authentication/authentication.action";
-import { AccountCircle, AddCircle, Home, Security, Settings as SettingsIcon } from "@mui/icons-material";
 import { SettingContainer } from "./settings/Settings";
 import { CredentialContainer } from "./credentials/Credentials";
 import { useAsyncEffect } from "../hooks/useAsyncEffect";
@@ -64,7 +67,7 @@ function AppDrawer() {
 			createDrawerAction("Home", {
 				onClick: () => dispatch(changeLocation(applicationPaths.dashboard)),
 				icon: <Home />,
-			})
+			}),
 		);
 	}
 
@@ -73,7 +76,7 @@ function AppDrawer() {
 			createDrawerAction("Logout", {
 				onClick: () => dispatch(logout()),
 				icon: <Logout fill={"currentColor"} />,
-			})
+			}),
 		);
 		actions.push(createDrawerDivider("User"));
 
@@ -82,7 +85,7 @@ function AppDrawer() {
 				createDrawerAction("Settings", {
 					onClick: () => dispatch(changeLocation(applicationPaths.settings)),
 					icon: <SettingsIcon />,
-				})
+				}),
 			);
 		}
 
@@ -91,7 +94,7 @@ function AppDrawer() {
 				createDrawerAction("Credentials", {
 					onClick: () => dispatch(changeLocation(applicationPaths.credentials)),
 					icon: <AccountCircle />,
-				})
+				}),
 			);
 		}
 	} else {
@@ -99,7 +102,7 @@ function AppDrawer() {
 			createDrawerAction("Login", {
 				onClick: () => dispatch(changeLocation(applicationPaths.login)),
 				icon: <Logout fill={"currentColor"} />,
-			})
+			}),
 		);
 	}
 
@@ -110,7 +113,7 @@ function AppDrawer() {
 				createDrawerAction("Register", {
 					icon: <AddCircle />,
 					onClick: () => dispatch(changeLocation(applicationPaths.register)),
-				})
+				}),
 			);
 		}
 		if (isLogged && pathname !== applicationPaths.authorizations) {
@@ -118,7 +121,7 @@ function AppDrawer() {
 				createDrawerAction("Authorizations", {
 					onClick: () => dispatch(changeLocation(applicationPaths.authorizations)),
 					icon: <Security />,
-				})
+				}),
 			);
 		}
 	}

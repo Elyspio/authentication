@@ -15,7 +15,7 @@ namespace Authentication.CLI.Services
 
         public async Task<string> Login()
         {
-            var name = AnsiConsole.Ask<string>("What's your [green]login[/]?");
+            var name = AnsiConsole.Ask<string>("What's your [green]login[/]?" , "user");
 
             var password = AnsiConsole.Prompt(
                 new TextPrompt<string>("Enter [red]password[/]?")

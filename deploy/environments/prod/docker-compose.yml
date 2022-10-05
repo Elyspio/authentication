@@ -23,8 +23,7 @@ services:
             HTTP_PORT: ${HTTP_PORT}
         volumes:
             - ./config/front/conf.js:/front/conf.js
-        depends_on:
-            - authentication-db
+            - ./config/back/external.json:/back/build/config/external.json
         networks:
             - authentication
             - external
