@@ -13,8 +13,8 @@ FROM node:16-alpine as app
 
 ARG folder
 
-COPY --from=deps /${folder}/node_modules /app/node_modules
+COPY --from=deps /${folder}/node_modules /${folder}/node_modules
 
 
-WORKDIR /app
+WORKDIR /${folder}
 CMD ["yarn", "start"]

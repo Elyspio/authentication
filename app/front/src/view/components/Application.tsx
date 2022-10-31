@@ -8,6 +8,7 @@ import Home from "@mui/icons-material/Home";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import AddCircle from "@mui/icons-material/AddCircle";
 import Security from "@mui/icons-material/Security";
+import SettingsIcon from "@mui/icons-material/Settings"
 import { Route, Routes } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/module/theme/theme.action";

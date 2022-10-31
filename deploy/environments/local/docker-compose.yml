@@ -24,10 +24,12 @@ services:
         ports:
             - "4001:4001"
         volumes:
-            - "../../../app/back:/app"
-            - /back/node_modules
+            - "../../../app/back:/app/back"
+            - /app/back/node_modules
+            - ./config/back/external.json:/app/back/src/config/external.json
+       
         networks:
-            cicd-network:
+            internal:
     
     front:
         image: elyspio/authentication:front-local
@@ -41,10 +43,10 @@ services:
         ports:
             - "3001:3001"
         volumes:
-            - "../../../app/front:/app"
-            - /front/node_modules
+            - "../../../app/front:/app/front"
+            - /app/front/node_modules
 
 networks:
-    cicd-network:
+    internal:
         external: true
-        name: cicd-network
+        name: internal

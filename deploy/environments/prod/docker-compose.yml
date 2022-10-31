@@ -14,13 +14,6 @@ services:
             - "traefik.http.routers.authentication.rule=PathPrefix(`/authentication`)"
             - "traefik.http.services.authentication.loadbalancer.server.port=4000"
             - "traefik.http.routers.authentication.entrypoints=external"
-        environment:
-            DB_PASSWORD: ${DB_PASSWORD}
-            DB_HOST: ${DB_HOST}
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PORT: ${DB_PORT}
-            DB_DATABASE: ${DB_DATABASE}
-            HTTP_PORT: ${HTTP_PORT}
         volumes:
             - ./config/front/conf.js:/front/conf.js
             - ./config/back/external.json:/back/build/config/external.json

@@ -1,12 +1,5 @@
 {
-	"database": {
-		"username": "root",
-		"password": "root",
-		"host": "mongodb",
-		"port": 27017,
-		"database": "authentication",
-		"authSource": "admin"
-	},
+	"database":"mongodb://root:root@localhost:6003/authentication?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
 	"server": {
 		"port": 4001
 	}

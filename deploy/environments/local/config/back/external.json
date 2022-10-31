@@ -1,0 +1,6 @@
+{
+	"database": "mongodb://root:root@mongodb:27017/authentication?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=admin&authMechanism=SCRAM-SHA-256",
+	"server": {
+		"port": 4001
+	}
+}
