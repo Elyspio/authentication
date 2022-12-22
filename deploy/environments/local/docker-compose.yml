@@ -11,7 +11,11 @@ services:
         restart: always
         extra_hosts:
             - "host.docker.internal:host-gateway"
-
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 256M 
     back:
         container_name: authentication-local-back
         image: elyspio/authentication:back-local
@@ -30,7 +34,11 @@ services:
        
         networks:
             internal:
-    
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: 256M   
     front:
         image: elyspio/authentication:front-local
         container_name: authentication-local-front
@@ -45,7 +53,11 @@ services:
         volumes:
             - "../../../app/front:/app/front"
             - /app/front/node_modules
-
+        deploy:
+            resources:
+                limits:
+                    cpus: "2"
+                    memory: 1G 
 networks:
     internal:
         external: true
