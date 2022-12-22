@@ -1,18 +1,19 @@
-import { AfterRoutesInit, Service } from "@tsed/common";
-import { TypeORMService } from "@tsed/typeorm";
-import { MongoRepository } from "typeorm";
-import { getLogger } from "../../../utils/logger";
-import { Log } from "../../../utils/decorators/logger";
-import { UserEntity } from "../../entities/user/user.entity";
-import { UserTheme } from "../../entities/user/settings.entity";
-import { Roles } from "../../entities/user/authorization/authentication.entity";
+import {AfterRoutesInit, Service} from "@tsed/common";
+import {TypeORMService} from "@tsed/typeorm";
+import {MongoRepository} from "typeorm";
+import {getLogger} from "../../../utils/logger";
+import {Log} from "../../../utils/decorators/logger";
+import {UserEntity} from "../../entities/user/user.entity";
+import {UserTheme} from "../../entities/user/settings.entity";
+import {Roles} from "../../entities/user/authorization/authentication.entity";
 
 @Service()
 export class UserRepository implements AfterRoutesInit {
 	private static log = getLogger.repository(UserRepository);
 	private repo!: { user: MongoRepository<UserEntity> };
 
-	constructor(private typeORMService: TypeORMService) {}
+	constructor(private typeORMService: TypeORMService) {
+	}
 
 	$afterRoutesInit() {
 		const connection = this.typeORMService.get("db")!; // get connection by name
@@ -23,7 +24,13 @@ export class UserRepository implements AfterRoutesInit {
 
 	@Log(UserRepository.log)
 	async create(username: string, hash: string): Promise<UserEntity> {
-		const user = await this.repo.user.save({
+
+		const userRoles = [Roles.User];
+
+
+		if (!await this.checkIfUsersExist()) userRoles.push(Roles.Admin)
+
+		return await this.repo.user.save({
 			username,
 			hash,
 			settings: {
@@ -32,20 +39,17 @@ export class UserRepository implements AfterRoutesInit {
 			credentials: {},
 			authorizations: {
 				authentication: {
-					roles: [Roles.User],
+					roles: userRoles,
 				},
 			},
 		});
-
-		return user;
 	}
 
 	@Log(UserRepository.log)
 	async findByUsername(username: string): Promise<UserEntity | undefined> {
-		const connections = await this.repo.user.findOne({
-			where: { username },
+		return await this.repo.user.findOne({
+			where: {username},
 		});
-		return connections;
 	}
 
 	@Log(UserRepository.log)
