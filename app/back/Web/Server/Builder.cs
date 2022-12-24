@@ -31,7 +31,7 @@ public class ServerBuilder
 		var builder = WebApplication.CreateBuilder(args);
 		builder.WebHost.ConfigureKestrel((_, options) =>
 			{
-				options.Listen(IPAddress.Any, 4000, listenOptions =>
+				options.Listen(IPAddress.Any, 4001, listenOptions =>
 					{
 						// Use HTTP/3
 						listenOptions.Protocols = HttpProtocols.Http1AndHttp2;

@@ -11,7 +11,7 @@ public interface IUsersRepository
 	/// <param name="salt">generated salt for this user</param>
 	/// <param name="hash">Hashed and salted password</param>
 	/// <returns>the created user</returns>
-	Task<UserEntity> Add(string username, string salt, string hash);
+	Task<UserEntity?> Add(string username, string salt, string hash);
 
 
 	/// <summary>
@@ -19,7 +19,7 @@ public interface IUsersRepository
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns></returns>
-	Task<UserEntity> Get(string username);
+	Task<UserEntity?> Get(string username);
 
 
 	/// <summary>

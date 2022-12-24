@@ -1,7 +1,9 @@
 ﻿using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Interfaces.Services;
+using Authentication.Api.Abstractions.Models;
 using Authentication.Api.Abstractions.Transports;
+using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Core.Assemblers;
 using Microsoft.Extensions.Logging;
 

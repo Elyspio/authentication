@@ -18,6 +18,7 @@
     <ItemGroup>
         <Folder Include="Exceptions\" />
         <Folder Include="Extensions\" />
+        <Folder Include="Transports\Requests" />
     </ItemGroup>
 
     <ItemGroup>

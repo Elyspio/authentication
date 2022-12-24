@@ -1,4 +1,4 @@
-﻿using Authentication.Api.Abstractions.Transports.user;
+﻿using Authentication.Api.Abstractions.Transports.Data.user;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

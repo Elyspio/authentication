@@ -18,24 +18,23 @@ public static class ApplicationServer
 
 		application.UseAuthentication();
 
+		if (!application.Environment.IsProduction()) return application;
+
 		// Start SPA serving
-		if (application.Environment.IsProduction())
-		{
-			application.UseRouting();
+		application.UseRouting();
 
-			application.UseDefaultFiles(new DefaultFilesOptions
+		application.UseDefaultFiles(new DefaultFilesOptions
+			{
+				DefaultFileNames = new List<string>
 				{
-					DefaultFileNames = new List<string>
-					{
-						"index.html"
-					},
-					RedirectToAppendTrailingSlash = true
-				}
-			);
-			application.UseStaticFiles();
+					"index.html"
+				},
+				RedirectToAppendTrailingSlash = true
+			}
+		);
+		application.UseStaticFiles();
 
-			application.UseEndpoints(endpoints => { endpoints.MapFallbackToFile("/index.html"); });
-		}
+		application.UseEndpoints(endpoints => { endpoints.MapFallbackToFile("/index.html"); });
 
 		return application;
 	}

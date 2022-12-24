@@ -1,7 +1,7 @@
 ﻿using Authentication.Api.Abstractions.Exceptions;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Models;
-using Authentication.Api.Abstractions.Transports.user;
+using Authentication.Api.Abstractions.Transports.Data.user;
 using Authentication.Api.Db.Repositories.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -18,7 +18,7 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	}
 
 
-	public async Task<UserEntity> Add(string username, string salt, string hash)
+	public async Task<UserEntity?> Add(string username, string salt, string hash)
 	{
 		var roles = new List<AuthenticationRoles>
 		{
@@ -61,7 +61,7 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 		return entity;
 	}
 
-	public async Task<UserEntity> Get(string username)
+	public async Task<UserEntity?> Get(string username)
 	{
 		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Username == username);
 	}

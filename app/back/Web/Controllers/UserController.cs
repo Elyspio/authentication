@@ -1,5 +1,6 @@
 ﻿using Authentication.Api.Abstractions.Interfaces.Services;
 using Authentication.Api.Abstractions.Transports;
+using Authentication.Api.Abstractions.Transports.Data;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using System.Net;

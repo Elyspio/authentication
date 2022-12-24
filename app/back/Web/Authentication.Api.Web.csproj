@@ -6,6 +6,7 @@
         <UserSecretsId>f60c5c41-cfe1-4a57-ae16-b1f4a799afdd</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <EnablePreviewFeatures>True</EnablePreviewFeatures>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
 
@@ -28,7 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Transports\Responses" />
+        <Folder Include="Transports" />
     </ItemGroup>
 
 

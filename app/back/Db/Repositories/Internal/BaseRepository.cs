@@ -10,28 +10,21 @@ namespace Authentication.Api.Db.Repositories.Internal;
 
 public abstract class BaseRepository<T>
 {
-	protected readonly string CollectionName;
-	protected readonly MongoContext context;
-	private readonly ILogger<BaseRepository<T>> logger;
+	private readonly string _collectionName;
+	private readonly MongoContext _context;
+	private readonly ILogger<BaseRepository<T>> _logger;
 
 	protected BaseRepository(IConfiguration configuration, ILogger<BaseRepository<T>> logger, string? collectionName = default)
 	{
-		context = new(configuration);
-		CollectionName = collectionName ?? typeof(T).Name[..^"Entity".Length];
+		_context = new(configuration);
+		_collectionName = collectionName ?? typeof(T).Name[..^"Entity".Length].ToLower();
 
-		if (collectionName == default && !CollectionName.EndsWith('s')) CollectionName += 's';
+		if (collectionName == default && !_collectionName.EndsWith('s')) _collectionName += 's';
 
-		this.logger = logger;
-		var pack = new ConventionPack
-		{
-			new EnumRepresentationConvention(BsonType.String)
-		};
-
-		ConventionRegistry.Register("EnumStringConvention", pack, t => true);
-		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
+		_logger = logger;
 	}
 
-	protected IMongoCollection<T> EntityCollection => context.MongoDatabase.GetCollection<T>(CollectionName);
+	protected IMongoCollection<T> EntityCollection => _context.MongoDatabase.GetCollection<T>(_collectionName);
 
 
 	protected void CreateIndexIfMissing(string property, bool unique = false)
@@ -47,9 +40,9 @@ public abstract class BaseRepository<T>
 
 		if (foundIndex) return;
 
-		logger.LogWarning($"Property {CollectionName}.{property} is not indexed, creating one");
+		_logger.LogWarning($"Property {_collectionName}.{property} is not indexed, creating one");
 		EntityCollection.Indexes.CreateOne(indexModel);
-		logger.LogWarning($"Property {CollectionName}.{property} is now indexed");
+		_logger.LogWarning($"Property {_collectionName}.{property} is now indexed");
 	}
 }
 

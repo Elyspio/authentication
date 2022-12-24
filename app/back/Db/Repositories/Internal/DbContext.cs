@@ -24,10 +24,10 @@ public class MongoContext
 
 		var pack = new ConventionPack
 		{
-			new EnumRepresentationConvention(BsonType.String)
+			new EnumRepresentationConvention(BsonType.String),
+			new CamelCaseElementNameConvention()
 		};
 		ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
-		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
 	}
 
 	/// <summary>

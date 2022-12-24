@@ -74,5 +74,16 @@ public static class Log
 
 			_logger.Log(_level, sb.ToString());
 		}
+
+		public void Debug(string s)
+		{		
+			if (!_logger.IsEnabled(LogLevel.Debug)) return;
+			var sb = new StringBuilder($"{_method}");
+			if (_arguments?.Length > 0) sb.Append($" -- {_arguments}");
+			sb.Append($" -- {s}");
+			
+			_logger.LogDebug(sb.ToString());
+
+		}
 	}
 }
