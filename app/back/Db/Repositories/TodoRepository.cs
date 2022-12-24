@@ -1,50 +1,73 @@
-﻿using Authentication.Api.Abstractions.Extensions;
+﻿using Authentication.Api.Abstractions.Exceptions;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Models;
+using Authentication.Api.Abstractions.Transports.user;
 using Authentication.Api.Db.Repositories.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
+using System.Net;
 
-namespace Authentication.Api.Db.Repositories
+namespace Authentication.Api.Db.Repositories;
+
+internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 {
-	internal class TodoRepository : BaseRepository<TodoEntity>, ITodoRepository
+	public UsersRepository(IConfiguration configuration, ILogger<BaseRepository<UserEntity>> logger) : base(configuration, logger)
 	{
-		public TodoRepository(IConfiguration configuration, ILogger<BaseRepository<TodoEntity>> logger) : base(configuration, logger) { }
+	}
 
 
-		public async Task<TodoEntity> Add(string label, string user)
+	public async Task<UserEntity> Add(string username, string salt, string hash)
+	{
+		var roles = new List<AuthenticationRoles>
 		{
-			var entity = new TodoEntity
+			AuthenticationRoles.User
+		};
+
+		if (!await CheckIfUsersExist()) roles.Add(AuthenticationRoles.Admin);
+
+
+		var entity = new UserEntity
+		{
+			Username = username,
+			Hash = hash,
+			Salt = salt,
+			Credentials = new(),
+			Settings = new()
 			{
-				Checked = false,
-				Label = label,
-				User = user
-			};
+				Theme = SettingsType.System
+			},
+			Authorizations = new()
+			{
+				Authentication = new()
+				{
+					Roles = roles
+				}
+			}
+		};
+
+		try
+		{
 			await EntityCollection.InsertOneAsync(entity);
-			return entity;
 		}
-
-		public async Task<List<TodoEntity>> GetAll(string user)
+		catch (MongoWriteException e)
 		{
-			return await EntityCollection.AsQueryable().Where(x => x.User == user).ToListAsync();
+			if (e.WriteError.Category != ServerErrorCategory.DuplicateKey) throw;
+
+			throw new HttpException(HttpStatusCode.Conflict, $"Username {username} is already taken", e);
 		}
 
-		public async Task<TodoEntity> Check(Guid id, string user)
-		{
-			var entity = await EntityCollection.AsQueryable().FirstAsync(todo => todo.Id == id.AsObjectId());
+		return entity;
+	}
 
-			entity.Checked = !entity.Checked;
+	public async Task<UserEntity> Get(string username)
+	{
+		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Username == username);
+	}
 
-			await EntityCollection.FindOneAndReplaceAsync(e => e.Id == id.AsObjectId(), entity);
-
-			return entity;
-		}
-
-		public async Task Delete(Guid id, string user)
-		{
-			await EntityCollection.FindOneAndDeleteAsync(todo => todo.User == user && todo.Id == id.AsObjectId());
-		}
+	public async Task<bool> CheckIfUsersExist()
+	{
+		return await EntityCollection.AsQueryable().AnyAsync();
 	}
 }

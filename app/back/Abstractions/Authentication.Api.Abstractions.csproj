@@ -1,21 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="MongoDB.Bson" Version="2.15.0" />
-    <PackageReference Include="Serilog" Version="2.11.0" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Mapster.Core" Version="1.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+        <PackageReference Include="MongoDB.Bson" Version="2.15.0" />
+        <PackageReference Include="Serilog" Version="2.11.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Enums\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Exceptions\" />
+        <Folder Include="Extensions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Transports\user\AuthenticationRoles.cs">
+            <DependentUpon>Authentication.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Transports\user\SettingsType.cs">
+            <DependentUpon>Settings.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Transports\user\Docker.cs">
+            <DependentUpon>Credentials.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Transports\user\Github.cs">
+            <DependentUpon>Credentials.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Transports\user\Authentication.cs">
+            <DependentUpon>Authorizations.cs</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
 </Project>

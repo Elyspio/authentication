@@ -1,8 +1,7 @@
-﻿namespace Authentication.Api.Adapters.Configs
+﻿namespace Authentication.Api.Adapters.Configs;
+
+public class EndpointConfig
 {
-	public class EndpointConfig
-	{
-		public const string Section = "Endpoints";
-		public string Authentication { get; set; }
-	}
+	public const string Section = "Endpoints";
+	public string Authentication { get; set; }
 }
