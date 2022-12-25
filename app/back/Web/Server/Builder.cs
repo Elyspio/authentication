@@ -8,14 +8,18 @@ using Authentication.Api.Web.Filters;
 using Authentication.Api.Web.Processors;
 using Authentication.Api.Web.Utils;
 using Mapster;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NJsonSchema.Generation;
 using Serilog;
 using Serilog.Events;
 using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Authentication.Api.Web.Server;
@@ -75,8 +79,11 @@ public class ServerBuilder
 					o.Filters.Add<HttpExceptionFilter>();
 				}
 			)
-			.AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
-			.AddNewtonsoftJson(x => x.SerializerSettings.Converters.Add(new StringEnumConverter()));
+			.AddNewtonsoftJson(x =>
+			{
+				x.SerializerSettings.Converters.Add(new StringEnumConverter());
+				x.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+			});
 
 		// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 		builder.Services.AddEndpointsApiExplorer();
@@ -88,6 +95,22 @@ public class ServerBuilder
 			document.SchemaProcessors.Add(new NullableSchemaProcessor());
 			document.OperationProcessors.Add(new NullableOperationProcessor());
 		});
+		
+		//JWT Authentication
+		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+			options.TokenValidationParameters = new()
+			{
+				ValidateIssuer = true,
+				ValidateAudience = true,
+				ValidateLifetime = true,
+				ValidateIssuerSigningKey = true,
+				ValidIssuer = builder.Configuration["Jwt:Issuer"],
+				ValidAudience = builder.Configuration["Jwt:Audience"],
+				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+			};
+		});
+		
+		
 		// Setup SPA Serving
 		if (builder.Environment.IsProduction()) Console.WriteLine($"Server in production, serving SPA from {_frontPath} folder");
 

@@ -4,13 +4,15 @@ import { Box, Grid, Paper, Typography } from "@mui/material";
 import { Drawer } from "./Drawer";
 import "./actions/Actions.scss";
 
+export type ModalAction = {
+	component: ActionComponentProps;
+	description: ActionDescriptionProps;
+	key?: string;
+};
+
 export type WithDrawerProps = {
 	component: React.ReactNode;
-	actions: {
-		component: ActionComponentProps;
-		description: ActionDescriptionProps;
-		key?: string;
-	}[];
+	actions: ModalAction[];
 	title: string;
 };
 

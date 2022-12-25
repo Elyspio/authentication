@@ -16,6 +16,14 @@ namespace Authentication.Api.Core.Services;
 public class AuthenticationService : IAuthenticationService
 {
 	private readonly ILogger<UserService> _logger;
+	private readonly UserAssembler _userAssembler = new();
+	private readonly IUsersRepository _usersRepository;
+	private readonly ITokenService _tokenService;
+
+
+	/// <summary>
+	///		Map a username to its generated challenge
+	/// </summary>
 	private readonly Dictionary<string, string> _loggingChallenges = new();
 
 	/// <summary>
@@ -23,13 +31,11 @@ public class AuthenticationService : IAuthenticationService
 	/// </summary>
 	private readonly Dictionary<string, string> _registringSalts = new();
 
-	private readonly UserAssembler _userAssembler = new();
-	private readonly IUsersRepository _usersRepository;
-
-	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger)
+	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger, ITokenService tokenService)
 	{
 		_usersRepository = usersRepository;
 		_logger = logger;
+		_tokenService = tokenService;
 	}
 
 
@@ -74,10 +80,9 @@ public class AuthenticationService : IAuthenticationService
 		return salt;
 	}
 
-	public async Task<bool> Verify(string username, string hash)
+	public async Task<string> Login(string username, string hash)
 	{
 		var logger = _logger.Enter(Log.Format(username));
-
 
 		if (!_loggingChallenges.TryGetValue(username, out var challenge)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} logging in");
 
@@ -92,13 +97,14 @@ public class AuthenticationService : IAuthenticationService
 		logger.Debug($"{Log.Format(match)}");
 
 		if (match) _loggingChallenges.Remove(username);
-
+		else throw new HttpException(HttpStatusCode.Forbidden, "Wrong password");
+		
 		logger.Exit();
 
-		return match;
+		return _tokenService.GenerateJwt(_userAssembler.Convert(storedUser));
 	}
 
-	public async Task<InitVerifyResponse> InitVerify(string username)
+	public async Task<InitVerifyResponse> InitLogin(string username)
 	{
 		var logger = _logger.Enter(Log.Format(username));
 

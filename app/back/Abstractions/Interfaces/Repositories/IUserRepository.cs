@@ -11,7 +11,7 @@ public interface IUsersRepository
 	/// <param name="salt">generated salt for this user</param>
 	/// <param name="hash">Hashed and salted password</param>
 	/// <returns>the created user</returns>
-	Task<UserEntity?> Add(string username, string salt, string hash);
+	Task<UserEntity> Add(string username, string salt, string hash);
 
 
 	/// <summary>
@@ -27,4 +27,10 @@ public interface IUsersRepository
 	/// </summary>
 	/// <returns></returns>
 	Task<bool> CheckIfUsersExist();
+
+	/// <summary>
+	///		Returns all users
+	/// </summary>
+	/// <returns></returns>
+	Task<List<UserEntity>> GetAll();
 }

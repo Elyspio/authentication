@@ -18,7 +18,7 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	}
 
 
-	public async Task<UserEntity?> Add(string username, string salt, string hash)
+	public async Task<UserEntity> Add(string username, string salt, string hash)
 	{
 		var roles = new List<AuthenticationRoles>
 		{
@@ -69,5 +69,10 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	public async Task<bool> CheckIfUsersExist()
 	{
 		return await EntityCollection.AsQueryable().AnyAsync();
+	}
+
+	public async Task<List<UserEntity>> GetAll()
+	{
+		return await EntityCollection.AsQueryable().ToListAsync();
 	}
 }

@@ -33,13 +33,13 @@ public interface IAuthenticationService
 	/// </summary>
 	/// <param name="username"></param>
 	/// <param name="hash"></param>
-	/// <returns>if the user is logged or not </returns>
-	Task<bool> Verify(string username, string hash);
+	/// <returns>user's JWT</returns>
+	Task<string> Login(string username, string hash);
 
 	/// <summary>
 	///     Create a login challenge for this user
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns></returns>
-	Task<InitVerifyResponse> InitVerify(string username);
+	Task<InitVerifyResponse> InitLogin(string username);
 }

@@ -31,4 +31,16 @@ public class UserService : IUserService
 
 		return data;
 	}
+
+	public async  Task<List<User>> GetAll()
+	{
+		var logger = _logger.Enter();
+
+		var entity = await _usersRepository.GetAll();
+		var data = _userAssembler.Convert(entity);
+
+		logger.Exit();
+
+		return data;
+	}
 }

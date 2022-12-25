@@ -10,4 +10,6 @@ public interface IUserService
 	/// <param name="username"></param>
 	/// <returns></returns>
 	Task<User> Get(string username);
+
+	Task<List<User>> GetAll();
 }
