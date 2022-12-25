@@ -8,7 +8,7 @@ public class UserBase
 
 	[AdaptIgnore]
 	public required string Hash { get; set; }
-	
+
 	[AdaptIgnore]
 	public required string Salt { get; set; }
 

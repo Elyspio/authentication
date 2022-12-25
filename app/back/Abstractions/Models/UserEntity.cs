@@ -9,5 +9,4 @@ public class UserEntity : UserBase
 	[BsonId]
 	[BsonRepresentation(BsonType.ObjectId)]
 	public ObjectId Id { get; init; }
-
 }

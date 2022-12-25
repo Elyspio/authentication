@@ -55,17 +55,12 @@ export function createDrawerAction(name: string, config: ActionComponentProps): 
 
 export function createDrawerDivider(name: string): WithDrawerProps["actions"][number] {
 	return {
-		description: {
-			children: (
-				<Typography variant={"overline"} color={"primary"}>
-					{name}
-				</Typography>
-			),
-		},
+		description: { children: null },
 		key: name,
 		component: {
-			icon: null,
+			divider: name,
 			onClick: () => {},
+			icon: null,
 		},
 	};
 }

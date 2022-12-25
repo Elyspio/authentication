@@ -22,6 +22,14 @@ public abstract class BaseRepository<T>
 		if (collectionName == default && !_collectionName.EndsWith('s')) _collectionName += 's';
 
 		_logger = logger;
+		var pack = new ConventionPack
+		{
+			new EnumRepresentationConvention(BsonType.String),
+			new CamelCaseElementNameConvention()
+		};
+
+		ConventionRegistry.Register("EnumStringConvention", pack, t => true);
+		BsonSerializer.RegisterSerializationProvider(new EnumAsStringSerializationProvider());
 	}
 
 	protected IMongoCollection<T> EntityCollection => _context.MongoDatabase.GetCollection<T>(_collectionName);

@@ -1,5 +1,4 @@
-﻿using Authentication.Api.Abstractions.Transports;
-using Authentication.Api.Abstractions.Transports.Data;
+﻿using Authentication.Api.Abstractions.Transports.Data;
 
 namespace Authentication.Api.Abstractions.Interfaces.Services;
 

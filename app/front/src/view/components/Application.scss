@@ -1,30 +1,13 @@
 .Application {
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	height: 100vh;
+	overflow-x: hidden;
 
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  height: 100vh;
-  overflow-x: hidden;
-
-
-  .content {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-
-  .Drawer {
-    height: calc(100% - 4rem);
-  }
-
-
-  hr.Divider {
-    width: 100%;
-  }
-
+	.content > * {
+		height: 100%;
+		width: 100%;
+	}
 }
-
-

@@ -1,7 +1,5 @@
 import { createTheme, Theme } from "@mui/material";
 import * as colors from "@mui/material/colors";
-import { Services } from "../core/services";
-import { UserSettingsModel } from "../core/apis/backend";
 
 const darkTheme = createTheme({
 	palette: {
@@ -45,7 +43,7 @@ const lightTheme = createTheme({
 		},
 		background: {
 			paper: "#ffffff",
-			default: "rgba(250,250,250,1)",
+			default: "#e6e6e6",
 		},
 	},
 	components: {
@@ -67,19 +65,6 @@ export const themes = {
 };
 
 export type Themes = "dark" | "light";
+export const getUrlTheme = (): Themes => new URL(window.location.toString()).searchParams.get("theme") || ("dark" as any);
 
-export const getUrlTheme = (): Themes => {
-	let fromUrl = new URL(window.location.toString()).searchParams.get("theme");
-	let fromSession = Services.localStorage.settings.retrieve<UserSettingsModel>();
-	if (fromUrl) return fromUrl as Themes;
-	if (fromSession?.theme) {
-		if (fromSession.theme === "system") {
-			return Services.theme.getThemeFromSystem();
-		} else return fromSession.theme;
-	}
-	return Services.theme.getThemeFromSystem();
-};
-
-export const getCurrentTheme = (theme: Themes): Theme => {
-	return themes[theme];
-};
+export const getCurrentTheme = (theme: Themes): Theme => themes[theme];

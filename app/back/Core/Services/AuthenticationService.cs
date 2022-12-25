@@ -2,8 +2,6 @@
 using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Interfaces.Services;
-using Authentication.Api.Abstractions.Models;
-using Authentication.Api.Abstractions.Transports;
 using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Abstractions.Transports.Responses;
 using Authentication.Api.Core.Assemblers;
@@ -18,6 +16,7 @@ namespace Authentication.Api.Core.Services;
 public class AuthenticationService : IAuthenticationService
 {
 	private readonly ILogger<UserService> _logger;
+	private readonly Dictionary<string, string> _loggingChallenges = new();
 
 	/// <summary>
 	///     Map a username to its generated salt
@@ -26,7 +25,6 @@ public class AuthenticationService : IAuthenticationService
 
 	private readonly UserAssembler _userAssembler = new();
 	private readonly IUsersRepository _usersRepository;
-	private readonly Dictionary<string, string> _loggingChallenges = new();
 
 	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger)
 	{
@@ -81,23 +79,20 @@ public class AuthenticationService : IAuthenticationService
 		var logger = _logger.Enter(Log.Format(username));
 
 
-		if (!_loggingChallenges.TryGetValue(hash, out var challenge)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} logging in");
+		if (!_loggingChallenges.TryGetValue(username, out var challenge)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} logging in");
 
 		var storedUser = await _usersRepository.Get(username);
 
 		if (storedUser == default) throw new HttpException(HttpStatusCode.NotFound, $"There is no user '{username}' in database");
-	
+
 		var storedHash = ComputeSignature(storedUser.Hash, challenge);
 
 		var match = storedHash == hash;
 
-		logger.Debug($"{username}: {Log.Format(match)}");
+		logger.Debug($"{Log.Format(match)}");
 
-		if (match)
-		{
-			_loggingChallenges.Remove(username);
-		}
-		
+		if (match) _loggingChallenges.Remove(username);
+
 		logger.Exit();
 
 		return match;
@@ -129,7 +124,7 @@ public class AuthenticationService : IAuthenticationService
 
 	private string ComputeSignature(string hash, string challenge)
 	{
-		using var shaAlg = Sha3.Sha3256();
+		using var shaAlg = Sha3.Sha3512();
 		var bytes = shaAlg.ComputeHash(Encoding.UTF8.GetBytes(hash + challenge));
 		return Convert.ToBase64String(bytes);
 	}

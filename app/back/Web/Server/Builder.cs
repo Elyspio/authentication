@@ -1,8 +1,6 @@
 ﻿using Authentication.Api.Abstractions.Extensions;
 using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Injections;
-using Authentication.Api.Abstractions.Models;
-using Authentication.Api.Abstractions.Transports;
 using Authentication.Api.Adapters.Injections;
 using Authentication.Api.Core.Injections;
 using Authentication.Api.Db.Injections;

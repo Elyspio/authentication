@@ -1,36 +1,34 @@
-import md5 from "md5";
-import { Apis } from "../apis";
+import { inject, injectable } from "inversify";
+import { BackendApi } from "../apis/backend";
+import { BaseService } from "./common/base.service";
+import Sha from "jssha";
 
-export class AuthenticationService {
-	public async login({ name, password }: { name: string; password: string }) {
-		const ownHash = md5(name + password);
-		try {
-			const salt = (await Apis.authentication.loginInit({ name: name })).data.salt;
-			const hash = md5(ownHash + salt);
-			const res = await Apis.authentication.login({ name: name, hash });
-			if (res.status === 200) return { success: true, token: res.data.token };
-		} catch (e) {
-			console.error("ERROR in isAuthorized", e);
-		}
-		return { success: false };
+@injectable()
+export class AuthenticationService extends BaseService {
+	@inject(BackendApi)
+	private backendApi!: BackendApi;
+
+	public async register(name: string, password: string) {
+		const { salt } = await this.backendApi.authentication.initRegister(name);
+
+		const hash = this.computeHash(name, password, salt);
+
+		await this.backendApi.authentication.register(name, hash);
 	}
 
-	public async isValid() {
-		const { data } = await Apis.authentication.validToken();
-		return data;
+	public async login(name: string, password: string) {
+		const { salt, challenge } = await this.backendApi.authentication.initVerify(name);
+
+		const hash = this.computeHash(name, password, salt);
+
+		const challengedHash = this.computeHash(hash, challenge);
+
+		await this.backendApi.authentication.verify(name, challengedHash);
 	}
 
-	public async logout() {
-		await Apis.authentication.logout();
-	}
-
-	public async getToken() {
-		const { data } = await Apis.users.core.getUserInfo("token");
-		return data;
-	}
-
-	public async create({ name, password }: { name: string; password: string }) {
-		const ownHash = md5(name + password);
-		await Apis.users.core.addUser({ username: name, hash: ownHash });
+	private computeHash(...args: string[]) {
+		const encoder = new Sha("SHA3-512", "TEXT", { encoding: "UTF8" });
+		encoder.update(args.join(""));
+		return encoder.getHash("B64");
 	}
 }

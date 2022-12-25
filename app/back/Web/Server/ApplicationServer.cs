@@ -5,7 +5,7 @@ public static class ApplicationServer
 	public static WebApplication Initialize(this WebApplication application)
 	{
 		// Allow CORS
-		application.UseCors("Cors");
+		application.UseCors();
 
 		application.UseOpenApi();
 		application.UseSwaggerUi3();

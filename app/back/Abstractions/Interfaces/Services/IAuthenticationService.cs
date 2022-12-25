@@ -1,5 +1,4 @@
-﻿using Authentication.Api.Abstractions.Transports;
-using Authentication.Api.Abstractions.Transports.Data;
+﻿using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Abstractions.Transports.Responses;
 
 namespace Authentication.Api.Abstractions.Interfaces.Services;
@@ -30,7 +29,7 @@ public interface IAuthenticationService
 
 
 	/// <summary>
-	/// Verify user's hash with the one stored in database
+	///     Verify user's hash with the one stored in database
 	/// </summary>
 	/// <param name="username"></param>
 	/// <param name="hash"></param>
@@ -43,6 +42,4 @@ public interface IAuthenticationService
 	/// <param name="username"></param>
 	/// <returns></returns>
 	Task<InitVerifyResponse> InitVerify(string username);
-
-	
 }

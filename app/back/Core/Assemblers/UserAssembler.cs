@@ -1,6 +1,5 @@
 ﻿using Authentication.Api.Abstractions.Assemblers;
 using Authentication.Api.Abstractions.Models;
-using Authentication.Api.Abstractions.Transports;
 using Authentication.Api.Abstractions.Transports.Data;
 using Mapster;
 
