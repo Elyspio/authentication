@@ -16,13 +16,10 @@ namespace Authentication.Api.Core.Services;
 public class AuthenticationService : IAuthenticationService
 {
 	private readonly ILogger<UserService> _logger;
-	private readonly UserAssembler _userAssembler = new();
-	private readonly IUsersRepository _usersRepository;
-	private readonly ITokenService _tokenService;
 
 
 	/// <summary>
-	///		Map a username to its generated challenge
+	///     Map a username to its generated challenge
 	/// </summary>
 	private readonly Dictionary<string, string> _loggingChallenges = new();
 
@@ -30,6 +27,10 @@ public class AuthenticationService : IAuthenticationService
 	///     Map a username to its generated salt
 	/// </summary>
 	private readonly Dictionary<string, string> _registringSalts = new();
+
+	private readonly ITokenService _tokenService;
+	private readonly UserAssembler _userAssembler = new();
+	private readonly IUsersRepository _usersRepository;
 
 	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger, ITokenService tokenService)
 	{
@@ -98,7 +99,7 @@ public class AuthenticationService : IAuthenticationService
 
 		if (match) _loggingChallenges.Remove(username);
 		else throw new HttpException(HttpStatusCode.Forbidden, "Wrong password");
-		
+
 		logger.Exit();
 
 		return _tokenService.GenerateJwt(_userAssembler.Convert(storedUser));
@@ -121,7 +122,6 @@ public class AuthenticationService : IAuthenticationService
 
 		return new(storedUser.Salt, challenge);
 	}
-
 
 	private string GenerateRandom()
 	{

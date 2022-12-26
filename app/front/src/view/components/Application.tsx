@@ -2,9 +2,9 @@ import * as React from "react";
 import { useEffect, useMemo } from "react";
 import "./Application.scss";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { createDrawerAction, ModalAction, withDrawer } from "./utils/drawer/Drawer.hoc";
+import { createDrawerAction, withDrawer } from "./utils/drawer/Drawer.hoc";
 import { Box, Container } from "@mui/material";
-import { DarkMode, LightMode, Login as IconLogin, Logout, PersonAdd } from "@mui/icons-material";
+import { DarkMode, Dashboard as DashboardIcon, LightMode, Login as IconLogin, Logout, PersonAdd } from "@mui/icons-material";
 import { Route, Routes } from "react-router";
 import { applicationPaths } from "../../config/routes";
 import { Register } from "./register/Register";
@@ -12,38 +12,57 @@ import { Login } from "./login/Login";
 import { logout } from "../../store/module/authentication/authentication.async.action";
 import { changeLocation } from "../../core/services/router.service";
 import { initApp } from "../../store/common/common.actions";
+import { toggleTheme } from "../../store/module/theme/theme.action";
+import { Dashboard } from "./dashboard/Dashboard";
+import { AuthenticationRoles } from "../../core/apis/backend/generated";
 
 function Application() {
 	const dispatch = useAppDispatch();
 
-	const { theme, themeIcon, logged, init } = useAppSelector((s) => ({
+	const { theme, themeIcon, logged, init, route, user } = useAppSelector((s) => ({
 		theme: s.theme.current,
 		themeIcon: s.theme.current === "dark" ? <LightMode /> : <DarkMode />,
 		logged: !!s.authentication.user,
+		user: s.authentication.user,
 		init: s.authentication.init,
+		route: s.router.location,
 	}));
 
 	const actions = useMemo(() => {
-		const acts: ModalAction[] = [];
+		const elems = [
+			createDrawerAction(theme === "light" ? "Dark Mode" : "Light Mode", {
+				icon: themeIcon,
+				onClick: () => dispatch(toggleTheme()),
+			}),
+		];
 
 		if (logged) {
-			acts.push(
+			elems.push(
 				createDrawerAction("Logout", {
 					icon: <Logout />,
 					onClick: () => dispatch(logout()),
 				})
 			);
+
+			if (!route?.pathname.endsWith(applicationPaths.dashboard)) {
+				createDrawerAction("Dashboard", {
+					icon: <DashboardIcon />,
+					onClick: () => dispatch(changeLocation("dashboard")),
+				});
+			}
 		} else {
-			acts.push(
-				createDrawerAction("Login", {
-					icon: <IconLogin />,
-					onClick: () => dispatch(changeLocation("login")),
-				})
-			);
+			if (!route?.pathname.endsWith(applicationPaths.login)) {
+				elems.push(
+					createDrawerAction("Login", {
+						icon: <IconLogin />,
+						onClick: () => dispatch(changeLocation("login")),
+					})
+				);
+			}
 		}
 
-		if (logged || init) {
-			acts.push(
+		if ((user?.authorizations?.authentication.roles.includes(AuthenticationRoles.Admin) || init) && !route?.pathname.endsWith(applicationPaths.register)) {
+			elems.push(
 				createDrawerAction("Register", {
 					icon: <PersonAdd />,
 					onClick: () => dispatch(changeLocation("register")),
@@ -51,8 +70,8 @@ function Application() {
 			);
 		}
 
-		return acts;
-	}, [logged, dispatch]);
+		return elems;
+	}, [logged, dispatch, theme, themeIcon, init, route, user]);
 
 	useEffect(() => {
 		dispatch(initApp());
@@ -64,6 +83,7 @@ function Application() {
 				<Routes>
 					<Route path={applicationPaths.login} element={<Login />} />
 					<Route path={applicationPaths.register} element={<Register />} />
+					<Route path={applicationPaths.dashboard} element={<Dashboard />} />
 				</Routes>
 			</Container>
 		),

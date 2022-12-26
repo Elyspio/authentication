@@ -1,6 +1,6 @@
 import { ExtraArgument } from "../index";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { checkIfUserExist } from "../module/authentication/authentication.async.action";
+import { checkIfUserExist, silentLogin } from "../module/authentication/authentication.async.action";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -15,4 +15,5 @@ export function createActionBase(base: string) {
 
 export const initApp = createAsyncThunk("initApp", async (_, { dispatch, extra }) => {
 	dispatch(checkIfUserExist());
+	dispatch(silentLogin());
 });

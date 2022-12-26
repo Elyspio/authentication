@@ -29,7 +29,7 @@ public interface IUsersRepository
 	Task<bool> CheckIfUsersExist();
 
 	/// <summary>
-	///		Returns all users
+	///     Returns all users
 	/// </summary>
 	/// <returns></returns>
 	Task<List<UserEntity>> GetAll();

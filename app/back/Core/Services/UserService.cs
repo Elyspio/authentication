@@ -32,7 +32,7 @@ public class UserService : IUserService
 		return data;
 	}
 
-	public async  Task<List<User>> GetAll()
+	public async Task<List<User>> GetAll()
 	{
 		var logger = _logger.Enter();
 

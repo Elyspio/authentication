@@ -21,26 +21,40 @@ export function AuthForm({ validate, label }: AuthFormProps) {
 	);
 
 	const {
-		palette: { primary },
+		palette: { secondary },
 	} = useTheme();
+
+	const onSubmit = useCallback(
+		(e: React.ChangeEvent<HTMLFormElement>) => {
+			e.stopPropagation();
+			e.preventDefault();
+			validate();
+		},
+		[validate]
+	);
 
 	return (
 		<Stack height={"100%"} alignItems={"center"} justifyContent={"center"}>
 			<Paper>
-				<Stack m={4} spacing={2} minWidth={300} alignItems={"center"}>
-					<Typography variant={"overline"} fontSize={"100%"}>
-						{label}
-					</Typography>
-					<Box pb={2} width={"100%"}>
-						<Divider flexItem color={primary.main}></Divider>
-					</Box>
-					<TextField onChange={setOnChange("username")} fullWidth label={"Username"} />
-					<TextField onChange={setOnChange("password")} fullWidth label={"Password"} />
+				<form onSubmit={onSubmit}>
+					<Stack mx={4} my={2} spacing={2} minWidth={300} alignItems={"center"}>
+						<Typography variant={"overline"} fontSize={"110%"}>
+							{label}
+						</Typography>
+						<Box pb={2} width={"100%"}>
+							<Divider flexItem color={secondary.main}></Divider>
+						</Box>
 
-					<Button disabled={!username || !password} onClick={validate} variant={"contained"} sx={{ borderRadius: 2 }}>
-						{label}
-					</Button>
-				</Stack>
+						<TextField type={"text"} onChange={setOnChange("username")} fullWidth label={"Username"} />
+						<TextField type={"password"} onChange={setOnChange("password")} fullWidth label={"Password"} />
+
+						<Box pt={1}>
+							<Button type={"submit"} disabled={!username || !password} variant={"contained"} color={"secondary"} sx={{ borderRadius: 2, width: 130 }}>
+								{label}
+							</Button>
+						</Box>
+					</Stack>
+				</form>
 			</Paper>
 		</Stack>
 	);

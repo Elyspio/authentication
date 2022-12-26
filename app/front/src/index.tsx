@@ -27,7 +27,7 @@ function Wrapper() {
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={theme}>
 				<Application />
-				<ToastContainer theme={current} position={"top-right"} />
+				<ToastContainer theme={current} position={"bottom-center"} />
 			</ThemeProvider>
 		</StyledEngineProvider>
 	);

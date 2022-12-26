@@ -16,11 +16,11 @@ using MongoDB.Bson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NJsonSchema.Generation;
+using NSwag;
 using Serilog;
 using Serilog.Events;
 using System.Net;
 using System.Text;
-using System.Text.Json.Serialization;
 
 namespace Authentication.Api.Web.Server;
 
@@ -94,10 +94,18 @@ public class ServerBuilder
 			document.DefaultResponseReferenceTypeNullHandling = ReferenceTypeNullHandling.NotNull;
 			document.SchemaProcessors.Add(new NullableSchemaProcessor());
 			document.OperationProcessors.Add(new NullableOperationProcessor());
+			document.AddSecurity("Bearer", new()
+			{
+				In = OpenApiSecurityApiKeyLocation.Header,
+				Description = "Please insert JWT with Bearer into field",
+				Name = "Authorization",
+				Type = OpenApiSecuritySchemeType.ApiKey
+			});
 		});
-		
+
 		//JWT Authentication
-		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
+		builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+		{
 			options.TokenValidationParameters = new()
 			{
 				ValidateIssuer = true,
@@ -109,8 +117,8 @@ public class ServerBuilder
 				IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
 			};
 		});
-		
-		
+
+
 		// Setup SPA Serving
 		if (builder.Environment.IsProduction()) Console.WriteLine($"Server in production, serving SPA from {_frontPath} folder");
 

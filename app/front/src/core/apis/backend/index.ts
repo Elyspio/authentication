@@ -1,13 +1,24 @@
-import { injectable } from "inversify";
+import { inject, injectable } from "inversify";
 import axios from "axios";
 import { AuthenticationClient, UsersClient } from "./generated";
-
-const instance = axios.create({ withCredentials: true, transformResponse: [] });
+import { TokenService } from "../../services/token.service";
 
 const basePath = window.config.endpoints.core;
 
 @injectable()
 export class BackendApi {
-	public authentication = new AuthenticationClient(basePath, instance);
-	public users = new UsersClient(basePath, instance);
+	public authentication: AuthenticationClient;
+	public users: UsersClient;
+
+	constructor(@inject(TokenService) tokenService: TokenService) {
+		const instance = axios.create({ withCredentials: true, transformResponse: [] });
+
+		instance.interceptors.request.use((value) => {
+			value.headers!["Authorization"] = `Bearer ${tokenService.getToken()}`;
+			return value;
+		});
+
+		this.authentication = new AuthenticationClient(basePath, instance);
+		this.users = new UsersClient(basePath, instance);
+	}
 }

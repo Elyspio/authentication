@@ -12,14 +12,14 @@ public static class ApplicationServer
 
 		// Start Dependency Injection
 		application.UseAdvancedDependencyInjection();
-		
+
 		// Setup authentication
 		application.UseAuthentication();
 		application.UseAuthorization();
-		
+
 		// Setup Controllers
 		application.MapControllers();
-		
+
 		if (!application.Environment.IsProduction()) return application;
 
 		// Start SPA serving
