@@ -1,9 +1,18 @@
-﻿using Authentication.Api.Abstractions.Interfaces.Assemblers;
+﻿using Authentication.Api.Abstractions.Extensions;
+using Authentication.Api.Abstractions.Interfaces.Assemblers;
+using Mapster;
+using MongoDB.Bson;
 
 namespace Authentication.Api.Abstractions.Assemblers;
 
 public abstract class BaseAssembler<TA, TB> : IAssembler<TA, TB>
 {
+	static BaseAssembler()
+	{
+		TypeAdapterConfig.GlobalSettings.ForType<Guid, ObjectId>().MapWith(id => id.AsObjectId());
+		TypeAdapterConfig.GlobalSettings.ForType<ObjectId, Guid>().MapWith(id => id.AsGuid());
+	}
+
 	public abstract TB Convert(TA obj);
 
 	public abstract TA Convert(TB obj);

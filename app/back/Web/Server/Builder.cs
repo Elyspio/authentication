@@ -1,5 +1,4 @@
-﻿using Authentication.Api.Abstractions.Extensions;
-using Authentication.Api.Abstractions.Helpers;
+﻿using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Injections;
 using Authentication.Api.Adapters.Injections;
 using Authentication.Api.Core.Injections;
@@ -7,12 +6,10 @@ using Authentication.Api.Db.Injections;
 using Authentication.Api.Web.Filters;
 using Authentication.Api.Web.Processors;
 using Authentication.Api.Web.Utils;
-using Mapster;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
-using MongoDB.Bson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NJsonSchema.Generation;
@@ -125,8 +122,6 @@ public class ServerBuilder
 
 		// Mapster
 
-		TypeAdapterConfig.GlobalSettings.ForType<Guid, ObjectId>().MapWith(id => id.AsObjectId());
-		TypeAdapterConfig.GlobalSettings.ForType<ObjectId, Guid>().MapWith(id => id.AsGuid());
 
 		Application = builder.Build();
 	}

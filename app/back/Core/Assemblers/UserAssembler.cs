@@ -7,6 +7,11 @@ namespace Authentication.Api.Core.Assemblers;
 
 public class UserAssembler : BaseAssembler<User, UserEntity>
 {
+	static UserAssembler()
+	{
+		TypeAdapterConfig<UserEntity, User>.ForType().Map(user => user.CreatedAt, entity => entity.Id.CreationTime);
+	}
+
 	public override User Convert(UserEntity? obj)
 	{
 		return obj.Adapt<User>();
