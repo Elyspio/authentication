@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import { TokenService } from "../../../core/services/token.service";
 import { setUserFromToken } from "./authentication.action";
 import { changeLocation } from "../../../core/services/router.service";
+import { AxiosError } from "axios";
+import * as HttpStatusCode from "http-status";
+import { goBack } from "redux-first-history";
 
 export const register = createAsyncThunk("authentication/register", async (_, { extra, getState, dispatch }) => {
 	const {
@@ -17,15 +20,24 @@ export const register = createAsyncThunk("authentication/register", async (_, { 
 
 	const service = getService(AuthenticationService, extra);
 
-	await toast.promise(service.register(username, password), {
-		success: "User created",
-		error: "Could not register user",
-		pending: "Registering user",
-	});
+	try {
+		await toast.promise(service.register(username, password), {
+			success: "User created",
+			pending: "Registering user",
+		});
 
-	// Auto login if the user is not logged (first user)
-	if (!user) {
-		dispatch(login());
+		// Auto login if the user is not logged (first user)
+		if (!user) {
+			dispatch(login());
+		}
+	} catch (e) {
+		const err = e as AxiosError;
+		const texts = {
+			[HttpStatusCode.CONFLICT]: `"${username}" is already taken`,
+		};
+		const text = texts[err.status!.toString()] ?? "An error occurred during register";
+
+		toast.error(text);
 	}
 });
 
@@ -42,18 +54,29 @@ export const login = createAsyncThunk("authentication/login", async (_, { extra,
 	const authService = getService(AuthenticationService, extra);
 	const tokenService = getService(TokenService, extra);
 
-	const jwt = await toast.promise(authService.login(username, password), {
-		success: "Logged",
-		pending: "Logging in",
-		error: "Could not login",
-	});
+	try {
+		const jwt = await toast.promise(authService.login(username, password), {
+			success: "Logged",
+			pending: "Logging in",
+		});
 
-	tokenService.setToken(jwt);
+		tokenService.setToken(jwt);
 
-	const user = tokenService.parseJwt(jwt);
-	dispatch(setUserFromToken(user));
+		const user = tokenService.parseJwt(jwt);
 
-	dispatch(changeLocation("dashboard"));
+		dispatch(setUserFromToken(user));
+		dispatch(goBack());
+	} catch (e) {
+		const err = e as AxiosError;
+		const texts = {
+			[HttpStatusCode.LOCKED]: `"${username}" is disabled`,
+			[HttpStatusCode.FORBIDDEN]: "Wrong username or password",
+		};
+
+		const text = texts[err.status!.toString()] ?? "An error occurred during login";
+
+		toast.error(text);
+	}
 });
 
 export const logout = createAsyncThunk("authentication/logout", async (_, { extra, dispatch }) => {
@@ -72,7 +95,6 @@ export const silentLogin = createAsyncThunk("authentication/silentLogin", async 
 	if (jwt && (await authenticationService.isValid())) {
 		const user = tokenService.parseJwt(jwt);
 		dispatch(setUserFromToken(user));
-		dispatch(changeLocation("dashboard"));
 	} else {
 		tokenService.delete();
 	}

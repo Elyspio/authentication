@@ -1,6 +1,7 @@
 import { inject, injectable } from "inversify";
 import { BackendApi } from "../apis/backend";
-import { BaseService } from "./common/base.service";
+import { BaseService } from "./technical/base.service";
+import { User } from "../apis/backend/generated";
 
 @injectable()
 export class UsersService extends BaseService {
@@ -12,5 +13,6 @@ export class UsersService extends BaseService {
 	 */
 	public checkIfUsersExist = () => this.backendApi.users.checkIfUsersExist();
 	public getAll = () => this.backendApi.users.getAll();
-	public get = (username) => this.backendApi.users.get(username);
+	public get = (username: string) => this.backendApi.users.get(username);
+	public update = (user: User) => this.backendApi.users.updateUser(user.username, user);
 }

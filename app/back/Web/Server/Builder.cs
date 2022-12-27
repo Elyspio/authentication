@@ -4,8 +4,8 @@ using Authentication.Api.Adapters.Injections;
 using Authentication.Api.Core.Injections;
 using Authentication.Api.Db.Injections;
 using Authentication.Api.Web.Filters;
-using Authentication.Api.Web.Processors;
 using Authentication.Api.Web.Utils;
+using Authentication.Api.Web.Utils.Processors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -18,6 +18,7 @@ using Serilog;
 using Serilog.Events;
 using System.Net;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Authentication.Api.Web.Server;
 
@@ -119,8 +120,15 @@ public class ServerBuilder
 		// Setup SPA Serving
 		if (builder.Environment.IsProduction()) Console.WriteLine($"Server in production, serving SPA from {_frontPath} folder");
 
-
-		// Mapster
+		builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; })
+			.AddJsonProtocol(options =>
+				{
+					options.PayloadSerializerOptions.IncludeFields = true;
+					options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+					options.PayloadSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+					options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				}
+			);
 
 
 		Application = builder.Build();

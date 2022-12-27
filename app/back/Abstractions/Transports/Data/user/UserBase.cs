@@ -8,12 +8,10 @@ public class UserBase
 	public required string Username { get; set; }
 
 	[AdaptIgnore]
-	[JsonIgnore]
-	public required string Hash { get; set; }
+	public  string? Hash { get; set; }
 
 	[AdaptIgnore]
-	[JsonIgnore]
-	public required string Salt { get; set; }
+	public  string? Salt { get; set; }
 
 	public required Settings Settings { get; set; }
 	public required Credentials Credentials { get; set; }

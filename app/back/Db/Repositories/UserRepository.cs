@@ -69,7 +69,16 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 
 	public async Task Update(UserEntity user)
 	{
-		await EntityCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
+
+		var update = Builders<UserEntity>.Update
+			.Set(u => u.Disabled, user.Disabled)
+			.Set(u => u.Settings, user.Settings)
+			.Set(u => u.Authorizations, user.Authorizations)
+			.Set(u => u.Credentials, user.Credentials)
+			.Set(u => u.LastConnection, user.LastConnection)
+			.Set(u => u.LastConnection, user.LastConnection);
+
+		await EntityCollection.UpdateOneAsync(u => u.Id == user.Id, update);
 	}
 
 	public async Task<bool> CheckIfUsersExist()

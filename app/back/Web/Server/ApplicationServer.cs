@@ -1,4 +1,6 @@
-﻿namespace Authentication.Api.Web.Server;
+﻿using Authentication.Api.Sockets.Hubs;
+
+namespace Authentication.Api.Web.Server;
 
 public static class ApplicationServer
 {
@@ -16,6 +18,8 @@ public static class ApplicationServer
 		// Setup authentication
 		application.UseAuthentication();
 		application.UseAuthorization();
+
+		application.MapHub<UpdateHub>("/ws/update");
 
 		// Setup Controllers
 		application.MapControllers();

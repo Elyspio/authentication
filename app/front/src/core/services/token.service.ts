@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { BaseService } from "./common/base.service";
+import { BaseService } from "./technical/base.service";
 import { User } from "../apis/backend/generated";
 import { LocalStorageService } from "./common/localStorage.service";
 import { DiKeysService } from "../di/services/di.keys.service";

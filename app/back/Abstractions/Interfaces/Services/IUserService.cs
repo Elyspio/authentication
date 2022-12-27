@@ -11,5 +11,18 @@ public interface IUserService
 	/// <returns></returns>
 	Task<User> Get(string username);
 
-	Task<List<User>> GetAll();
+
+    /// <summary>
+    ///     Return all users
+    /// </summary>
+    /// <param name="username"></param>
+    /// <returns></returns>
+    Task<List<User>> GetAll();
+
+    /// <summary>
+    ///     Update an user
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+	Task Update(User user);
 }

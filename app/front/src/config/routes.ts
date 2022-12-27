@@ -1,5 +1,5 @@
 export enum applicationPaths {
-	dashboard = "",
+	dashboard = "dashboard",
 	login = "login",
 	settings = "settings",
 	register = "register",

@@ -2,7 +2,7 @@
 using NSwag.Generation.Processors.Contexts;
 using System.Reflection;
 
-namespace Authentication.Api.Web.Processors;
+namespace Authentication.Api.Web.Utils.Processors;
 
 public class NullableOperationProcessor : IOperationProcessor
 {

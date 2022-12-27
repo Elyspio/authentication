@@ -1,7 +1,7 @@
 ﻿using NJsonSchema;
 using NJsonSchema.Generation;
 
-namespace Authentication.Api.Web.Processors;
+namespace Authentication.Api.Web.Utils.Processors;
 
 /// <inheritdoc />
 public class NullableSchemaProcessor : ISchemaProcessor

@@ -1,10 +1,13 @@
 ﻿using Authentication.Api.Abstractions.Exceptions;
 using Authentication.Api.Abstractions.Helpers;
+using Authentication.Api.Abstractions.Interfaces.Hubs;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Interfaces.Services;
 using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Abstractions.Transports.Responses;
 using Authentication.Api.Core.Assemblers;
+using Authentication.Api.Sockets.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using SHA3.Net;
 using System.Net;
@@ -31,12 +34,14 @@ public class AuthenticationService : IAuthenticationService
 	private readonly ITokenService _tokenService;
 	private readonly UserAssembler _userAssembler = new();
 	private readonly IUsersRepository _usersRepository;
+	private readonly IHubContext<UpdateHub, IUpdateHub> _hubContext;
 
-	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger, ITokenService tokenService)
+	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger, ITokenService tokenService, IHubContext<UpdateHub, IUpdateHub> hubContext)
 	{
 		_usersRepository = usersRepository;
 		_logger = logger;
 		_tokenService = tokenService;
+		_hubContext = hubContext;
 	}
 
 
@@ -49,6 +54,8 @@ public class AuthenticationService : IAuthenticationService
 		var entity = await _usersRepository.Add(username, salt, hash);
 		var data = _userAssembler.Convert(entity);
 
+		await _hubContext.Clients.All.UserUpdated(data);
+		
 		logger.Exit();
 
 		return data;
@@ -91,7 +98,7 @@ public class AuthenticationService : IAuthenticationService
 
 		if (storedUser == default) throw new HttpException(HttpStatusCode.NotFound, $"There is no user '{username}' in database");
 
-		var storedHash = ComputeSignature(storedUser.Hash, challenge);
+		var storedHash = ComputeSignature(storedUser.Hash!, challenge);
 
 		var match = storedHash == hash;
 
@@ -123,9 +130,11 @@ public class AuthenticationService : IAuthenticationService
 		var storedUser = await _usersRepository.Get(username);
 		if (storedUser == default) throw new HttpException(HttpStatusCode.NotFound, $"There is no user '{username}' in database");
 
+		if(storedUser.Disabled) throw new HttpException(HttpStatusCode.Locked, $"The user '{username}' is disabled");
+		
 		logger.Exit();
 
-		return new(storedUser.Salt, challenge);
+		return new(storedUser.Salt!, challenge);
 	}
 
 	private string GenerateRandom()

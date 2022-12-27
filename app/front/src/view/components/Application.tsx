@@ -7,26 +7,27 @@ import { Box, Container } from "@mui/material";
 import { DarkMode, Dashboard as DashboardIcon, LightMode, Login as IconLogin, Logout, PersonAdd } from "@mui/icons-material";
 import { Route, Routes } from "react-router";
 import { applicationPaths } from "../../config/routes";
-import { Register } from "./register/Register";
-import { Login } from "./login/Login";
+import { Register } from "./auth/Register";
+import { Login } from "./auth/Login";
 import { logout } from "../../store/module/authentication/authentication.async.action";
 import { changeLocation } from "../../core/services/router.service";
 import { initApp } from "../../store/common/common.actions";
 import { toggleTheme } from "../../store/module/theme/theme.action";
-import { Dashboard } from "./dashboard/Dashboard";
-import { AuthenticationRoles } from "../../core/apis/backend/generated";
+import { Dashboard } from "./users/dashboard/Dashboard";
+import { usePermissions } from "../hooks/usePermissions";
 
 function Application() {
 	const dispatch = useAppDispatch();
 
-	const { theme, themeIcon, logged, init, route, user } = useAppSelector((s) => ({
+	const { theme, themeIcon, logged, init, route } = useAppSelector((s) => ({
 		theme: s.theme.current,
 		themeIcon: s.theme.current === "dark" ? <LightMode /> : <DarkMode />,
 		logged: !!s.authentication.user,
-		user: s.authentication.user,
 		init: s.authentication.init,
 		route: s.router.location,
 	}));
+
+	const { isAdmin } = usePermissions();
 
 	const actions = useMemo(() => {
 		const elems = [
@@ -61,7 +62,7 @@ function Application() {
 			}
 		}
 
-		if ((user?.authorizations?.authentication.roles.includes(AuthenticationRoles.Admin) || init) && !route?.pathname.endsWith(applicationPaths.register)) {
+		if ((isAdmin || init) && !route?.pathname.endsWith(applicationPaths.register)) {
 			elems.push(
 				createDrawerAction("Register", {
 					icon: <PersonAdd />,
@@ -71,7 +72,7 @@ function Application() {
 		}
 
 		return elems;
-	}, [logged, dispatch, theme, themeIcon, init, route, user]);
+	}, [logged, isAdmin, dispatch, theme, themeIcon, init, route]);
 
 	useEffect(() => {
 		dispatch(initApp());

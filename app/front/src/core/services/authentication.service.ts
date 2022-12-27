@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import { BackendApi } from "../apis/backend";
-import { BaseService } from "./common/base.service";
+import { BaseService } from "./technical/base.service";
 import Sha from "jssha";
 
 @injectable()

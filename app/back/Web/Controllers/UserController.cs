@@ -35,6 +35,21 @@ public class UsersController : ControllerBase
 	}
 
 	/// <summary>
+	///     Update an user
+	/// </summary>
+	/// <param name="username"></param>
+	/// <param name="user"></param>
+	/// <returns></returns>
+	[HttpPut("{username}")]
+	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
+	public async Task<IActionResult> UpdateUser(string username, [FromBody] User user)
+	{
+		user.Username = username;
+		await _userService.Update(user);
+		return NoContent();
+	}
+
+	/// <summary>
 	///     Get all users
 	/// </summary>
 	/// <returns></returns>

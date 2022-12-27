@@ -354,6 +354,41 @@ export class UsersClient {
 	}
 
 	/**
+	 * Update an user
+	 */
+	updateUser(username: string, user: User, cancelToken?: CancelToken | undefined): Promise<void> {
+		let url_ = this.baseUrl + "/api/users/{username}";
+		if (username === undefined || username === null) throw new Error("The parameter 'username' must be defined.");
+		url_ = url_.replace("{username}", encodeURIComponent("" + username));
+		url_ = url_.replace(/[?&]$/, "");
+
+		const content_ = JSON.stringify(user);
+
+		let options_: AxiosRequestConfig = {
+			data: content_,
+			method: "PUT",
+			url: url_,
+			headers: {
+				"Content-Type": "application/json",
+			},
+			cancelToken,
+		};
+
+		return this.instance
+			.request(options_)
+			.catch((_error: any) => {
+				if (isAxiosError(_error) && _error.response) {
+					return _error.response;
+				} else {
+					throw _error;
+				}
+			})
+			.then((_response: AxiosResponse) => {
+				return this.processUpdateUser(_response);
+			});
+	}
+
+	/**
 	 * Get all users
 	 */
 	getAll(cancelToken?: CancelToken | undefined): Promise<User[]> {
@@ -437,6 +472,26 @@ export class UsersClient {
 		return Promise.resolve<User>(null as any);
 	}
 
+	protected processUpdateUser(response: AxiosResponse): Promise<void> {
+		const status = response.status;
+		let _headers: any = {};
+		if (response.headers && typeof response.headers === "object") {
+			for (let k in response.headers) {
+				if (response.headers.hasOwnProperty(k)) {
+					_headers[k] = response.headers[k];
+				}
+			}
+		}
+		if (status === 204) {
+			const _responseText = response.data;
+			return Promise.resolve<void>(null as any);
+		} else if (status !== 200 && status !== 204) {
+			const _responseText = response.data;
+			return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+		}
+		return Promise.resolve<void>(null as any);
+	}
+
 	protected processGetAll(response: AxiosResponse): Promise<User[]> {
 		const status = response.status;
 		let _headers: any = {};
@@ -486,8 +541,8 @@ export class UsersClient {
 
 export interface UserBase {
 	username: string;
-	hash: string;
-	salt: string;
+	hash?: string | undefined;
+	salt?: string | undefined;
 	settings: Settings;
 	credentials: Credentials;
 	authorizations: Authorizations;
