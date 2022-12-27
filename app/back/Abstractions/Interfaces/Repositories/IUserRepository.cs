@@ -23,6 +23,14 @@ public interface IUsersRepository
 
 
 	/// <summary>
+	///     Update an user in database
+	/// </summary>
+	/// <param name="user"></param>
+	/// <returns></returns>
+	Task Update(UserEntity user);
+
+
+	/// <summary>
 	///     Return if at least one user is stored in database
 	/// </summary>
 	/// <returns></returns>

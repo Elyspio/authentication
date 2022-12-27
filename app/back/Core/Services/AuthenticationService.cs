@@ -100,9 +100,14 @@ public class AuthenticationService : IAuthenticationService
 		if (match) _loggingChallenges.Remove(username);
 		else throw new HttpException(HttpStatusCode.Forbidden, "Wrong password");
 
+		storedUser.LastConnection = DateTime.Now;
+		await _usersRepository.Update(storedUser);
+
+		var jwt = _tokenService.GenerateJwt(_userAssembler.Convert(storedUser));
+
 		logger.Exit();
 
-		return _tokenService.GenerateJwt(_userAssembler.Convert(storedUser));
+		return jwt;
 	}
 
 	public async Task<InitVerifyResponse> InitLogin(string username)

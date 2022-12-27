@@ -15,6 +15,7 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 {
 	public UsersRepository(IConfiguration configuration, ILogger<BaseRepository<UserEntity>> logger) : base(configuration, logger)
 	{
+		CreateIndexIfMissing(nameof(UserEntity.Username), true);
 	}
 
 
@@ -64,6 +65,11 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	public async Task<UserEntity?> Get(string username)
 	{
 		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Username == username);
+	}
+
+	public async Task Update(UserEntity user)
+	{
+		await EntityCollection.ReplaceOneAsync(u => u.Id == user.Id, user);
 	}
 
 	public async Task<bool> CheckIfUsersExist()

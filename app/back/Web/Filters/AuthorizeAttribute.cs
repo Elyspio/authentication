@@ -4,6 +4,7 @@ using Authentication.Api.Abstractions.Transports.Data.user;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 
 namespace Authentication.Api.Web.Filters;
 
@@ -45,7 +46,10 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 		}
 
 
-		var user = (User) token!.Payload["data"];
+		var userStr = token!.Payload["data"].ToString()!;
+
+		var user = JsonConvert.DeserializeObject<User>(userStr);
+
 
 		if (!user.Authorizations.Authentication.Roles.Contains(_role))
 			context.Result = new JsonResult(new

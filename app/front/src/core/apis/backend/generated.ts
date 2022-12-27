@@ -491,10 +491,13 @@ export interface UserBase {
 	settings: Settings;
 	credentials: Credentials;
 	authorizations: Authorizations;
+	lastConnection?: string | undefined;
+	disabled: boolean;
 }
 
 export interface User extends UserBase {
 	id: string;
+	createdAt: string;
 }
 
 export interface Settings {

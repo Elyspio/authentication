@@ -6,4 +6,6 @@ namespace Authentication.Api.Abstractions.Transports.Data;
 public class User : UserBase
 {
 	[Required] public Guid Id { get; init; }
+
+	[Required] public DateTime CreatedAt { get; init; }
 }
