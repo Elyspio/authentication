@@ -12,7 +12,7 @@ import { changeLocation } from "../../../core/services/router.service";
 
 export const register = createAsyncThunk("authentication/register", async (_, { extra, getState, dispatch }) => {
 	const {
-		authentication: { username, password },
+		authentication: { username, password, user },
 	} = getState() as StoreState;
 
 	const service = getService(AuthenticationService, extra);
@@ -23,7 +23,10 @@ export const register = createAsyncThunk("authentication/register", async (_, { 
 		pending: "Registering user",
 	});
 
-	dispatch(login());
+	// Auto login if the user is not logged (first user)
+	if (!user) {
+		dispatch(login());
+	}
 });
 
 export const checkIfUserExist = createAsyncThunk("authentication/checkIfUserExist", async (_, { extra }) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { ActionComponent, ActionComponentProps, ActionDescription, ActionDescriptionProps } from "./actions/Action";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Drawer } from "./Drawer";
 import "./actions/Actions.scss";
 
@@ -18,13 +18,13 @@ export type WithDrawerProps = {
 
 function Actions(props: { elements: WithDrawerProps["actions"] }) {
 	return (
-		<Box className={"Actions"}>
+		<Stack className={"Actions"} spacing={0.5} m={0.5}>
 			{props.elements.map((action) => (
 				<ActionComponent key={action.key ?? action.description.children?.toString()} {...action.component}>
 					<ActionDescription children={action.description.children} />
 				</ActionComponent>
 			))}
-		</Box>
+		</Stack>
 	);
 }
 

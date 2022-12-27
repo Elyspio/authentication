@@ -79,7 +79,7 @@ function Application() {
 
 	const drawer = withDrawer({
 		component: (
-			<Container maxWidth={"xl"}>
+			<Container maxWidth={"xl"} className={"Container"}>
 				<Routes>
 					<Route path={applicationPaths.login} element={<Login />} />
 					<Route path={applicationPaths.register} element={<Register />} />

@@ -5,6 +5,7 @@ import { authenticationReducer } from "./module/authentication/authentication.re
 import { container } from "../core/di";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
+import { usersReducer } from "./module/users/users.reducer";
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({ history: createBrowserHistory() });
 
@@ -13,6 +14,7 @@ const store = configureStore({
 		theme: themeReducer,
 		authentication: authenticationReducer,
 		router: routerReducer,
+		users: usersReducer,
 	},
 	devTools: process.env.NODE_ENV !== "production",
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware({ thunk: { extraArgument: { container } as ExtraArgument } }).prepend(routerMiddleware),
