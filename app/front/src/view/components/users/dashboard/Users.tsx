@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Chip, Paper, Stack, Tooltip, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AuthenticationRoles, User } from "../../../../core/apis/backend/generated";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { usePermissions } from "../../../hooks/usePermissions";
-import { getAllUsers, updateUser } from "../../../../store/module/users/users.async.action";
+import { updateUser } from "../../../../store/module/users/users.async.action";
 import IconButton from "@mui/material/IconButton";
 import { Edit, PersonAdd, PersonOff } from "@mui/icons-material";
 import { getEditUserLocation } from "../../../../core/services/router.service";
@@ -34,11 +33,6 @@ export function Users() {
 	);
 
 	const { palette } = useTheme();
-	const { isAdmin } = usePermissions();
-
-	useEffect(() => {
-		if (isAdmin && users.length === 0) dispatch(getAllUsers());
-	}, [isAdmin, dispatch, users]);
 
 	const editUser = useCallback((id: User["id"]) => () => dispatch(getEditUserLocation(id)), [dispatch]);
 

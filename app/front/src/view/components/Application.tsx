@@ -15,16 +15,19 @@ import { initApp } from "../../store/common/common.actions";
 import { toggleTheme } from "../../store/module/theme/theme.action";
 import { Dashboard } from "./users/dashboard/Dashboard";
 import { usePermissions } from "../hooks/usePermissions";
+import { UserDetail } from "./users/detail/UserDetail";
+import { getAllUsers } from "../../store/module/users/users.async.action";
 
 function Application() {
 	const dispatch = useAppDispatch();
 
-	const { theme, themeIcon, logged, init, route } = useAppSelector((s) => ({
+	const { theme, themeIcon, logged, init, route, users } = useAppSelector((s) => ({
 		theme: s.theme.current,
 		themeIcon: s.theme.current === "dark" ? <LightMode /> : <DarkMode />,
 		logged: !!s.authentication.user,
 		init: s.authentication.init,
 		route: s.router.location,
+		users: s.users.all,
 	}));
 
 	const { isAdmin } = usePermissions();
@@ -78,11 +81,16 @@ function Application() {
 		dispatch(initApp());
 	}, [dispatch]);
 
+	useEffect(() => {
+		if (isAdmin && Object.keys(users).length === 0) dispatch(getAllUsers());
+	}, [isAdmin, dispatch, users]);
+
 	const drawer = withDrawer({
 		component: (
 			<Container maxWidth={"xl"} className={"Container"}>
 				<Routes>
 					<Route path={applicationPaths.login} element={<Login />} />
+					<Route path={"users/:id"} element={<UserDetail />} />
 					<Route path={applicationPaths.register} element={<Register />} />
 					<Route path={applicationPaths.dashboard} element={<Dashboard />} />
 				</Routes>

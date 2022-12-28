@@ -3,6 +3,8 @@ import { ActionComponent, ActionComponentProps, ActionDescription, ActionDescrip
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Drawer } from "./Drawer";
 import "./actions/Actions.scss";
+import store from "../../../../store";
+import { changeLocation } from "../../../../core/services/router.service";
 
 export type ModalAction = {
 	component: ActionComponentProps;
@@ -29,12 +31,14 @@ function Actions(props: { elements: WithDrawerProps["actions"] }) {
 }
 
 export function withDrawer({ component, title, actions }: WithDrawerProps) {
+	const goToHome = () => store.dispatch(changeLocation("dashboard"));
+
 	return (
 		<Box className={"Drawer-hoc"}>
 			<Paper elevation={1} color={"red"}>
 				<Grid className={"header"} alignItems={"center"} justifyContent={"center"} container>
 					<Grid item>
-						<Typography variant={"h4"} align={"center"}>
+						<Typography variant={"h4"} align={"center"} onClick={goToHome} sx={{ cursor: "pointer" }}>
 							{title}
 						</Typography>
 					</Grid>

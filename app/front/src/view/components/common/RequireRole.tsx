@@ -3,6 +3,7 @@ import { Button, Paper, Stack, Typography, useTheme } from "@mui/material";
 import { AuthenticationRoles } from "../../../core/apis/backend/generated";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { logout } from "../../../store/module/authentication/authentication.async.action";
+import { Title } from "./Title";
 
 type RequireLoginProps = {
 	missing: AuthenticationRoles;
@@ -28,9 +29,7 @@ export function RequireRole({ missing }: RequireLoginProps) {
 	return (
 		<Paper>
 			<Stack spacing={2} m={2} p={4}>
-				<Typography fontSize={"120%"} color={"primary"} variant={"overline"}>
-					Missing Permissions
-				</Typography>
+				<Title>Missing Permissions</Title>
 
 				<Stack spacing={1}>
 					{logged ? (
