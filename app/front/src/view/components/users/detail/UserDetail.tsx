@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { FormControlLabel, Paper, Stack, Switch, TextField } from "@mui/material";
 import { Title } from "../../common/Title";
 import { useParams } from "react-router";
@@ -10,7 +10,10 @@ import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
 import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import { updateUser } from "../../../../store/module/users/users.async.action";
+import { deleteUserRemote, getUser, updateUser } from "../../../../store/module/users/users.async.action";
+import IconButton from "@mui/material/IconButton";
+import { DeleteForever } from "@mui/icons-material";
+import { changeLocation } from "../../../../core/services/router.service";
 
 const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(({ theme }) => ({
 	border: `1px solid ${theme.palette.divider}`,
@@ -50,6 +53,11 @@ export function UserDetail() {
 	const user = useMemo(() => users[id!], [users, id]);
 
 	const updateRemoteUser = useCallback((user: User) => dispatch(updateUser(user)), [dispatch]);
+
+	const delUser = useCallback(() => {
+		dispatch(deleteUserRemote(user.id));
+		dispatch(changeLocation("dashboard"));
+	}, [dispatch, user?.id]);
 
 	const toggleDisabled = useCallback(
 		() =>
@@ -92,6 +100,10 @@ export function UserDetail() {
 		[user, updateRemoteUser]
 	);
 
+	useEffect(() => {
+		dispatch(getUser(id!));
+	}, [id, dispatch]);
+
 	if (!logged) return <RequireRole missing={AuthenticationRoles.User} />;
 
 	if (!user) return null;
@@ -99,7 +111,12 @@ export function UserDetail() {
 	return (
 		<Paper>
 			<Stack p={2} m={1}>
-				<Title>{user.username}'s infos</Title>
+				<Stack direction={"row"} justifyContent={"space-between"} height={40}>
+					<Title>{user.username}'s infos</Title>
+					<IconButton color={"error"} onClick={delUser} sx={{ mr: 1 }}>
+						<DeleteForever />
+					</IconButton>
+				</Stack>
 				<Stack m={2} p={2} borderRadius={3} spacing={4}>
 					<Stack bgcolor={"background.default"} spacing={2} p={1}>
 						<FormControlLabel

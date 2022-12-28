@@ -5,7 +5,7 @@ namespace Authentication.Api.Abstractions.Transports.Data;
 
 public class User : UserBase
 {
-	[Required] public Guid Id { get; init; }
+	[Required] public Guid Id { get; set; }
 
 	[Required] public DateTime CreatedAt { get; init; }
 }

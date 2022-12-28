@@ -1,4 +1,5 @@
 ﻿using Authentication.Api.Abstractions.Exceptions;
+using Authentication.Api.Abstractions.Extensions;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Models;
 using Authentication.Api.Abstractions.Transports.Data.user;
@@ -62,6 +63,11 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 		return entity;
 	}
 
+	public async Task<UserEntity?> Get(Guid id)
+	{
+		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Id == id.AsObjectId());
+	}
+
 	public async Task<UserEntity?> Get(string username)
 	{
 		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Username == username);
@@ -69,7 +75,6 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 
 	public async Task Update(UserEntity user)
 	{
-
 		var update = Builders<UserEntity>.Update
 			.Set(u => u.Disabled, user.Disabled)
 			.Set(u => u.Settings, user.Settings)
@@ -89,5 +94,10 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	public async Task<List<UserEntity>> GetAll()
 	{
 		return await EntityCollection.AsQueryable().ToListAsync();
+	}
+
+	public async Task Delete(Guid id)
+	{
+		await EntityCollection.DeleteOneAsync(u => u.Id == id.AsObjectId());
 	}
 }

@@ -15,12 +15,20 @@ public interface IUsersRepository
 
 
 	/// <summary>
+	///     Return an user from its id
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	Task<UserEntity?> Get(Guid id);
+
+	
+	
+	/// <summary>
 	///     Return an user from its username
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns></returns>
 	Task<UserEntity?> Get(string username);
-
 
 	/// <summary>
 	///     Update an user in database
@@ -41,4 +49,11 @@ public interface IUsersRepository
 	/// </summary>
 	/// <returns></returns>
 	Task<List<UserEntity>> GetAll();
+
+	///  <summary>
+	/// 		Delete an user
+	///  </summary>
+	///  <param name="id"></param>
+	///  <returns></returns>
+	Task Delete(Guid id);
 }

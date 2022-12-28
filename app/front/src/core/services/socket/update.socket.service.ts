@@ -5,6 +5,8 @@ import { injectable } from "inversify";
 
 interface UpdateHub extends HubConnection {
 	on(event: "UserUpdated", callback: (user: User) => void);
+
+	on(event: "UserDeleted", callback: (id: User["id"]) => void);
 }
 
 @injectable()

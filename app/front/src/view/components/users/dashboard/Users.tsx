@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Chip, Paper, Stack, Tooltip, Typography, useTheme } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AuthenticationRoles, User } from "../../../../core/apis/backend/generated";
 import { useAppDispatch, useAppSelector } from "../../../../store";
-import { updateUser } from "../../../../store/module/users/users.async.action";
+import { usePermissions } from "../../../hooks/usePermissions";
+import { getAllUsers, updateUser } from "../../../../store/module/users/users.async.action";
 import IconButton from "@mui/material/IconButton";
-import { Edit, PersonAdd, PersonOff } from "@mui/icons-material";
+import { PersonAdd, PersonOff } from "@mui/icons-material";
 import { getEditUserLocation } from "../../../../core/services/router.service";
 
 type Row = Record<Field, any>;
@@ -34,16 +35,24 @@ export function Users() {
 
 	const { palette } = useTheme();
 
-	const editUser = useCallback((id: User["id"]) => () => dispatch(getEditUserLocation(id)), [dispatch]);
+	const { isAdmin } = usePermissions();
+
+	useEffect(() => {
+		if (isAdmin && users.length === 0) dispatch(getAllUsers());
+	}, [isAdmin, dispatch, users]);
+
+	const editUser = useCallback((id: User["id"]) => dispatch(getEditUserLocation(id)), [dispatch]);
 
 	const toggleDisabled = useCallback(
-		(id: User["id"]) => () =>
-			dispatch(
+		(id: User["id"]) => (e: React.ChangeEvent<any>) => {
+			e.stopPropagation();
+			return dispatch(
 				updateUser({
 					...allUsers[id],
 					disabled: !allUsers[id].disabled,
 				})
-			),
+			);
+		},
 		[dispatch, allUsers]
 	);
 
@@ -113,10 +122,6 @@ export function Users() {
 
 					return (
 						<Stack direction={"row"} spacing={1} justifyContent={"space-evenly"} width={"100%"}>
-							<IconButton color={"primary"} onClick={editUser(row.id)}>
-								<Edit />
-							</IconButton>
-
 							{row.disabled ? (
 								<Tooltip title={"Activate"} onClick={toggleDisabled(row.id)} arrow placement={"right"}>
 									<IconButton>
@@ -144,7 +149,7 @@ export function Users() {
 		});
 
 		return cols;
-	}, [toggleDisabled, editUser]);
+	}, [toggleDisabled]);
 
 	return (
 		<Paper>
@@ -153,6 +158,7 @@ export function Users() {
 					Users
 				</Typography>
 				<DataGrid
+					onRowClick={({ row }) => editUser(row.id)}
 					columns={columns}
 					rows={rows}
 					autoHeight

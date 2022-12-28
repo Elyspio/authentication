@@ -5,11 +5,11 @@ namespace Authentication.Api.Abstractions.Interfaces.Services;
 public interface IUserService
 {
 	/// <summary>
-	///     Return an user from its username
+	///     Return an user from its id
 	/// </summary>
-	/// <param name="username"></param>
+	/// <param name="id"></param>
 	/// <returns></returns>
-	Task<User> Get(string username);
+	Task<User> Get(Guid id);
 
 
     /// <summary>
@@ -25,4 +25,11 @@ public interface IUserService
     /// <param name="user"></param>
     /// <returns></returns>
 	Task Update(User user);
+
+	///  <summary>
+	/// 		Delete an user
+	///  </summary>
+	///  <param name="id"></param>
+	///  <returns></returns>
+	Task Delete(Guid id);
 }

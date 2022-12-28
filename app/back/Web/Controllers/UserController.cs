@@ -25,27 +25,41 @@ public class UsersController : ControllerBase
 	/// <summary>
 	///     Get a specific user
 	/// </summary>
-	/// <param name="username"></param>
+	/// <param name="id"></param>
 	/// <returns></returns>
-	[HttpGet("{username}")]
+	[HttpGet("{id:guid}")]
 	[SwaggerResponse(HttpStatusCode.OK, typeof(User))]
-	public async Task<IActionResult> Get(string username)
+	public async Task<IActionResult> Get(Guid id)
 	{
-		return Ok(await _userService.Get(username));
+		return Ok(await _userService.Get(id));
 	}
 
 	/// <summary>
 	///     Update an user
 	/// </summary>
-	/// <param name="username"></param>
+	/// <param name="id"></param>
 	/// <param name="user"></param>
 	/// <returns></returns>
-	[HttpPut("{username}")]
+	[HttpPut("{id:guid}")]
+	[Filters.Authorize(AuthenticationRoles.User)]
 	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
-	public async Task<IActionResult> UpdateUser(string username, [FromBody] User user)
+	public async Task<IActionResult> UpdateUser(Guid id, [FromBody] User user)
 	{
-		user.Username = username;
+		user.Id = id;
 		await _userService.Update(user);
+		return NoContent();
+	}
+	
+	/// <summary>
+	///     Delete an user
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
+	[HttpDelete("{id:guid}")]
+	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
+	public async Task<IActionResult> DeleteUser(Guid id)
+	{
+		await _userService.Delete(id);
 		return NoContent();
 	}
 

@@ -37,7 +37,7 @@ export function RequireRole({ missing }: RequireLoginProps) {
 							<Typography variant={"body1"}>
 								You are connected as{" "}
 								<Typography component={"span"} color={"secondary"} fontSize={"medium"}>
-									{logged.username}
+									{logged.id}
 								</Typography>{" "}
 								but you are missing the{" "}
 								<Typography component={"span"} color={palette.warning.main} fontSize={"medium"}>

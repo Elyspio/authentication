@@ -26,11 +26,11 @@ public class UserService : IUserService
 	}
 
 
-	public async Task<User> Get(string username)
+	public async Task<User> Get(Guid id)
 	{
-		var logger = _logger.Enter(Log.Format(username));
+		var logger = _logger.Enter(Log.Format(id));
 
-		var entity = await _usersRepository.Get(username);
+		var entity = await _usersRepository.Get(id);
 		var data = _userAssembler.Convert(entity);
 
 		logger.Exit();
@@ -62,5 +62,16 @@ public class UserService : IUserService
 		
 		logger.Exit();
 
+	}
+
+	public async Task Delete(Guid id)
+	{
+		var logger = _logger.Enter(Log.Format(id));
+
+		await _usersRepository.Delete(id);
+
+		await _hubContext.Clients.All.UserDeleted(id);
+		
+		logger.Exit();
 	}
 }

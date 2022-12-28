@@ -64,7 +64,7 @@ public class TokenService : ITokenService
 	{
 		validatedToken = null;
 
-		if (token == null)
+		if (string.IsNullOrWhiteSpace(token))
 			return false;
 
 

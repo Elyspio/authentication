@@ -13,6 +13,7 @@ export class UsersService extends BaseService {
 	 */
 	public checkIfUsersExist = () => this.backendApi.users.checkIfUsersExist();
 	public getAll = () => this.backendApi.users.getAll();
-	public get = (username: string) => this.backendApi.users.get(username);
-	public update = (user: User) => this.backendApi.users.updateUser(user.username, user);
+	public get = (id: string) => this.backendApi.users.get(id);
+	public delete = (id: string) => this.backendApi.users.deleteUser(id);
+	public update = (user: User) => this.backendApi.users.updateUser(user.id, user);
 }

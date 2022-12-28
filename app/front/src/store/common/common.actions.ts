@@ -2,7 +2,7 @@ import { ExtraArgument } from "../index";
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { checkIfUserExist, silentLogin } from "../module/authentication/authentication.async.action";
 import { UpdateSocketService } from "../../core/services/socket/update.socket.service";
-import { updateUser } from "../module/users/users.action";
+import { deleteUser, updateUser } from "../module/users/users.action";
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -23,7 +23,6 @@ export const initApp = createAsyncThunk("initApp", async (_, { dispatch, extra }
 
 	const socket = await updateSocketService.createSocket();
 
-	socket.on("UserUpdated", (user) => {
-		dispatch(updateUser(user));
-	});
+	socket.on("UserUpdated", (user) => dispatch(updateUser(user)));
+	socket.on("UserDeleted", (id) => dispatch(deleteUser(id)));
 });
