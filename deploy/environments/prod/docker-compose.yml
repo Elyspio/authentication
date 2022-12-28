@@ -12,11 +12,11 @@ services:
             - "traefik.http.middlewares.authentication-prefix.stripprefix.prefixes=/authentication"
             - "traefik.http.routers.authentication.middlewares=authentication-prefix@docker"
             - "traefik.http.routers.authentication.rule=PathPrefix(`/authentication`)"
-            - "traefik.http.services.authentication.loadbalancer.server.port=4000"
+            - "traefik.http.services.authentication.loadbalancer.server.port=4001"
             - "traefik.http.routers.authentication.entrypoints=external"
         volumes:
-            - ./config/front/conf.js:/front/conf.js
-            - ./config/back/external.json:/back/build/config/external.json
+            - ./config/front/conf.js:/back/wwwroot/conf.js
+            - ./config/back/appsettings.docker.json:/back/appsettings.docker.json
         networks:
             - authentication
             - external

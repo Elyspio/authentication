@@ -78,7 +78,7 @@ public class AuthenticationController : ControllerBase
 	///     Verify if Jwt is still valid
 	/// </summary>
 	/// <returns>a JWT for this user</returns>
-	[HttpPost("verify")]
+	[HttpGet("verify")]
 	[SwaggerResponse(HttpStatusCode.OK, typeof(bool))]
 	public IActionResult Verify()
 	{

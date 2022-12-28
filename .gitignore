@@ -1,11 +1,10 @@
-app/front/build
-app/back/build
 node_modules
 .idea
-deploy/environments/local/data
-deploy/environments/prod/.env
 .vs
-packages/cli/Authentication.CLI/obj
-packages/cli/Authentication.CLI/bin
 packages/cli/nuget.config
-deploy/environments/prod/config/back/external.json
+
+
+bin
+obj
+app/front/build
+deploy/environments/prod/config/back/appsettings.docker.json

@@ -29,6 +29,9 @@ public class ServerBuilder
 	public ServerBuilder(string[] args)
 	{
 		var builder = WebApplication.CreateBuilder(args);
+		
+		builder.Configuration.AddJsonFile("appsettings.docker.json", true, true);
+		
 		builder.WebHost.ConfigureKestrel((_, options) =>
 			{
 				options.Listen(IPAddress.Any, 4001, listenOptions =>

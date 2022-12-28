@@ -262,7 +262,7 @@ export class AuthenticationClient {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "POST",
+            method: "GET",
             url: url_,
             headers: {
                 "Accept": "application/json"
@@ -537,7 +537,7 @@ export class UsersClient {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "POST",
+            method: "GET",
             url: url_,
             headers: {
                 "Accept": "application/json"

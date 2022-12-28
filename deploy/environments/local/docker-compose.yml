@@ -22,16 +22,13 @@ services:
         restart: always
         build:
             context: ../../../
-            dockerfile: deploy/build/local.dockerfile
-            args:
-                folder: app/back
+            dockerfile: deploy/build/local/back.local.dockerfile
         ports:
             - "4001:4001"
         volumes:
             - "../../../app/back:/app/back"
-            - /app/back/node_modules
-            - ./config/back/external.json:/app/back/src/config/external.json
-       
+            - "./config/back/appsettings.docker.json:/app/Web/appsettings.docker.json"
+
         networks:
             internal:
         deploy:
@@ -45,7 +42,7 @@ services:
         restart: always
         build:
             context: ../../../
-            dockerfile: deploy/build/local.dockerfile
+            dockerfile: deploy/build/local/front.local.dockerfile
             args:
                 folder: app/front
         ports:
