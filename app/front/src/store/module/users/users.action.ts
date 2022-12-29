@@ -3,5 +3,5 @@ import { User } from "../../../core/apis/backend/generated";
 
 const createAction = createActionBase("users");
 
-export const updateUser = createAction<User>("updateUser");
+export const updateLocalUser = createAction<User>("updateLocalUser");
 export const deleteUser = createAction<User["id"]>("deleteUser");

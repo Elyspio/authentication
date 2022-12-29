@@ -3,15 +3,18 @@ import { getService } from "../../common/common.actions";
 import { UsersService } from "../../../core/services/users.service";
 import { User } from "../../../core/apis/backend/generated";
 import { toast } from "react-toastify";
+import { updateLocalUser } from "./users.action";
 
 export const getAllUsers = createAsyncThunk("users/getAllUsers", async (_, { extra }) => {
 	const service = getService(UsersService, extra);
 	return service.getAll();
 });
 
-export const getUser = createAsyncThunk("users/getAllUsers", async (id: User["id"], { extra }) => {
+export const getUser = createAsyncThunk("users/getUser", async (id: User["id"], { extra, dispatch }) => {
 	const service = getService(UsersService, extra);
-	return service.get(id);
+	const user = await service.get(id);
+
+	dispatch(updateLocalUser(user));
 });
 
 export const updateUser = createAsyncThunk("users/updateUser", async (user: User, { extra }) => {

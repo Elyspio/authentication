@@ -1,47 +1,16 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { FormControlLabel, Paper, Stack, Switch, TextField } from "@mui/material";
+import { FormControlLabel, Paper, Stack, Switch, Tooltip } from "@mui/material";
 import { Title } from "../../common/Title";
 import { useParams } from "react-router";
-import { AuthenticationRoles, Docker, Github, User } from "../../../../core/apis/backend/generated";
+import { AuthenticationRoles, User } from "../../../../core/apis/backend/generated";
 import { useAppDispatch, useAppSelector } from "../../../../store";
 import { RequireRole } from "../../common/RequireRole";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
-import MuiAccordionSummary, { AccordionSummaryProps } from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { deleteUserRemote, getUser, updateUser } from "../../../../store/module/users/users.async.action";
 import IconButton from "@mui/material/IconButton";
 import { DeleteForever } from "@mui/icons-material";
 import { changeLocation } from "../../../../core/services/router.service";
-
-const Accordion = styled((props: AccordionProps) => <MuiAccordion disableGutters elevation={0} square {...props} />)(({ theme }) => ({
-	border: `1px solid ${theme.palette.divider}`,
-	"&:not(:last-child)": {
-		borderBottom: 0,
-	},
-	"&:before": {
-		display: "none",
-	},
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => <MuiAccordionSummary expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />} {...props} />)(
-	({ theme }) => ({
-		flexDirection: "row-reverse",
-		"& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-			transform: "rotate(90deg)",
-		},
-		"& .MuiAccordionSummary-content": {
-			marginLeft: theme.spacing(1),
-		},
-	})
-);
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-	padding: theme.spacing(2),
-	borderTop: "1px solid rgba(0, 0, 0, .125)",
-	backgroundColor: theme.palette.background.default,
-}));
+import { UserCredentials } from "./UserCredentials";
+import { UserAuthorizations } from "./UserAuthorizations";
 
 export function UserDetail() {
 	const { id } = useParams<{ id: User["id"] }>();
@@ -68,41 +37,11 @@ export function UserDetail() {
 		[updateRemoteUser, user]
 	);
 
-	const updateGithub = useCallback(
-		(field: keyof Github) => (e: React.FocusEvent<HTMLInputElement>) => {
-			updateRemoteUser({
-				...user,
-				credentials: {
-					...user.credentials,
-					github: {
-						...(user.credentials.github ?? { user: "", token: "" }),
-						[field]: e.target.value,
-					},
-				},
-			});
-		},
-		[user, updateRemoteUser]
-	);
-
-	const updateDocker = useCallback(
-		(field: keyof Docker) => (e: React.FocusEvent<HTMLInputElement>) => {
-			updateRemoteUser({
-				...user,
-				credentials: {
-					...user.credentials,
-					docker: {
-						...(user.credentials.docker ?? { username: "", password: "" }),
-						[field]: e.target.value,
-					},
-				},
-			});
-		},
-		[user, updateRemoteUser]
-	);
-
 	useEffect(() => {
 		dispatch(getUser(id!));
 	}, [id, dispatch]);
+
+	const isConnectedUser = useMemo(() => logged?.id === user?.id, [logged, user]);
 
 	if (!logged) return <RequireRole missing={AuthenticationRoles.User} />;
 
@@ -111,14 +50,19 @@ export function UserDetail() {
 	return (
 		<Paper>
 			<Stack p={2} m={1}>
-				<Stack direction={"row"} justifyContent={"space-between"} height={40}>
+				<Stack direction={"row"} spacing={3} height={40} alignItems={"center"}>
 					<Title>{user.username}'s infos</Title>
-					<IconButton color={"error"} onClick={delUser} sx={{ mr: 1 }}>
-						<DeleteForever />
-					</IconButton>
+
+					<Tooltip title={isConnectedUser ? "You can't delete yourself" : ""} placement={"right-end"}>
+						<div>
+							<IconButton color={"error"} onClick={delUser} sx={{ mr: 1 }} disabled={isConnectedUser}>
+								<DeleteForever />
+							</IconButton>
+						</div>
+					</Tooltip>
 				</Stack>
 				<Stack m={2} p={2} borderRadius={3} spacing={4}>
-					<Stack bgcolor={"background.default"} spacing={2} p={1}>
+					<Stack bgcolor={"background.default"} spacing={2} p={1} px={0}>
 						<FormControlLabel
 							onClick={toggleDisabled}
 							sx={{ width: 155 }}
@@ -128,31 +72,9 @@ export function UserDetail() {
 						/>
 					</Stack>
 
-					<Accordion defaultExpanded>
-						<AccordionSummary>Github</AccordionSummary>
-						<AccordionDetails>
-							<Stack spacing={2} m={1}>
-								<TextField onBlur={updateGithub("user")} color={"secondary"} label={"Username"} defaultValue={user.credentials.github?.user} />
-								<TextField onBlur={updateGithub("token")} type={"password"} color={"secondary"} label={"PAT"} defaultValue={user.credentials.github?.token} />
-							</Stack>
-						</AccordionDetails>
-					</Accordion>
+					<UserAuthorizations data={user} update={updateRemoteUser} />
 
-					<Accordion defaultExpanded>
-						<AccordionSummary>Docker</AccordionSummary>
-						<AccordionDetails>
-							<Stack spacing={2} m={1}>
-								<TextField onBlur={updateDocker("username")} color={"secondary"} label={"Username"} defaultValue={user.credentials.docker?.username} />
-								<TextField
-									onBlur={updateDocker("password")}
-									type={"password"}
-									color={"secondary"}
-									label={"Password"}
-									defaultValue={user.credentials.docker?.password}
-								/>
-							</Stack>
-						</AccordionDetails>
-					</Accordion>
+					<UserCredentials data={user} update={updateRemoteUser} />
 				</Stack>
 			</Stack>
 		</Paper>

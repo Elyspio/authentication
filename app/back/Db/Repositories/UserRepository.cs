@@ -42,6 +42,10 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 			},
 			Authorizations = new()
 			{
+				Videyo = new()
+				{
+					Roles = new()
+				},
 				Authentication = new()
 				{
 					Roles = roles
@@ -80,7 +84,6 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 			.Set(u => u.Settings, user.Settings)
 			.Set(u => u.Authorizations, user.Authorizations)
 			.Set(u => u.Credentials, user.Credentials)
-			.Set(u => u.LastConnection, user.LastConnection)
 			.Set(u => u.LastConnection, user.LastConnection);
 
 		await EntityCollection.UpdateOneAsync(u => u.Id == user.Id, update);

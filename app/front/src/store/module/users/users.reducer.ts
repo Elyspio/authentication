@@ -1,7 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { User } from "../../../core/apis/backend/generated";
 import { getAllUsers } from "./users.async.action";
-import { deleteUser, updateUser } from "./users.action";
+import { deleteUser, updateLocalUser } from "./users.action";
 
 export interface AuthenticationState {
 	all: Record<User["id"], User>;
@@ -19,7 +19,7 @@ export const usersReducer = createReducer(defaultState, (builder) => {
 		});
 	});
 
-	builder.addCase(updateUser, (state, action) => {
+	builder.addCase(updateLocalUser, (state, action) => {
 		state.all[action.payload.id] = action.payload;
 	});
 
