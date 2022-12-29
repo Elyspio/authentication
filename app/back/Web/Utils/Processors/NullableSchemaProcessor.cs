@@ -6,12 +6,6 @@ namespace Authentication.Api.Web.Utils.Processors;
 /// <inheritdoc />
 public class NullableSchemaProcessor : ISchemaProcessor
 {
-	/// <summary>
-	///     Permet d'indiquer dans le schéma OpenApi que les champs non-Nullables notamment certaines string sont required
-	///     (sans avoir besoin de l'annotation)
-	/// </summary>
-	/// <param name="context"></param>
-	/// <returns></returns>
 	/// <inheritdoc />
 	public void Process(SchemaProcessorContext context)
 	{

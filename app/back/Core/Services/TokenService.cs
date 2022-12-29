@@ -1,22 +1,31 @@
-﻿using Authentication.Api.Abstractions.Interfaces.Services;
+﻿using Authentication.Api.Abstractions.Helpers;
+using Authentication.Api.Abstractions.Interfaces.Services;
 using Authentication.Api.Abstractions.Transports.Data;
-using Microsoft.Extensions.Configuration;
+using Authentication.Api.Abstractions.Transports.Data.config;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Text;
+using System.Security.Cryptography;
 
 namespace Authentication.Api.Core.Services;
 
 public class TokenService : ITokenService
 {
-	private readonly IConfiguration _config;
+	private readonly AppConfig _config;
 
-	public TokenService(IConfiguration configuration)
+
+	private SecurityKey? _privateKey;
+	private SecurityKey? _publicKey;
+	private ILogger<TokenService> _logger;
+
+	public TokenService(IOptions<AppConfig> configuration, ILogger<TokenService> logger)
 	{
-		_config = configuration;
+		_logger = logger;
+		_config = configuration.Value;
 
 		var jsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -38,12 +47,12 @@ public class TokenService : ITokenService
 
 	public string GenerateJwt(User user)
 	{
-		var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-		var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+		var logger = _logger.Enter(Log.Format(user.Username));
+		
+		var credentials = new SigningCredentials(GetPrivateKey(), SecurityAlgorithms.RsaSha512);
 
-
-		var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-			_config["Jwt:Audience"],
+		var jwt = new JwtSecurityToken(_config.Jwt.Issuer,
+			_config.Jwt.Audience,
 			expires: DateTime.Now.AddMinutes(30),
 			signingCredentials: credentials
 		)
@@ -56,8 +65,11 @@ public class TokenService : ITokenService
 			}
 		};
 
+		var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-		return new JwtSecurityTokenHandler().WriteToken(token);
+		logger.Exit();
+		
+		return token;
 	}
 
 	public bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken)
@@ -70,7 +82,6 @@ public class TokenService : ITokenService
 
 		token = token[("Bearer".Length + 1)..];
 
-		var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 		var tokenHandler = new JwtSecurityTokenHandler();
 
 		try
@@ -78,7 +89,7 @@ public class TokenService : ITokenService
 			tokenHandler.ValidateToken(token, new()
 			{
 				ValidateIssuerSigningKey = true,
-				IssuerSigningKey = securityKey,
+				IssuerSigningKey = GetPublicKey(),
 				ValidateIssuer = false,
 				ValidateAudience = false,
 				// set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
@@ -93,5 +104,48 @@ public class TokenService : ITokenService
 		{
 			return false;
 		}
+	}
+
+	public string GetPublicKeyRaw()
+	{
+
+		var key = RSA.Create();
+
+		key.ImportFromPem(_config.Jwt.PrivateKey);
+
+		var pem = key.ExportRSAPublicKeyPem();
+
+
+		return pem;
+	}
+
+
+	private SecurityKey GetPrivateKey()
+	{
+
+		if (_privateKey != default) return _privateKey;
+
+		var key = RSA.Create();
+
+		key.ImportFromPem(_config.Jwt.PrivateKey);
+
+		_privateKey = new RsaSecurityKey(key);
+
+		
+		return _privateKey;
+	}
+
+	private SecurityKey GetPublicKey()
+	{
+		if (_publicKey != default) return _publicKey;
+
+		var key = GetPublicKeyRaw();
+		var rsa = RSA.Create();
+
+		rsa.ImportFromPem(key);
+
+		_publicKey = new RsaSecurityKey(rsa);
+
+		return _publicKey;
 	}
 }

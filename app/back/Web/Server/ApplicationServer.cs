@@ -12,6 +12,7 @@ public static class ApplicationServer
 		application.UseOpenApi();
 		application.UseSwaggerUi3();
 
+
 		// Start Dependency Injection
 		application.UseAdvancedDependencyInjection();
 

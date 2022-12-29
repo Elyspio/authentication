@@ -5,7 +5,10 @@ namespace Authentication.Api.Abstractions.Interfaces.Services;
 
 public interface ITokenService
 {
-	public string GenerateJwt(User user);
+	string GenerateJwt(User user);
 
 	bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken);
+
+
+	string GetPublicKeyRaw();
 }

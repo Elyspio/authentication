@@ -258,7 +258,7 @@ export class AuthenticationClient {
      * @return a JWT for this user
      */
     verify(  cancelToken?: CancelToken | undefined): Promise<boolean> {
-        let url_ = this.baseUrl + "/api/auth/verify";
+        let url_ = this.baseUrl + "/api/auth/jwt/verify";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
@@ -303,6 +303,58 @@ export class AuthenticationClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
         }
         return Promise.resolve<boolean>(null as any);
+    }
+
+    /**
+     * Get public RSA key used for Jwt validation
+     * @return a JWT for this user
+     */
+    getValidationKey(  cancelToken?: CancelToken | undefined): Promise<StringResponse> {
+        let url_ = this.baseUrl + "/api/auth/jwt/validation-key";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: AxiosRequestConfig = {
+            method: "GET",
+            url: url_,
+            headers: {
+                "Accept": "application/json"
+            },
+            cancelToken
+        };
+
+        return this.instance.request(options_).catch((_error: any) => {
+            if (isAxiosError(_error) && _error.response) {
+                return _error.response;
+            } else {
+                throw _error;
+            }
+        }).then((_response: AxiosResponse) => {
+            return this.processGetValidationKey(_response);
+        });
+    }
+
+    protected processGetValidationKey(response: AxiosResponse): Promise<StringResponse> {
+        const status = response.status;
+        let _headers: any = {};
+        if (response.headers && typeof response.headers === "object") {
+            for (let k in response.headers) {
+                if (response.headers.hasOwnProperty(k)) {
+                    _headers[k] = response.headers[k];
+                }
+            }
+        }
+        if (status === 200) {
+            const _responseText = response.data;
+            let result200: any = null;
+            let resultData200  = _responseText;
+            result200 = JSON.parse(resultData200);
+            return Promise.resolve<StringResponse>(result200);
+
+        } else if (status !== 200 && status !== 204) {
+            const _responseText = response.data;
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+        }
+        return Promise.resolve<StringResponse>(null as any);
     }
 }
 
@@ -537,7 +589,7 @@ export class UsersClient {
         url_ = url_.replace(/[?&]$/, "");
 
         let options_: AxiosRequestConfig = {
-            method: "GET",
+            method: "POST",
             url: url_,
             headers: {
                 "Accept": "application/json"
@@ -642,6 +694,10 @@ export interface InitRegisterResponse {
 export interface InitVerifyResponse {
     salt: string;
     challenge: string;
+}
+
+export interface StringResponse {
+    data: string;
 }
 
 export class ApiException extends Error {

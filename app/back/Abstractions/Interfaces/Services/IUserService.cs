@@ -12,24 +12,24 @@ public interface IUserService
 	Task<User> Get(Guid id);
 
 
-    /// <summary>
-    ///     Return all users
-    /// </summary>
-    /// <param name="username"></param>
-    /// <returns></returns>
-    Task<List<User>> GetAll();
+	/// <summary>
+	///     Return all users
+	/// </summary>
+	/// <param name="username"></param>
+	/// <returns></returns>
+	Task<List<User>> GetAll();
 
-    /// <summary>
-    ///     Update an user
-    /// </summary>
-    /// <param name="user"></param>
-    /// <returns></returns>
+	/// <summary>
+	///     Update an user
+	/// </summary>
+	/// <param name="user"></param>
+	/// <returns></returns>
 	Task Update(User user);
 
-	///  <summary>
-	/// 		Delete an user
-	///  </summary>
-	///  <param name="id"></param>
-	///  <returns></returns>
+	/// <summary>
+	///     Delete an user
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
 	Task Delete(Guid id);
 }

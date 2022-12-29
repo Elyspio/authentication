@@ -49,7 +49,7 @@ public class UsersController : ControllerBase
 		await _userService.Update(user);
 		return NoContent();
 	}
-	
+
 	/// <summary>
 	///     Delete an user
 	/// </summary>
@@ -78,7 +78,7 @@ public class UsersController : ControllerBase
 	///     Get if there is at least one user in database
 	/// </summary>
 	/// <returns>If at least one user exist in database</returns>
-	[HttpGet("any")]
+	[HttpPost("any")]
 	[AllowAnonymous]
 	[SwaggerResponse(HttpStatusCode.OK, typeof(bool))]
 	public async Task<IActionResult> CheckIfUsersExist()

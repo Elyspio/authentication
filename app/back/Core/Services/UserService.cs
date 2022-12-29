@@ -12,10 +12,10 @@ namespace Authentication.Api.Core.Services;
 
 public class UserService : IUserService
 {
+	private readonly IHubContext<UpdateHub, IUpdateHub> _hubContext;
 	private readonly ILogger<UserService> _logger;
 	private readonly UserAssembler _userAssembler = new();
 	private readonly IUsersRepository _usersRepository;
-	private readonly IHubContext<UpdateHub, IUpdateHub> _hubContext;
 
 
 	public UserService(ILogger<UserService> logger, IUsersRepository usersRepository, IHubContext<UpdateHub, IUpdateHub> hubContext)
@@ -55,13 +55,12 @@ public class UserService : IUserService
 		var logger = _logger.Enter(Log.Format(user.Id));
 
 		var entity = _userAssembler.Convert(user);
-		
+
 		await _usersRepository.Update(entity);
 
 		await _hubContext.Clients.All.UserUpdated(user);
-		
-		logger.Exit();
 
+		logger.Exit();
 	}
 
 	public async Task Delete(Guid id)
@@ -71,7 +70,7 @@ public class UserService : IUserService
 		await _usersRepository.Delete(id);
 
 		await _hubContext.Clients.All.UserDeleted(id);
-		
+
 		logger.Exit();
 	}
 }

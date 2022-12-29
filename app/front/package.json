@@ -6,7 +6,7 @@
   "scripts": {
     "start": "craco --max_old_space_size=4096 start",
     "build": "craco --max_old_space_size=4096 build",
-    "docker": "node ../deploy/build/build.js",
+    "docker": "node ../../deploy/build/build.js",
     "refresh-clients": "ts-node ./scripts/generate-api.ts"
   },
   "dependencies": {

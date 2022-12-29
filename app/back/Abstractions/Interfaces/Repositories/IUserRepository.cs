@@ -21,8 +21,7 @@ public interface IUsersRepository
 	/// <returns></returns>
 	Task<UserEntity?> Get(Guid id);
 
-	
-	
+
 	/// <summary>
 	///     Return an user from its username
 	/// </summary>
@@ -50,10 +49,10 @@ public interface IUsersRepository
 	/// <returns></returns>
 	Task<List<UserEntity>> GetAll();
 
-	///  <summary>
-	/// 		Delete an user
-	///  </summary>
-	///  <param name="id"></param>
-	///  <returns></returns>
+	/// <summary>
+	///     Delete an user
+	/// </summary>
+	/// <param name="id"></param>
+	/// <returns></returns>
 	Task Delete(Guid id);
 }

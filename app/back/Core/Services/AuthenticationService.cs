@@ -18,6 +18,7 @@ namespace Authentication.Api.Core.Services;
 
 public class AuthenticationService : IAuthenticationService
 {
+	private readonly IHubContext<UpdateHub, IUpdateHub> _hubContext;
 	private readonly ILogger<UserService> _logger;
 
 
@@ -34,7 +35,6 @@ public class AuthenticationService : IAuthenticationService
 	private readonly ITokenService _tokenService;
 	private readonly UserAssembler _userAssembler = new();
 	private readonly IUsersRepository _usersRepository;
-	private readonly IHubContext<UpdateHub, IUpdateHub> _hubContext;
 
 	public AuthenticationService(IUsersRepository usersRepository, ILogger<UserService> logger, ITokenService tokenService, IHubContext<UpdateHub, IUpdateHub> hubContext)
 	{
@@ -55,7 +55,7 @@ public class AuthenticationService : IAuthenticationService
 		var data = _userAssembler.Convert(entity);
 
 		await _hubContext.Clients.All.UserUpdated(data);
-		
+
 		logger.Exit();
 
 		return data;
@@ -130,8 +130,8 @@ public class AuthenticationService : IAuthenticationService
 		var storedUser = await _usersRepository.Get(username);
 		if (storedUser == default) throw new HttpException(HttpStatusCode.NotFound, $"There is no user '{username}' in database");
 
-		if(storedUser.Disabled) throw new HttpException(HttpStatusCode.Locked, $"The user '{username}' is disabled");
-		
+		if (storedUser.Disabled) throw new HttpException(HttpStatusCode.Locked, $"The user '{username}' is disabled");
+
 		logger.Exit();
 
 		return new(storedUser.Salt!, challenge);
