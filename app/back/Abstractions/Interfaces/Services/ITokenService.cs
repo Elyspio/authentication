@@ -7,6 +7,9 @@ public interface ITokenService
 {
 	string GenerateJwt(User user);
 
+    Task<string> RefreshJwt(Guid idUser);
+
+
 	bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken);
 
 

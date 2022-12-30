@@ -10,6 +10,9 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Authentication.Api.Abstractions.Interfaces.Repositories;
+using Authentication.Api.Core.Assemblers;
+using Mapster;
 
 namespace Authentication.Api.Core.Services;
 
@@ -21,11 +24,14 @@ public class TokenService : ITokenService
 	private SecurityKey? _privateKey;
 	private SecurityKey? _publicKey;
 	private ILogger<TokenService> _logger;
+	private IUsersRepository _usersRepository;
+	private UserAssembler _userAssembler = new ();
 
-	public TokenService(IOptions<AppConfig> configuration, ILogger<TokenService> logger)
+	public TokenService(IOptions<AppConfig> configuration, ILogger<TokenService> logger, IUsersRepository usersRepository)
 	{
 		_logger = logger;
-		_config = configuration.Value;
+        _usersRepository = usersRepository;
+        _config = configuration.Value;
 
 		var jsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -72,7 +78,21 @@ public class TokenService : ITokenService
 		return token;
 	}
 
-	public bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken)
+    public async Task<string> RefreshJwt(Guid idUser)
+    {
+        var logger = _logger.Enter(Log.Format(idUser));
+
+        var user = await _usersRepository.Get(idUser);
+
+        var jwt = GenerateJwt(_userAssembler.Convert(user));
+
+		logger.Exit();
+
+        return jwt;
+
+    }
+
+    public bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken)
 	{
 		validatedToken = null;
 

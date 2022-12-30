@@ -35,7 +35,12 @@ export class AuthenticationService extends BaseService {
 	}
 
 	public isValid() {
-		return this.backendApi.authentication.verify();
+		return this.backendApi.jwt.verify();
+	}
+
+	public async refreshJwt() {
+		const resp = await this.backendApi.jwt.refreshJwt();
+		return resp.data;
 	}
 
 	private computeHash(...args: string[]) {

@@ -1,6 +1,6 @@
 import { inject, injectable } from "inversify";
 import axios from "axios";
-import { AuthenticationClient, UsersClient } from "./generated";
+import { AuthenticationClient, JwtClient, UsersClient } from "./generated";
 import { TokenService } from "../../services/token.service";
 
 const basePath = window.config.endpoints.core;
@@ -9,6 +9,7 @@ const basePath = window.config.endpoints.core;
 export class BackendApi {
 	public authentication: AuthenticationClient;
 	public users: UsersClient;
+	public jwt: JwtClient;
 
 	constructor(@inject(TokenService) tokenService: TokenService) {
 		const instance = axios.create({ withCredentials: true, transformResponse: [] });
@@ -20,5 +21,6 @@ export class BackendApi {
 
 		this.authentication = new AuthenticationClient(basePath, instance);
 		this.users = new UsersClient(basePath, instance);
+		this.jwt = new JwtClient(basePath, instance);
 	}
 }

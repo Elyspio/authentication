@@ -50,8 +50,10 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
 		var user = JsonConvert.DeserializeObject<User>(userStr);
 
+        context.HttpContext.Items["user"] = user;
 
-		if (!user.Authorizations.Authentication.Roles.Contains(_role))
+
+        if (!user.Authorizations.Authentication.Roles.Contains(_role))
 			context.Result = new JsonResult(new
 			{
 				status = "Forbidden",

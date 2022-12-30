@@ -1,18 +1,17 @@
-﻿namespace Authentication.Api.Web.Utils;
+﻿using Authentication.Api.Abstractions.Transports.Data;
 
-public class AuthUtility
+namespace Authentication.Api.Web.Utils
 {
-	public static readonly string UsernameField = "auth_username";
+    public class AuthUtility
+    {
+        public static User GetUser(HttpRequest request)
+        {
+            return (User)request.HttpContext.Items["user"];
+        }
 
-	public static readonly string TokenField = "auth_token";
-
-	public static string GetUsername(HttpRequest request)
-	{
-		return request.Headers[UsernameField].First();
-	}
-
-	public static string GetToken(HttpRequest request)
-	{
-		return request.Headers[TokenField].First();
-	}
+        public static string GetToken(HttpRequest request)
+        {
+            return request.Headers.Authorization;
+        }
+    }
 }

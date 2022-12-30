@@ -105,26 +105,5 @@ public class AuthenticationController : ControllerBase
 	}
 
 
-	/// <summary>
-	///     Verify if Jwt is still valid
-	/// </summary>
-	/// <returns>a JWT for this user</returns>
-	[HttpGet("jwt/verify")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(bool))]
-	public IActionResult Verify()
-	{
-		return Ok(_tokenService.ValidateJwt(Request.Headers.Authorization.ToString(), out _));
-	}
 
-
-	/// <summary>
-	///     Get public RSA key used for Jwt validation
-	/// </summary>
-	/// <returns>a JWT for this user</returns>
-	[HttpGet("jwt/validation-key")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(StringResponse))]
-	public IActionResult GetValidationKey()
-	{
-		return Ok(new StringResponse(_tokenService.GetPublicKeyRaw()));
-	}
 }

@@ -86,6 +86,13 @@ export const logout = createAsyncThunk("authentication/logout", async (_, { extr
 	dispatch(changeLocation("login"));
 });
 
+export const refreshToken = createAsyncThunk("authentication/refreshToken", async (_, { extra, dispatch }) => {
+	const localStorageService = getService<LocalStorageService>(DiKeysService.localStorage.jwt, extra);
+	const authenticationService = getService(AuthenticationService, extra);
+	const token = await authenticationService.refreshJwt();
+	localStorageService.set(token);
+});
+
 export const silentLogin = createAsyncThunk("authentication/silentLogin", async (_, { extra, dispatch }) => {
 	const tokenService = getService(TokenService, extra);
 	const authenticationService = getService(AuthenticationService, extra);

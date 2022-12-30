@@ -29,8 +29,6 @@ services:
             - "../../../app/back:/app/back"
             - "./config/back/appsettings.docker.json:/app/Web/appsettings.docker.json"
 
-        networks:
-            internal:
         deploy:
             resources:
                 limits:
@@ -55,7 +53,3 @@ services:
                 limits:
                     cpus: "2"
                     memory: 1G 
-networks:
-    internal:
-        external: true
-        name: internal
