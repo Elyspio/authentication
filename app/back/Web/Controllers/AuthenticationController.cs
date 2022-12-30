@@ -46,6 +46,37 @@ public class AuthenticationController : ControllerBase
 	{
 		return Ok(new InitRegisterResponse(_authenticationService.InitRegister(username)));
 	}
+	
+	
+	
+	/// <summary>
+	///     Change user's password
+	/// </summary>
+	/// <param name="username"></param>
+	/// <param name="hash">user's password hashed with salt</param>
+	/// <returns>the created user</returns>
+	[HttpPut("{username}")]
+	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
+	public async Task<IActionResult> ChangePassword(string username, [FromBody] string hash)
+	{
+		 await _authenticationService.ChangePassword(username, hash);
+		return NoContent();
+	}
+
+
+	/// <summary>
+	///     First step to change user's password
+	/// </summary>
+	/// <param name="username"></param>
+	/// <returns>a salt for this username</returns>
+	[HttpPut("{username}/init")]
+	[SwaggerResponse(HttpStatusCode.OK, typeof(InitRegisterResponse))]
+	public IActionResult InitChangePassword(string username)
+	{
+		return Ok(new InitRegisterResponse(_authenticationService.InitChangePassword(username)));
+	}
+	
+	
 
 	/// <summary>
 	///     Final login step

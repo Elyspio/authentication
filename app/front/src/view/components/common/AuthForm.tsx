@@ -6,9 +6,12 @@ import { setAuthenticationField } from "../../../store/module/authentication/aut
 type AuthFormProps = {
 	label: string;
 	validate: () => void;
+
+	buttonLabel?: string;
+	disableUsername?: boolean;
 };
 
-export function AuthForm({ validate, label }: AuthFormProps) {
+export function AuthForm({ validate, label, buttonLabel, disableUsername }: AuthFormProps) {
 	const { password, username } = useAppSelector((state) => state.authentication);
 
 	const dispatch = useAppDispatch();
@@ -45,12 +48,12 @@ export function AuthForm({ validate, label }: AuthFormProps) {
 							<Divider flexItem color={secondary.main}></Divider>
 						</Box>
 
-						<TextField type={"text"} onChange={setOnChange("username")} fullWidth label={"Username"} />
-						<TextField type={"password"} onChange={setOnChange("password")} fullWidth label={"Password"} />
+						<TextField disabled={disableUsername} type={"text"} onChange={setOnChange("username")} fullWidth label={"Username"} defaultValue={username} />
+						<TextField type={"password"} onChange={setOnChange("password")} fullWidth label={"Password"} defaultValue={password} />
 
 						<Box pt={1}>
 							<Button type={"submit"} disabled={!username || !password} variant={"contained"} color={"secondary"} sx={{ borderRadius: 2, width: 130 }}>
-								{label}
+								{buttonLabel ?? label}
 							</Button>
 						</Box>
 					</Stack>

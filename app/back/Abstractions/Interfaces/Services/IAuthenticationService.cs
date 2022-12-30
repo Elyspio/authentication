@@ -42,4 +42,20 @@ public interface IAuthenticationService
 	/// <param name="username"></param>
 	/// <returns></returns>
 	Task<InitVerifyResponse> InitLogin(string username);
+
+	
+	/// <summary>
+	///     Recreate salt for this username
+	/// </summary>
+	/// <param name="username"></param>
+	/// <returns></returns>
+	string InitChangePassword(string username);
+
+	/// <summary>
+	///     Change user's password
+	/// </summary>
+	/// <param name="username">user's name, must be unique</param>
+	/// <param name="hash">Hashed and salted password</param>
+	/// <returns>the created user</returns>
+	Task ChangePassword(string username, string hash);
 }

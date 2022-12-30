@@ -55,4 +55,6 @@ public interface IUsersRepository
 	/// <param name="id"></param>
 	/// <returns></returns>
 	Task Delete(Guid id);
+
+	Task ChangePassword(string username, string salt, string hash);
 }

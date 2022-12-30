@@ -103,4 +103,13 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 	{
 		await EntityCollection.DeleteOneAsync(u => u.Id == id.AsObjectId());
 	}
+
+	public async Task ChangePassword(string username, string salt, string hash)
+	{
+		var update = Builders<UserEntity>.Update
+			.Set(u => u.Hash, hash)
+			.Set(u => u.Salt, salt);
+
+		await EntityCollection.UpdateOneAsync(u => u.Username == username, update);
+	}
 }

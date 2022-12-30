@@ -1,5 +1,4 @@
 ﻿using Authentication.Api.Abstractions.Interfaces.Injections;
-using Authentication.Api.Adapters.AuthenticationApi;
 using Authentication.Api.Adapters.Configs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +11,5 @@ public class AdapterModule : IDotnetModule
 	{
 		var conf = new EndpointConfig();
 		configuration.GetSection(EndpointConfig.Section).Bind(conf);
-
-		services.AddHttpClient<IUsersClient, UsersClient>(client => { client.BaseAddress = new(conf.Authentication); });
-
-		services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(client => { client.BaseAddress = new(conf.Authentication); });
-	}
+}
 }

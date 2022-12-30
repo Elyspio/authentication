@@ -26,6 +26,14 @@ export class AuthenticationService extends BaseService {
 		return await this.backendApi.authentication.login(name, challengedHash);
 	}
 
+	public async changePassword(name: string, password: string) {
+		const { salt } = await this.backendApi.authentication.initChangePassword(name);
+
+		const hash = this.computeHash(name, password, salt);
+
+		await this.backendApi.authentication.changePassword(name, hash);
+	}
+
 	public isValid() {
 		return this.backendApi.authentication.verify();
 	}

@@ -99,3 +99,16 @@ export const silentLogin = createAsyncThunk("authentication/silentLogin", async 
 		tokenService.delete();
 	}
 });
+
+export const changePassword = createAsyncThunk("authentication/changePassword", async (_, { extra, getState, dispatch }) => {
+	const {
+		authentication: { username, password },
+	} = getState() as StoreState;
+
+	const service = getService(AuthenticationService, extra);
+
+	await toast.promise(service.changePassword(username, password), {
+		success: "Password changed",
+		error: "An error occurred during changing your password",
+	});
+});

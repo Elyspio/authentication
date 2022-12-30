@@ -27,7 +27,17 @@ function Wrapper() {
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={theme}>
 				<Application />
-				<ToastContainer theme={current} position={"bottom-center"} />
+				<ToastContainer
+					theme={current}
+					position={"top-right"}
+					limit={5}
+					toastStyle={{
+						right: 40,
+						top: 48,
+						backgroundColor: theme.palette.background.default,
+						border: `1px solid ${theme.palette.divider}`,
+					}}
+				/>
 			</ThemeProvider>
 		</StyledEngineProvider>
 	);

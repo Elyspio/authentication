@@ -137,6 +137,22 @@ public class AuthenticationService : IAuthenticationService
 		return new(storedUser.Salt!, challenge);
 	}
 
+	public string InitChangePassword(string username)
+	{
+		return InitRegister(username);
+	}
+
+	public async Task ChangePassword(string username, string hash)
+	{
+		var logger = _logger.Enter(Log.Format(username));
+
+		if (!_registringSalts.TryGetValue(username, out var salt)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} changing password");
+
+		 await _usersRepository.ChangePassword(username, salt, hash);
+
+		logger.Exit();
+	}
+
 	private string GenerateRandom()
 	{
 		return Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
