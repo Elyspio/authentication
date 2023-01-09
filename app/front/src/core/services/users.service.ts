@@ -11,9 +11,23 @@ export class UsersService extends BaseService {
 	/**
 	 * @return if at least one user exist in database
 	 */
-	public checkIfUsersExist = () => this.backendApi.users.checkIfUsersExist();
-	public getAll = () => this.backendApi.users.getAll();
-	public get = (id: string) => this.backendApi.users.get(id);
-	public delete = (id: string) => this.backendApi.users.deleteUser(id);
-	public update = (user: User) => this.backendApi.users.updateUser(user.id, user);
+	public checkIfUsersExist() {
+		return this.backendApi.users.checkIfUsersExist();
+	}
+
+	public getAll() {
+		return this.backendApi.users.getAll();
+	}
+
+	public get(id: string) {
+		return this.backendApi.users.get(id);
+	}
+
+	public delete(id: string) {
+		return this.backendApi.users.deleteUser(id);
+	}
+
+	public update(user: User) {
+		return this.backendApi.users.updateUser(user.id, user);
+	}
 }

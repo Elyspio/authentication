@@ -1,4 +1,5 @@
 export type Config = {
+	log?: true;
 	endpoints: {
 		core: string;
 		authentication: string;

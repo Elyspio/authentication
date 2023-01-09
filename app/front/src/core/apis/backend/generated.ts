@@ -483,7 +483,7 @@ export class JwtClient {
     }
 
     /**
-     * Verify if Jwt is still valid
+     * Refresh a JWT
      * @return a JWT for this user
      */
     refreshJwt(  cancelToken?: CancelToken | undefined): Promise<StringResponse> {

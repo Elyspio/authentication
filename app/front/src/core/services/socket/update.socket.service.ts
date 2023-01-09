@@ -2,6 +2,7 @@ import * as signalR from "@microsoft/signalr";
 import { HubConnection, LogLevel } from "@microsoft/signalr";
 import { User } from "../../apis/backend/generated";
 import { injectable } from "inversify";
+import { BaseService } from "../technical/base.service";
 
 interface UpdateHub extends HubConnection {
 	on(event: "UserUpdated", callback: (user: User) => void);
@@ -10,7 +11,7 @@ interface UpdateHub extends HubConnection {
 }
 
 @injectable()
-export class UpdateSocketService {
+export class UpdateSocketService extends BaseService {
 	async createSocket() {
 		const connection = new signalR.HubConnectionBuilder()
 			.withUrl(`${window.config.endpoints.core}/ws/update`)

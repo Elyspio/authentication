@@ -49,7 +49,7 @@ namespace Authentication.Api.Web.Controllers
 
 
         /// <summary>
-        ///     Verify if Jwt is still valid
+        ///     Refresh a JWT
         /// </summary>
         /// <returns>a JWT for this user</returns>
         [HttpPost("refresh")]

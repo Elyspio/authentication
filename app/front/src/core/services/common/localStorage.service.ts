@@ -1,8 +1,11 @@
 import { injectable } from "inversify";
+import { BaseService } from "../technical/base.service";
 
 @injectable()
-export class LocalStorageService {
-	constructor(private base: string) {}
+export class LocalStorageService extends BaseService {
+	constructor(private base: string) {
+		super();
+	}
 
 	set(value: number | string | object, key?: string) {
 		let name = this.base;

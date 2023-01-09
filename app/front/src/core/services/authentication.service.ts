@@ -39,8 +39,7 @@ export class AuthenticationService extends BaseService {
 	}
 
 	public async refreshJwt() {
-		const resp = await this.backendApi.jwt.refreshJwt();
-		return resp.data;
+		return (await this.backendApi.jwt.refreshJwt()).data;
 	}
 
 	private computeHash(...args: string[]) {
