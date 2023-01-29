@@ -11,7 +11,7 @@ using Authentication.Api.Web.Utils;
 
 namespace Authentication.Api.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/jwt")]
     [ApiController]
     public class JwtController : ControllerBase
     {

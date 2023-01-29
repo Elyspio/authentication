@@ -47,10 +47,12 @@ function Application() {
 			);
 
 			if (!route?.pathname.endsWith(applicationPaths.dashboard)) {
-				createDrawerAction("Dashboard", {
-					icon: <DashboardIcon />,
-					onClick: () => dispatch(changeLocation("dashboard")),
-				});
+				elems.push(
+					createDrawerAction("Dashboard", {
+						icon: <DashboardIcon />,
+						onClick: () => dispatch(changeLocation("dashboard")),
+					})
+				);
 			}
 		} else {
 			if (!route?.pathname.endsWith(applicationPaths.login)) {
