@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { getService } from "../../common/common.actions";
-import { UsersService } from "../../../core/services/users.service";
-import { User } from "../../../core/apis/backend/generated";
+import { getService } from "../../utils/utils.actions";
+import { UsersService } from "@services/users.service";
+import { User } from "@apis/backend/generated";
 import { toast } from "react-toastify";
 import { updateLocalUser } from "./users.action";
-import { StoreState } from "../../index";
+import { StoreState } from "@store";
 import { refreshToken } from "../authentication/authentication.async.action";
 
 export const getAllUsers = createAsyncThunk("users/getAllUsers", async (_, { extra }) => {
@@ -25,13 +25,13 @@ export const updateUser = createAsyncThunk("users/updateUser", async (user: User
 		error: "Could not update user",
 	});
 
-	const { authentication: { user: loggedUser } } = getState() as StoreState;
-
+	const {
+		authentication: { user: loggedUser },
+	} = getState() as StoreState;
 
 	if (user.id === loggedUser?.id) {
 		dispatch(refreshToken());
 	}
-
 });
 
 export const deleteUserRemote = createAsyncThunk("users/deleteUser", async (username: User["id"], { extra }) => {

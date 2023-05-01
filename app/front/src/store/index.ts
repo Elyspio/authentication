@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { themeReducer } from "./module/theme/theme.reducer";
-import { authenticationReducer } from "./module/authentication/authentication.reducer";
-import { container } from "../core/di";
+import { themeReducer } from "@modules/theme/theme.reducer";
+import { authenticationReducer } from "@modules/authentication/authentication.reducer";
+import { container } from "@/core/di";
 import { createBrowserHistory } from "history";
 import { createReduxHistoryContext } from "redux-first-history";
-import { usersReducer } from "./module/users/users.reducer";
+import { usersReducer } from "@modules/users/users.reducer";
 
 const { createReduxHistory, routerMiddleware, routerReducer } = createReduxHistoryContext({ history: createBrowserHistory() });
 

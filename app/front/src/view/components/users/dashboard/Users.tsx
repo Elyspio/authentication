@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useMemo } from "react";
-import { Chip, Paper, Stack, Tooltip, Typography, useTheme } from "@mui/material";
+import { Chip, Paper, Stack, Tooltip, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { AuthenticationRoles, User } from "../../../../core/apis/backend/generated";
-import { useAppDispatch, useAppSelector } from "../../../../store";
-import { usePermissions } from "../../../hooks/usePermissions";
-import { getAllUsers, updateUser } from "../../../../store/module/users/users.async.action";
+import { AuthenticationRoles, User } from "@apis/backend/generated";
+import { useAppDispatch, useAppSelector } from "@store";
+import { usePermissions } from "@hooks/usePermissions";
+import { getAllUsers, updateUser } from "@modules/users/users.async.action";
 import IconButton from "@mui/material/IconButton";
 import { PersonAdd, PersonOff } from "@mui/icons-material";
-import { getEditUserLocation } from "../../../../core/services/router.service";
+import { getEditUserLocation } from "@services/router.service";
 
 type Row = Record<Field, any>;
 
@@ -57,7 +58,7 @@ export function Users() {
 	);
 
 	const columns = useMemo(() => {
-		let cols: ColumnDef[] = [
+		const cols: ColumnDef[] = [
 			{
 				field: "username",
 				headerName: "Username",
@@ -163,9 +164,6 @@ export function Users() {
 					rows={rows}
 					autoHeight
 					isCellEditable={() => false}
-					showCellRightBorder={false}
-					showColumnRightBorder={false}
-					rowsPerPageOptions={[100]}
 					isRowSelectable={() => false}
 					sx={{
 						".MuiDataGrid-columnHeaders": {

@@ -1,19 +1,20 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { StoreState } from "../../index";
-import { getService } from "../../common/common.actions";
-import { UsersService } from "../../../core/services/users.service";
-import { LocalStorageService } from "../../../core/services/common/localStorage.service";
-import { DiKeysService } from "../../../core/di/services/di.keys.service";
-import { AuthenticationService } from "../../../core/services/authentication.service";
+import { StoreState } from "@store";
+import { createAsyncActionGenerator, getService } from "../../utils/utils.actions";
+import { UsersService } from "@services/users.service";
+import { LocalStorageService } from "@services/common/localStorage.service";
+import { DiKeysService } from "@/core/di/services/di.keys.service";
+import { AuthenticationService } from "@services/authentication.service";
 import { toast } from "react-toastify";
-import { TokenService } from "../../../core/services/token.service";
+import { TokenService } from "@services/token.service";
 import { setUserFromToken } from "./authentication.action";
-import { changeLocation } from "../../../core/services/router.service";
+import { changeLocation } from "@services/router.service";
 import { AxiosError } from "axios";
 import * as HttpStatusCode from "http-status";
 import { goBack } from "redux-first-history";
 
-export const register = createAsyncThunk("authentication/register", async (_, { extra, getState, dispatch }) => {
+const createAsyncThunk = createAsyncActionGenerator("authentication");
+
+export const register = createAsyncThunk("register", async (_, { extra, getState, dispatch }) => {
 	const {
 		authentication: { username, password, user },
 	} = getState() as StoreState;
@@ -33,7 +34,7 @@ export const register = createAsyncThunk("authentication/register", async (_, { 
 	} catch (e) {
 		const err = e as AxiosError;
 		const texts = {
-			[HttpStatusCode.CONFLICT]: `"${username}" is already taken`,
+			[HttpStatusCode.CONFLICT.toString()]: `"${username}" is already taken`,
 		};
 		const text = texts[err.status!.toString()] ?? "An error occurred during register";
 
@@ -41,12 +42,12 @@ export const register = createAsyncThunk("authentication/register", async (_, { 
 	}
 });
 
-export const checkIfUserExist = createAsyncThunk("authentication/checkIfUserExist", async (_, { extra }) => {
+export const checkIfUserExist = createAsyncThunk("checkIfUserExist", async (_, { extra }) => {
 	const service = getService(UsersService, extra);
 	return service.checkIfUsersExist();
 });
 
-export const login = createAsyncThunk("authentication/login", async (_, { extra, getState, dispatch }) => {
+export const login = createAsyncThunk("login", async (_, { extra, getState, dispatch }) => {
 	const {
 		authentication: { username, password },
 	} = getState() as StoreState;
@@ -69,8 +70,8 @@ export const login = createAsyncThunk("authentication/login", async (_, { extra,
 	} catch (e) {
 		const err = e as AxiosError;
 		const texts = {
-			[HttpStatusCode.LOCKED]: `"${username}" is disabled`,
-			[HttpStatusCode.FORBIDDEN]: "Wrong username or password",
+			[HttpStatusCode.LOCKED.toString()]: `"${username}" is disabled`,
+			[HttpStatusCode.FORBIDDEN.toString()]: "Wrong username or password",
 		};
 
 		const text = texts[err.status!.toString()] ?? "An error occurred during login";
@@ -79,21 +80,21 @@ export const login = createAsyncThunk("authentication/login", async (_, { extra,
 	}
 });
 
-export const logout = createAsyncThunk("authentication/logout", async (_, { extra, dispatch }) => {
+export const logout = createAsyncThunk("logout", async (_, { extra, dispatch }) => {
 	const localStorageService = getService<LocalStorageService>(DiKeysService.localStorage.jwt, extra);
 	localStorageService.remove();
 	toast.success("Logged out");
 	dispatch(changeLocation("login"));
 });
 
-export const refreshToken = createAsyncThunk("authentication/refreshToken", async (_, { extra, dispatch }) => {
+export const refreshToken = createAsyncThunk("refreshToken", async (_, { extra }) => {
 	const localStorageService = getService<LocalStorageService>(DiKeysService.localStorage.jwt, extra);
 	const authenticationService = getService(AuthenticationService, extra);
 	const token = await authenticationService.refreshJwt();
 	localStorageService.set(token);
 });
 
-export const silentLogin = createAsyncThunk("authentication/silentLogin", async (_, { extra, dispatch }) => {
+export const silentLogin = createAsyncThunk("silentLogin", async (_, { extra, dispatch }) => {
 	const tokenService = getService(TokenService, extra);
 	const authenticationService = getService(AuthenticationService, extra);
 
@@ -107,7 +108,7 @@ export const silentLogin = createAsyncThunk("authentication/silentLogin", async 
 	}
 });
 
-export const changePassword = createAsyncThunk("authentication/changePassword", async (_, { extra, getState, dispatch }) => {
+export const changePassword = createAsyncThunk("changePassword", async (_, { extra, getState }) => {
 	const {
 		authentication: { username, password },
 	} = getState() as StoreState;

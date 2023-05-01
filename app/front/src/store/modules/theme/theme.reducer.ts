@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setTheme, toggleTheme } from "./theme.action";
-import { getUrlTheme, Themes } from "../../../config/theme";
+import { getUrlTheme, Themes } from "@/config/theme";
 
 export interface ThemeState {
 	current: Themes;

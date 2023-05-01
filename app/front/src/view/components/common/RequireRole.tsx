@@ -1,8 +1,9 @@
 import React, { useCallback } from "react";
-import { Button, Paper, Stack, Typography, useTheme } from "@mui/material";
-import { AuthenticationRoles } from "../../../core/apis/backend/generated";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { logout } from "../../../store/module/authentication/authentication.async.action";
+import { Button, Paper, Stack, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { AuthenticationRoles } from "@apis/backend/generated";
+import { useAppDispatch, useAppSelector } from "@store";
+import { logout } from "@modules/authentication/authentication.async.action";
 import { Title } from "./Title";
 
 type RequireLoginProps = {
@@ -20,7 +21,7 @@ export function RequireRole({ missing }: RequireLoginProps) {
 
 	const { palette } = useTheme();
 
-	let loginBtn = (
+	const loginBtn = (
 		<Button onClick={logoutCb} variant={"outlined"} size={"small"} component={"span"} sx={{ mx: 1 }}>
 			login
 		</Button>

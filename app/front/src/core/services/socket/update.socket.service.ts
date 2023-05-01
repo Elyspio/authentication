@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import { HubConnection, LogLevel } from "@microsoft/signalr";
-import { User } from "../../apis/backend/generated";
+import { User } from "@apis/backend/generated";
 import { injectable } from "inversify";
 import { BaseService } from "../technical/base.service";
 

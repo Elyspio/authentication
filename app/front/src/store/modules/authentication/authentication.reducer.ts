@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { setAuthenticationField, setUserFromToken } from "./authentication.action";
-import { User } from "../../../core/apis/backend/generated";
+import { User } from "@apis/backend/generated";
 import { checkIfUserExist, logout } from "./authentication.async.action";
 
 export interface AuthenticationState {

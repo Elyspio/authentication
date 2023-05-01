@@ -3,8 +3,8 @@ import { ActionComponent, ActionComponentProps, ActionDescription, ActionDescrip
 import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Drawer } from "./Drawer";
 import "./actions/Actions.scss";
-import store from "../../../../store";
-import { changeLocation } from "../../../../core/services/router.service";
+import store from "@store";
+import { changeLocation } from "@services/router.service";
 
 export type ModalAction = {
 	component: ActionComponentProps;
@@ -65,7 +65,9 @@ export function createDrawerDivider(name: string): WithDrawerProps["actions"][nu
 		key: name,
 		component: {
 			divider: name,
-			onClick: () => {},
+			onClick: () => {
+				// empty
+			},
 			icon: null,
 		},
 	};

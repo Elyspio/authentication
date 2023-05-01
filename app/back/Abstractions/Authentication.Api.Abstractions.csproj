@@ -56,6 +56,12 @@
         <Compile Update="Transports\Data\user\SettingsType.cs">
           <DependentUpon>Settings.cs</DependentUpon>
         </Compile>
+        <Compile Update="Transports\Data\user\Videyo.cs">
+          <DependentUpon>Authorizations.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Transports\Data\user\VideyoRoles.cs">
+          <DependentUpon>Videyo.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
 </Project>

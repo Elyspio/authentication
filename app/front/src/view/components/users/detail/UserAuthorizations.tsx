@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
-import { AuthenticationRoles, SousMarinJauneRole, User, VideyoRole } from "../../../../core/apis/backend/generated";
+import { AuthenticationRoles, SousMarinJauneRole, User, VideyoRole } from "@apis/backend/generated";
 import { Autocomplete, Box, Chip, Stack, TextField, Typography } from "@mui/material";
 import { Accordion, AccordionDetails, AccordionSummary } from "./common/Accordion";
-import { usePermissions } from "../../../hooks/usePermissions";
+import { usePermissions } from "@hooks/usePermissions";
 
 type UserCredentialsProps = {
 	data: User;
@@ -40,7 +40,6 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 		[data, update]
 	);
 
-
 	const updateSousMarinJauneRoles = useCallback(
 		(_, v: SousMarinJauneRole[]) => {
 			update({
@@ -56,12 +55,11 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 		[data, update]
 	);
 
-
 	const { isAdmin } = usePermissions();
 
-	let authRoles = Object.values(AuthenticationRoles) as AuthenticationRoles[];
-	let videyoRoles = Object.values(VideyoRole) as VideyoRole[];
-	let sousMarinJauneRoles = Object.values(SousMarinJauneRole) as SousMarinJauneRole[];
+	const authRoles = Object.values(AuthenticationRoles) as AuthenticationRoles[];
+	const videyoRoles = Object.values(VideyoRole) as VideyoRole[];
+	const sousMarinJauneRoles = Object.values(SousMarinJauneRole) as SousMarinJauneRole[];
 
 	function isAuthenticationOptionDisabled(option: AuthenticationRoles) {
 		return option === AuthenticationRoles.Admin && isAdmin;

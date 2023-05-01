@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
-import { Box, Button, Divider, Paper, Stack, TextField, Typography, useTheme } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { setAuthenticationField } from "../../../store/module/authentication/authentication.action";
+import { Box, Button, Divider, Paper, Stack, TextField, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { useAppDispatch, useAppSelector } from "@store";
+import { setAuthenticationField } from "@modules/authentication/authentication.action";
 
 type AuthFormProps = {
 	label: string;

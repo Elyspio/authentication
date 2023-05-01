@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
-import { BackendApi } from "../apis/backend";
+import { BackendApi } from "@apis/backend";
 import { BaseService } from "./technical/base.service";
-import { User } from "../apis/backend/generated";
+import { User } from "@apis/backend/generated";
 
 @injectable()
 export class UsersService extends BaseService {

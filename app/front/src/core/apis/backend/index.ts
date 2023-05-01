@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import axios from "axios";
 import { AuthenticationClient, JwtClient, UsersClient } from "./generated";
-import { TokenService } from "../../services/token.service";
+import { TokenService } from "@services/token.service";
 
 const basePath = window.config.endpoints.core;
 

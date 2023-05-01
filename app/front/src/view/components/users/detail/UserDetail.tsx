@@ -2,19 +2,19 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import { Button, Dialog, FormControlLabel, Paper, Stack, Switch, Tooltip } from "@mui/material";
 import { Title } from "../../common/Title";
 import { useParams } from "react-router";
-import { AuthenticationRoles, User } from "../../../../core/apis/backend/generated";
-import { useAppDispatch, useAppSelector } from "../../../../store";
+import { AuthenticationRoles, User } from "@apis/backend/generated";
+import { useAppDispatch, useAppSelector } from "@store";
 import { RequireRole } from "../../common/RequireRole";
-import { deleteUserRemote, getUser, updateUser } from "../../../../store/module/users/users.async.action";
+import { deleteUserRemote, getUser, updateUser } from "@modules/users/users.async.action";
 import IconButton from "@mui/material/IconButton";
 import { DeleteForever } from "@mui/icons-material";
-import { changeLocation } from "../../../../core/services/router.service";
+import { changeLocation } from "@services/router.service";
 import { UserCredentials } from "./UserCredentials";
 import { UserAuthorizations } from "./UserAuthorizations";
-import { useModal } from "../../../hooks/useModal";
+import { useModal } from "@hooks/useModal";
 import { AuthForm } from "../../common/AuthForm";
-import { changePassword } from "../../../../store/module/authentication/authentication.async.action";
-import { setAuthenticationField } from "../../../../store/module/authentication/authentication.action";
+import { changePassword } from "@modules/authentication/authentication.async.action";
+import { setAuthenticationField } from "@modules/authentication/authentication.action";
 
 export function UserDetail() {
 	const { id } = useParams<{ id: User["id"] }>();

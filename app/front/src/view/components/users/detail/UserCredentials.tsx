@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Docker, Github, User } from "../../../../core/apis/backend/generated";
+import { Docker, Github, User } from "@apis/backend/generated";
 import { Stack, TextField, Typography } from "@mui/material";
 import { Accordion, AccordionDetails, AccordionSummary } from "./common/Accordion";
 

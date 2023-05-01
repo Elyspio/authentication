@@ -25,7 +25,7 @@ Set-Content -Path $project -Value $newContent;
 Write-Host "Modification de $project vers la version $newVersion";
 
 
-cd $PSScriptRoot ; dotnet pack --configuration Release
+cd $PSScriptRoot; dotnet pack --configuration Release
 
 $package = (Get-Childitem -Path $PSScriptRoot -Include *.nupkg -Recurse).FullName;
 

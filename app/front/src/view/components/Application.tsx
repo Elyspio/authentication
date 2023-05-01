@@ -1,20 +1,20 @@
 import * as React from "react";
 import { useEffect, useMemo } from "react";
 import "./Application.scss";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "@store";
 import { createDrawerAction, withDrawer } from "./utils/drawer/Drawer.hoc";
 import { Box, Container } from "@mui/material";
-import { DarkMode, Dashboard as DashboardIcon, LightMode, Login as IconLogin, Logout, PersonAdd } from "@mui/icons-material";
+import { DarkMode, Dashboard, LightMode, Login, Logout, PersonAdd } from "@mui/icons-material";
 import { Route, Routes } from "react-router";
-import { applicationPaths } from "../../config/routes";
+import { applicationPaths } from "@/config/routes";
 import { Register } from "./auth/Register";
-import { Login } from "./auth/Login";
-import { logout } from "../../store/module/authentication/authentication.async.action";
-import { changeLocation } from "../../core/services/router.service";
-import { initApp } from "../../store/common/common.actions";
-import { toggleTheme } from "../../store/module/theme/theme.action";
-import { Dashboard } from "./users/dashboard/Dashboard";
-import { usePermissions } from "../hooks/usePermissions";
+import { Login as LoginComponent } from "./auth/Login";
+import { logout } from "@modules/authentication/authentication.async.action";
+import { changeLocation } from "@services/router.service";
+import { initApp } from "@store/modules/workflows/workflows.async.actions";
+import { toggleTheme } from "@modules/theme/theme.action";
+import { Dashboard as DashboardComponent } from "./users/dashboard/Dashboard";
+import { usePermissions } from "@hooks/usePermissions";
 import { UserDetail } from "./users/detail/UserDetail";
 
 function Application() {
@@ -49,7 +49,7 @@ function Application() {
 			if (!route?.pathname.endsWith(applicationPaths.dashboard)) {
 				elems.push(
 					createDrawerAction("Dashboard", {
-						icon: <DashboardIcon />,
+						icon: <Dashboard />,
 						onClick: () => dispatch(changeLocation("dashboard")),
 					})
 				);
@@ -58,7 +58,7 @@ function Application() {
 			if (!route?.pathname.endsWith(applicationPaths.login)) {
 				elems.push(
 					createDrawerAction("Login", {
-						icon: <IconLogin />,
+						icon: <Login />,
 						onClick: () => dispatch(changeLocation("login")),
 					})
 				);
@@ -85,10 +85,10 @@ function Application() {
 		component: (
 			<Container maxWidth={"xl"} className={"Container"}>
 				<Routes>
-					<Route path={applicationPaths.login} element={<Login />} />
+					<Route path={applicationPaths.login} element={<LoginComponent />} />
 					<Route path={"users/:id"} element={<UserDetail />} />
 					<Route path={applicationPaths.register} element={<Register />} />
-					<Route path={applicationPaths.dashboard} element={<Dashboard />} />
+					<Route path={applicationPaths.dashboard} element={<DashboardComponent />} />
 				</Routes>
 			</Container>
 		),

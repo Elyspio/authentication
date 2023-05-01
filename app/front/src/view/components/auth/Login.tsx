@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch } from "@store";
 import { AuthForm } from "../common/AuthForm";
-import { login } from "../../../store/module/authentication/authentication.async.action";
+import { login } from "@modules/authentication/authentication.async.action";
 
 export function Login() {
 	const dispatch = useAppDispatch();

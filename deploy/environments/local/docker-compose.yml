@@ -15,7 +15,7 @@ services:
             resources:
                 limits:
                     cpus: "1"
-                    memory: 256M 
+                    memory: 256M
     back:
         container_name: authentication-local-back
         image: elyspio/authentication:back-local
@@ -27,13 +27,11 @@ services:
             - "4001:4001"
         volumes:
             - "../../../app/back:/app/back"
-            - "./config/back/appsettings.docker.json:/app/Web/appsettings.docker.json"
-
         deploy:
             resources:
                 limits:
                     cpus: "1"
-                    memory: 256M   
+                    memory: 256M
     front:
         image: elyspio/authentication:front-local
         container_name: authentication-local-front

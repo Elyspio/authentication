@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { User } from "../../../core/apis/backend/generated";
+import { User } from "@apis/backend/generated";
 import { getAllUsers } from "./users.async.action";
 import { deleteUser, updateLocalUser } from "./users.action";
 

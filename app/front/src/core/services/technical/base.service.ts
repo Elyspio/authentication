@@ -7,7 +7,7 @@ export class BaseService {
 	}
 
 	private logMethods() {
-		let methods = this.getChildMethods();
+		const methods = this.getChildMethods();
 		for (const method of methods) {
 			this[method] = new Proxy(this[method], {
 				apply(target: any, thisArg: any, argArray: any[]): any {
