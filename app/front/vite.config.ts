@@ -3,8 +3,9 @@ import { defineConfig } from "vite";
 
 const config = getDefaultConfig(__dirname);
 
-export default defineConfig((env) => ({
+export default defineConfig({
 	...config,
+	build: { outDir: "build" },
 	base: "/authentication",
 	server: {
 		...config.server,
@@ -14,4 +15,4 @@ export default defineConfig((env) => ({
 			usePolling: !!process.env.RUNNING_IN_DOCKER,
 		},
 	},
-}));
+});
