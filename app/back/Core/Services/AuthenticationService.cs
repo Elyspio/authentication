@@ -47,7 +47,7 @@ public class AuthenticationService : IAuthenticationService
 
 	public async Task<User> Register(string username, string hash)
 	{
-		var logger = _logger.Enter($"{Log.Format(username)}");
+		var logger = _logger.Enter($"{Log.F(username)}");
 
 		if (!_registringSalts.TryGetValue(username, out var salt)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} registring");
 
@@ -75,7 +75,7 @@ public class AuthenticationService : IAuthenticationService
 
 	public string InitRegister(string username)
 	{
-		var logger = _logger.Enter(Log.Format(username));
+		var logger = _logger.Enter(Log.F(username));
 
 
 		if (_registringSalts.ContainsKey(username)) return _registringSalts[username];
@@ -90,7 +90,7 @@ public class AuthenticationService : IAuthenticationService
 
 	public async Task<string> Login(string username, string hash)
 	{
-		var logger = _logger.Enter(Log.Format(username));
+		var logger = _logger.Enter(Log.F(username));
 
 		if (!_loggingChallenges.TryGetValue(username, out var challenge)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} logging in");
 
@@ -102,7 +102,7 @@ public class AuthenticationService : IAuthenticationService
 
 		var match = storedHash == hash;
 
-		logger.Debug($"{Log.Format(match)}");
+		logger.Debug($"{Log.F(match)}");
 
 		if (match) _loggingChallenges.Remove(username);
 		else throw new HttpException(HttpStatusCode.Forbidden, "Wrong password");
@@ -119,7 +119,7 @@ public class AuthenticationService : IAuthenticationService
 
 	public async Task<InitVerifyResponse> InitLogin(string username)
 	{
-		var logger = _logger.Enter(Log.Format(username));
+		var logger = _logger.Enter(Log.F(username));
 
 		_loggingChallenges.TryGetValue(username, out var challenge);
 
@@ -144,11 +144,11 @@ public class AuthenticationService : IAuthenticationService
 
 	public async Task ChangePassword(string username, string hash)
 	{
-		var logger = _logger.Enter(Log.Format(username));
+		var logger = _logger.Enter(Log.F(username));
 
 		if (!_registringSalts.TryGetValue(username, out var salt)) throw new HttpException(HttpStatusCode.FailedDependency, $"There was no user named {username} changing password");
 
-		 await _usersRepository.ChangePassword(username, salt, hash);
+		await _usersRepository.ChangePassword(username, salt, hash);
 
 		logger.Exit();
 	}

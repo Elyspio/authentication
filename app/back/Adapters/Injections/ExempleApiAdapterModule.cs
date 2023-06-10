@@ -11,5 +11,5 @@ public class AdapterModule : IDotnetModule
 	{
 		var conf = new EndpointConfig();
 		configuration.GetSection(EndpointConfig.Section).Bind(conf);
-}
+	}
 }

@@ -28,7 +28,7 @@ public class UserService : IUserService
 
 	public async Task<User> Get(Guid id)
 	{
-		var logger = _logger.Enter(Log.Format(id));
+		var logger = _logger.Enter(Log.F(id));
 
 		var entity = await _usersRepository.Get(id);
 		var data = _userAssembler.Convert(entity);
@@ -52,7 +52,7 @@ public class UserService : IUserService
 
 	public async Task Update(User user)
 	{
-		var logger = _logger.Enter(Log.Format(user.Id));
+		var logger = _logger.Enter(Log.F(user.Id));
 
 		var entity = _userAssembler.Convert(user);
 
@@ -65,7 +65,7 @@ public class UserService : IUserService
 
 	public async Task Delete(Guid id)
 	{
-		var logger = _logger.Enter(Log.Format(id));
+		var logger = _logger.Enter(Log.F(id));
 
 		await _usersRepository.Delete(id);
 

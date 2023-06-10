@@ -7,7 +7,6 @@ public class SousMarinJaune
 
 public enum SousMarinJauneRole
 {
-    Admin,
-	User,
-
+	Admin,
+	User
 }

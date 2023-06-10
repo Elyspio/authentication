@@ -43,7 +43,7 @@ public interface IAuthenticationService
 	/// <returns></returns>
 	Task<InitVerifyResponse> InitLogin(string username);
 
-	
+
 	/// <summary>
 	///     Recreate salt for this username
 	/// </summary>

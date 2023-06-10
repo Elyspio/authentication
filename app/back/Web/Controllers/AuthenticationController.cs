@@ -46,9 +46,8 @@ public class AuthenticationController : ControllerBase
 	{
 		return Ok(new InitRegisterResponse(_authenticationService.InitRegister(username)));
 	}
-	
-	
-	
+
+
 	/// <summary>
 	///     Change user's password
 	/// </summary>
@@ -59,7 +58,7 @@ public class AuthenticationController : ControllerBase
 	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
 	public async Task<IActionResult> ChangePassword(string username, [FromBody] string hash)
 	{
-		 await _authenticationService.ChangePassword(username, hash);
+		await _authenticationService.ChangePassword(username, hash);
 		return NoContent();
 	}
 
@@ -75,8 +74,7 @@ public class AuthenticationController : ControllerBase
 	{
 		return Ok(new InitRegisterResponse(_authenticationService.InitChangePassword(username)));
 	}
-	
-	
+
 
 	/// <summary>
 	///     Final login step
@@ -103,7 +101,4 @@ public class AuthenticationController : ControllerBase
 	{
 		return Ok(await _authenticationService.InitLogin(username));
 	}
-
-
-
 }

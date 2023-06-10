@@ -16,7 +16,7 @@ public static class Log
 		}
 	};
 
-	public static string Format(object? value, [CallerArgumentExpression("value")] string name = "")
+	public static string F(object? value, [CallerArgumentExpression("value")] string name = "")
 	{
 		return $"{name}={JsonSerializer.Serialize(value, options)}";
 	}
