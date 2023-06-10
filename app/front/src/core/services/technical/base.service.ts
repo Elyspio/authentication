@@ -9,6 +9,7 @@ export class BaseService {
 	private logMethods() {
 		const methods = this.getChildMethods();
 		for (const method of methods) {
+			// @ts-ignore
 			this[method] = new Proxy(this[method], {
 				apply(target: any, thisArg: any, argArray: any[]): any {
 					const name = Object.getPrototypeOf(thisArg).constructor.name;

@@ -29,3 +29,4 @@ if (require.main === module) {
 		outputFile: path.resolve(__dirname, "..", "src", "core", "apis", "backend", "generated.ts"),
 	});
 }
+ 

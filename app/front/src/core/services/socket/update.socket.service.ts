@@ -5,9 +5,9 @@ import { injectable } from "inversify";
 import { BaseService } from "../technical/base.service";
 
 interface UpdateHub extends HubConnection {
-	on(event: "UserUpdated", callback: (user: User) => void);
+	on(event: "UserUpdated", callback: (user: User) => void): void;
 
-	on(event: "UserDeleted", callback: (id: User["id"]) => void);
+	on(event: "UserDeleted", callback: (id: User["id"]) => void): void;
 }
 
 @injectable()

@@ -5,7 +5,7 @@ import "./index.scss";
 import { Provider } from "react-redux";
 import store, { history, useAppSelector } from "@store";
 import Application from "./view/components/Application";
-import { StyledEngineProvider, Theme } from "@mui/material";
+import { StyledEngineProvider } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { themes } from "./config/theme";
 import { ToastContainer } from "react-toastify";
@@ -13,10 +13,6 @@ import "react-toastify/dist/ReactToastify.min.css";
 import { Provider as DiProvider } from "inversify-react";
 import { container } from "@/core/di";
 import { HistoryRouter } from "redux-first-history/rr6";
-
-declare module "@mui/styles/defaultTheme" {
-	interface DefaultTheme extends Theme {}
-}
 
 function Wrapper() {
 	const { theme, current } = useAppSelector((state) => ({

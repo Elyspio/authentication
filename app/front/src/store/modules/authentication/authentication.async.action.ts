@@ -42,7 +42,7 @@ export const register = createAsyncThunk("register", async (_, { extra, getState
 	}
 });
 
-export const checkIfUserExist = createAsyncThunk("checkIfUserExist", async (_, { extra }) => {
+export const checkIfUserExist = createAsyncThunk("check-if-user-exist", async (_, { extra }) => {
 	const service = getService(UsersService, extra);
 	return service.checkIfUsersExist();
 });
@@ -87,14 +87,14 @@ export const logout = createAsyncThunk("logout", async (_, { extra, dispatch }) 
 	dispatch(changeLocation("login"));
 });
 
-export const refreshToken = createAsyncThunk("refreshToken", async (_, { extra }) => {
+export const refreshToken = createAsyncThunk("refresh-token", async (_, { extra }) => {
 	const localStorageService = getService<LocalStorageService>(DiKeysService.localStorage.jwt, extra);
 	const authenticationService = getService(AuthenticationService, extra);
 	const token = await authenticationService.refreshJwt();
 	localStorageService.set(token);
 });
 
-export const silentLogin = createAsyncThunk("silentLogin", async (_, { extra, dispatch }) => {
+export const silentLogin = createAsyncThunk("silent-login", async (_, { extra, dispatch }) => {
 	const tokenService = getService(TokenService, extra);
 	const authenticationService = getService(AuthenticationService, extra);
 
@@ -108,7 +108,7 @@ export const silentLogin = createAsyncThunk("silentLogin", async (_, { extra, di
 	}
 });
 
-export const changePassword = createAsyncThunk("changePassword", async (_, { extra, getState }) => {
+export const changePassword = createAsyncThunk("change-password", async (_, { extra, getState }) => {
 	const {
 		authentication: { username, password },
 	} = getState() as StoreState;

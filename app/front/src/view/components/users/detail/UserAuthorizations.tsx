@@ -11,7 +11,7 @@ type UserCredentialsProps = {
 
 export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 	const updateAuthenticationRoles = useCallback(
-		(_, v: AuthenticationRoles[]) => {
+		(_: React.SyntheticEvent, v: AuthenticationRoles[]) => {
 			update({
 				...data,
 				authorizations: {
@@ -26,7 +26,7 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 	);
 
 	const updateVideyoRoles = useCallback(
-		(_, v: VideyoRole[]) => {
+		(_: React.SyntheticEvent, v: VideyoRole[]) => {
 			update({
 				...data,
 				authorizations: {
@@ -41,7 +41,7 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 	);
 
 	const updateSousMarinJauneRoles = useCallback(
-		(_, v: SousMarinJauneRole[]) => {
+		(_: React.SyntheticEvent, v: SousMarinJauneRole[]) => {
 			update({
 				...data,
 				authorizations: {
