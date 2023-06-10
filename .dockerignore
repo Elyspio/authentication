@@ -1,3 +1,7 @@
-**/node_modules
 **/bin
 **/obj
+.idea
+.vs
+.git
+app/front/build
+app/front/node_modules
