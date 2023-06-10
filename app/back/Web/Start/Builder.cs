@@ -19,7 +19,7 @@ using Serilog.Events;
 using System.Net;
 using System.Text.Json.Serialization;
 
-namespace Authentication.Api.Web.Server;
+namespace Authentication.Api.Web.Start;
 
 public class ServerBuilder
 {
@@ -46,13 +46,14 @@ public class ServerBuilder
 		// Setup CORS
 		builder.Services.AddCors(options =>
 			{
-				options.AddDefaultPolicy(b =>
-					{
-						b.AllowAnyOrigin();
-						b.AllowAnyHeader();
-						b.AllowAnyMethod();
-					}
-				);
+				if (!builder.Environment.IsProduction())
+					options.AddDefaultPolicy(b =>
+						{
+							b.AllowAnyOrigin();
+							b.AllowAnyHeader();
+							b.AllowAnyMethod();
+						}
+					);
 			}
 		);
 
@@ -116,7 +117,7 @@ public class ServerBuilder
 				{
 					options.PayloadSerializerOptions.IncludeFields = true;
 					options.PayloadSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-					options.PayloadSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+					options.PayloadSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
 					options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 				}
 			);
