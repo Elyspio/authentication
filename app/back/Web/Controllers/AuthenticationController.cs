@@ -1,24 +1,18 @@
-﻿using Authentication.Api.Abstractions.Interfaces.Services;
+﻿using Authentication.Api.Abstractions.Helpers;
+using Authentication.Api.Abstractions.Interfaces.Services;
+using Authentication.Api.Abstractions.Technical;
 using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Abstractions.Transports.Responses;
 using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
-using System.Net;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Authentication.Api.Web.Controllers;
 
-[Route("api/auth")]
+[Route("api/auth/{username}/")]
 [ApiController]
-public class AuthenticationController : ControllerBase
+public class AuthenticationController(IAuthenticationService authenticationService, ILogger<AuthenticationController> logger) : TracingContext(logger)
 {
-	private readonly IAuthenticationService _authenticationService;
-	private readonly ITokenService _tokenService;
-
-	public AuthenticationController(IAuthenticationService authenticationService, ITokenService tokenService)
-	{
-		_authenticationService = authenticationService;
-		_tokenService = tokenService;
-	}
+	private readonly IAuthenticationService _authenticationService = authenticationService;
 
 	/// <summary>
 	///     Final register step
@@ -26,12 +20,13 @@ public class AuthenticationController : ControllerBase
 	/// <param name="username"></param>
 	/// <param name="hash">user's password hashed with salt</param>
 	/// <returns>the created user</returns>
-	[HttpPost("{username}")]
-	[SwaggerResponse(HttpStatusCode.Created, typeof(User))]
-	public async Task<IActionResult> Register(string username, [FromBody] string hash)
+	[HttpPost("register/finalize")]
+	[SwaggerResponse(StatusCodes.Status201Created, Type = typeof(User))]
+	public async Task<IResult> Register(string username, [FromBody] string hash)
 	{
+		using var _ = LogController($"{Log.F(username)} {Log.F(hash)}");
 		var user = await _authenticationService.Register(username, hash);
-		return Created($"api/auth/{username}", user);
+		return Results.Created($"api/auth/{username}", user);
 	}
 
 
@@ -40,11 +35,12 @@ public class AuthenticationController : ControllerBase
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns>a salt for this username</returns>
-	[HttpPost("{username}/init")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(InitRegisterResponse))]
-	public IActionResult InitRegister(string username)
+	[HttpPost("register/init")]
+	[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InitRegisterResponse))]
+	public IResult InitRegister(string username)
 	{
-		return Ok(new InitRegisterResponse(_authenticationService.InitRegister(username)));
+		using var _ = LogController($"{Log.F(username)}");
+		return Results.Ok(new InitRegisterResponse(_authenticationService.InitRegister(username)));
 	}
 
 
@@ -54,12 +50,13 @@ public class AuthenticationController : ControllerBase
 	/// <param name="username"></param>
 	/// <param name="hash">user's password hashed with salt</param>
 	/// <returns>the created user</returns>
-	[HttpPut("{username}")]
-	[SwaggerResponse(HttpStatusCode.NoContent, typeof(void))]
-	public async Task<IActionResult> ChangePassword(string username, [FromBody] string hash)
+	[HttpPut("password/finalize")]
+	[SwaggerResponse(StatusCodes.Status204NoContent, Type = typeof(void))]
+	public async Task<IResult> ChangePassword(string username, [FromBody] string hash)
 	{
+		using var _ = LogController($"{Log.F(username)} {Log.F(hash)}");
 		await _authenticationService.ChangePassword(username, hash);
-		return NoContent();
+		return Results.NoContent();
 	}
 
 
@@ -68,11 +65,12 @@ public class AuthenticationController : ControllerBase
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns>a salt for this username</returns>
-	[HttpPut("{username}/init")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(InitRegisterResponse))]
-	public IActionResult InitChangePassword(string username)
+	[HttpPut("password/init")]
+	[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InitRegisterResponse))]
+	public IResult InitChangePassword(string username)
 	{
-		return Ok(new InitRegisterResponse(_authenticationService.InitChangePassword(username)));
+		using var _ = LogController($"{Log.F(username)}");
+		return Results.Ok(new InitRegisterResponse(_authenticationService.InitChangePassword(username)));
 	}
 
 
@@ -82,11 +80,12 @@ public class AuthenticationController : ControllerBase
 	/// <param name="username"></param>
 	/// <param name="hash"></param>
 	/// <returns>a JWT for this user</returns>
-	[HttpPost("{username}/login")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(string))]
-	public async Task<IActionResult> Login(string username, [FromBody] string hash)
+	[HttpPost("login/finalize")]
+	[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+	public async Task<IResult> Login(string username, [FromBody] string hash)
 	{
-		return Ok(await _authenticationService.Login(username, hash));
+		using var _ = LogController($"{Log.F(username)} {Log.F(hash)}");
+		return Results.Ok(await _authenticationService.Login(username, hash));
 	}
 
 
@@ -95,10 +94,11 @@ public class AuthenticationController : ControllerBase
 	/// </summary>
 	/// <param name="username"></param>
 	/// <returns>a challenge for this username</returns>
-	[HttpPost("{username}/login/init")]
-	[SwaggerResponse(HttpStatusCode.OK, typeof(InitVerifyResponse))]
-	public async Task<IActionResult> InitLogin([FromRoute] string username)
+	[HttpPost("login/init")]
+	[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InitVerifyResponse))]
+	public async Task<IResult> InitLogin([FromRoute] string username)
 	{
-		return Ok(await _authenticationService.InitLogin(username));
+		using var _ = LogController($"{Log.F(username)}");
+		return Results.Ok(await _authenticationService.InitLogin(username));
 	}
 }

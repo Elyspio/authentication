@@ -1,24 +1,16 @@
 ﻿using Authentication.Api.Sockets.Hubs;
+using Authentication.Api.Web.Utils.Extensions;
 
 namespace Authentication.Api.Web.Start;
 
-public static class ApplicationServer
+public static class AppRuntime
 {
 	public static WebApplication Initialize(this WebApplication app)
 	{
 		// Allow CORS
 		app.UseCors();
 
-		app.UseOpenApi(settings =>
-		{
-			settings.PostProcess = (document, request) =>
-			{
-				if (!request.Headers.Referer.FirstOrDefault()?.StartsWith("https://") == true) return;
-
-				foreach (var openApiServer in document.Servers) openApiServer.Url = openApiServer.Url.Replace("http://", "https://");
-			};
-		});
-		app.UseSwaggerUi3();
+		app.UseAppSwagger();
 
 
 		// Start Dependency Injection
@@ -37,7 +29,6 @@ public static class ApplicationServer
 
 		// Start SPA serving
 		app.UseRouting();
-
 
 		app.UseStaticFiles();
 

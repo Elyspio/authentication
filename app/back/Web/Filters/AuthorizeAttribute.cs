@@ -9,15 +9,10 @@ using Newtonsoft.Json;
 namespace Authentication.Api.Web.Filters;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public class AuthorizeAttribute : Attribute, IAuthorizationFilter
+public class AuthorizeAttribute(AuthenticationRoles role) : Attribute, IAuthorizationFilter
 {
-	private readonly AuthenticationRoles _role;
+	private readonly AuthenticationRoles _role = role;
 
-
-	public AuthorizeAttribute(AuthenticationRoles role)
-	{
-		_role = role;
-	}
 
 	/// <inheritdoc />
 	public void OnAuthorization(AuthorizationFilterContext context)

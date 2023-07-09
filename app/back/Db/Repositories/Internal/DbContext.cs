@@ -1,32 +1,37 @@
-﻿using Authentication.Api.Db.Configs;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 
 namespace Authentication.Api.Db.Repositories.Internal;
 
 public class MongoContext
 {
-	public MongoContext(IConfiguration configuration)
+	static MongoContext()
 	{
-		var conf = new DbConfig();
-
-		var connectionString = configuration["Database"];
-
-		var url = new MongoUrl(connectionString);
-		var client = new MongoClient(url);
-
-		Console.WriteLine($"Connecting to Database '{url.DatabaseName}'");
-
-		MongoDatabase = client.GetDatabase(url.DatabaseName);
-
 		var pack = new ConventionPack
 		{
 			new EnumRepresentationConvention(BsonType.String),
 			new CamelCaseElementNameConvention()
 		};
 		ConventionRegistry.Register("EnumStringConvention", pack, _ => true);
+	}
+
+	public MongoContext(IConfiguration configuration)
+	{
+		var connectionUri = new MongoUrl(configuration["Database"]);
+
+		var clientSettings = MongoClientSettings.FromUrl(connectionUri);
+
+		clientSettings.ClusterConfigurator = cb => cb.Subscribe(new DiagnosticsActivityEventSubscriber(new()
+		{
+			CaptureCommandText = true
+		}));
+
+		var client = new MongoClient(clientSettings);
+
+		MongoDatabase = client.GetDatabase(connectionUri.DatabaseName);
 	}
 
 	/// <summary>

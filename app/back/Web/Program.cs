@@ -1,3 +1,3 @@
 using Authentication.Api.Web.Start;
 
-new ServerBuilder(args).Application.Initialize().Run();
+new AppBuilder(args).Application.Initialize().Run();

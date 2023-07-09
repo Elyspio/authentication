@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Authentication.Api.Abstractions.Helpers;
+using Authentication.Api.Abstractions.Technical;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
@@ -8,13 +10,13 @@ using MongoDB.Driver;
 
 namespace Authentication.Api.Db.Repositories.Internal;
 
-public abstract class BaseRepository<T>
+public abstract class BaseRepository<T> : TracingContext
 {
 	private readonly string _collectionName;
 	private readonly MongoContext _context;
 	private readonly ILogger<BaseRepository<T>> _logger;
 
-	protected BaseRepository(IConfiguration configuration, ILogger<BaseRepository<T>> logger, string? collectionName = default)
+	protected BaseRepository(IConfiguration configuration, ILogger<BaseRepository<T>> logger, string? collectionName = default) : base(logger)
 	{
 		_context = new(configuration);
 		_collectionName = collectionName ?? typeof(T).Name[..^"Entity".Length].ToLower();
@@ -37,18 +39,22 @@ public abstract class BaseRepository<T>
 
 	protected void CreateIndexIfMissing(string property, bool unique = false)
 	{
+		using var _ = LogAdapter($"{Log.F(property)} {Log.F(unique)}");
+		
 		var indexes = EntityCollection.Indexes.List().ToList();
-		var foundIndex = indexes.Any(index => index["key"].AsBsonDocument.Names.Contains(property));
+		var foundIndex = indexes.Any(index => index["name"] == property);
+
+		if (foundIndex) return;
+		
+		_logger.LogWarning($"Property {_collectionName}.{property} is not indexed, creating one");
 
 		var possibleIndexes = Builders<T>.IndexKeys;
 		var indexModel = new CreateIndexModel<T>(possibleIndexes.Ascending(property), new()
 		{
-			Unique = unique
+			Unique = unique,
+			Name = property
 		});
-
-		if (foundIndex) return;
-
-		_logger.LogWarning($"Property {_collectionName}.{property} is not indexed, creating one");
+		
 		EntityCollection.Indexes.CreateOne(indexModel);
 		_logger.LogWarning($"Property {_collectionName}.{property} is now indexed");
 	}

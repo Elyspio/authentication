@@ -1,5 +1,6 @@
 ﻿using Authentication.Api.Abstractions.Exceptions;
 using Authentication.Api.Abstractions.Extensions;
+using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Models;
 using Authentication.Api.Abstractions.Transports.Data.user;
@@ -14,14 +15,18 @@ namespace Authentication.Api.Db.Repositories;
 
 internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 {
-	public UsersRepository(IConfiguration configuration, ILogger<BaseRepository<UserEntity>> logger) : base(configuration, logger)
+	public UsersRepository(IConfiguration configuration, ILogger<UsersRepository> logger) : base(configuration, logger)
 	{
+		using var _ = LogAdapter();
+
 		CreateIndexIfMissing(nameof(UserEntity.Username), true);
 	}
 
 
 	public async Task<UserEntity> Add(string username, string salt, string hash)
 	{
+		using var _ = LogAdapter($"{Log.F(username)}");
+
 		var roles = new List<AuthenticationRoles>
 		{
 			AuthenticationRoles.User
@@ -49,6 +54,10 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 				Authentication = new()
 				{
 					Roles = roles
+				},
+				SousMarinJaune = new()
+				{
+					Roles = new()
 				}
 			}
 		};
@@ -69,16 +78,22 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 
 	public async Task<UserEntity?> Get(Guid id)
 	{
+		using var _ = LogAdapter($"{Log.F(id)}");
+
 		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Id == id.AsObjectId());
 	}
 
 	public async Task<UserEntity?> Get(string username)
 	{
+		using var _ = LogAdapter($"{Log.F(username)}");
+
 		return await EntityCollection.AsQueryable().FirstOrDefaultAsync(u => u.Username == username);
 	}
 
 	public async Task Update(UserEntity user)
 	{
+		using var _ = LogAdapter($"{Log.F(user.Id)}");
+
 		var update = Builders<UserEntity>.Update
 			.Set(u => u.Disabled, user.Disabled)
 			.Set(u => u.Settings, user.Settings)
@@ -91,21 +106,29 @@ internal class UsersRepository : BaseRepository<UserEntity>, IUsersRepository
 
 	public async Task<bool> CheckIfUsersExist()
 	{
+		using var _ = LogAdapter();
+
 		return await EntityCollection.AsQueryable().AnyAsync();
 	}
 
 	public async Task<List<UserEntity>> GetAll()
 	{
+		using var _ = LogAdapter();
+
 		return await EntityCollection.AsQueryable().ToListAsync();
 	}
 
 	public async Task Delete(Guid id)
 	{
+		using var _ = LogAdapter($"{Log.F(id)}");
+		
 		await EntityCollection.DeleteOneAsync(u => u.Id == id.AsObjectId());
 	}
 
 	public async Task ChangePassword(string username, string salt, string hash)
 	{
+		using var _ = LogAdapter($"{Log.F(username)}");
+
 		var update = Builders<UserEntity>.Update
 			.Set(u => u.Hash, hash)
 			.Set(u => u.Salt, salt);

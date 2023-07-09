@@ -36,6 +36,6 @@ COPY --from=builder-back /app/out .
 COPY --from=builder-front /front/build /back/wwwroot
 ENV FRONT_PATH /back/wwwroot
 
-EXPOSE 4003
+
 ENTRYPOINT ["dotnet", "Authentication.Api.Web.dll"]
 

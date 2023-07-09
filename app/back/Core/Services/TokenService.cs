@@ -1,6 +1,7 @@
 ﻿using Authentication.Api.Abstractions.Helpers;
 using Authentication.Api.Abstractions.Interfaces.Repositories;
 using Authentication.Api.Abstractions.Interfaces.Services;
+using Authentication.Api.Abstractions.Technical;
 using Authentication.Api.Abstractions.Transports.Data;
 using Authentication.Api.Abstractions.Transports.Data.config;
 using Authentication.Api.Core.Assemblers;
@@ -15,23 +16,19 @@ using System.Security.Cryptography;
 
 namespace Authentication.Api.Core.Services;
 
-public class TokenService : ITokenService
+public class TokenService(IOptions<AppConfig> configuration, ILogger<TokenService> logger, IUsersRepository usersRepository) : TracingContext(logger), ITokenService
 {
-	private readonly AppConfig _config;
-	private readonly ILogger<TokenService> _logger;
+	private readonly AppConfig _config = configuration.Value;
+	private readonly UserAssembler _userAssembler = new();
+	private readonly IUsersRepository _usersRepository = usersRepository;
 
 
 	private SecurityKey? _privateKey;
 	private SecurityKey? _publicKey;
-	private readonly UserAssembler _userAssembler = new();
-	private readonly IUsersRepository _usersRepository;
 
-	public TokenService(IOptions<AppConfig> configuration, ILogger<TokenService> logger, IUsersRepository usersRepository)
+
+	static TokenService()
 	{
-		_logger = logger;
-		_usersRepository = usersRepository;
-		_config = configuration.Value;
-
 		var jsonSerializerSettings = new JsonSerializerSettings
 		{
 			Converters = new List<JsonConverter>
@@ -52,7 +49,7 @@ public class TokenService : ITokenService
 
 	public string GenerateJwt(User user)
 	{
-		var logger = _logger.Enter(Log.F(user.Username));
+		using var logger = LogService(Log.F(user.Username));
 
 		var credentials = new SigningCredentials(GetPrivateKey(), SecurityAlgorithms.RsaSha512);
 
@@ -79,7 +76,7 @@ public class TokenService : ITokenService
 
 	public async Task<string> RefreshJwt(Guid idUser)
 	{
-		var logger = _logger.Enter(Log.F(idUser));
+		using var logger = LogService(Log.F(idUser));
 
 		var user = await _usersRepository.Get(idUser);
 
@@ -92,6 +89,8 @@ public class TokenService : ITokenService
 
 	public bool ValidateJwt(string? token, out JwtSecurityToken? validatedToken)
 	{
+		using var _ = LogService($"{Log.F(token)}");
+
 		validatedToken = null;
 
 		if (string.IsNullOrWhiteSpace(token))
@@ -126,6 +125,8 @@ public class TokenService : ITokenService
 
 	public string GetPublicKeyRaw()
 	{
+		using var _ = LogService();
+
 		var key = RSA.Create();
 
 		key.ImportFromPem(_config.Jwt.PrivateKey);
@@ -139,6 +140,8 @@ public class TokenService : ITokenService
 
 	private SecurityKey GetPrivateKey()
 	{
+		using var _ = LogService();
+
 		if (_privateKey != default) return _privateKey;
 
 		var key = RSA.Create();
@@ -153,6 +156,8 @@ public class TokenService : ITokenService
 
 	private SecurityKey GetPublicKey()
 	{
+		using var _ = LogService();
+
 		if (_publicKey != default) return _publicKey;
 
 		var key = GetPublicKeyRaw();
