@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
-ARG SLN_PATH=app/back/Authentication.Api.sln
+ARG SLN_PATH=app/back/Authentication.Api.slnx
 ARG MAIN_CSPROJ_PATH=app/back/Web/
 ARG ROOT_FOLDER=app/back/
 

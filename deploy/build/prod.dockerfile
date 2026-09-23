@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS builder-back
 
 # Optim cache for "dotnet restore" with only csproj files
-COPY app/back/Authentication.Api.sln /app/
+COPY app/back/Authentication.Api.slnx /app/
 
 COPY app/back/*/*.csproj /app
 

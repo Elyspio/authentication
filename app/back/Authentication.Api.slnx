@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="Abstractions/Authentication.Api.Abstractions.csproj" />
+  <Project Path="Adapters/Authentication.Api.Adapters.csproj" />
+  <Project Path="Core/Authentication.Api.Core.csproj" />
+  <Project Path="Db/Authentication.Api.Db.csproj" />
+  <Project Path="Sockets/Authentication.Api.Sockets.csproj" />
+  <Project Path="Web/Authentication.Api.Web.csproj" />
+</Solution>
