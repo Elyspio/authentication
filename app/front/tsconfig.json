@@ -1,12 +1,9 @@
 {
 	"extends": "@elyspio/vite-eslint-config/tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": ".",
-		"noEmit": true
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"types": ["node", "vite-plus/client"]
 	},
-	"include": [
-		"vite.config.ts",
-		".eslintrc.js",
-		"src"
-	]
+	"include": ["vite.config.ts", "scripts", "src"]
 }

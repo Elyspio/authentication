@@ -3,11 +3,17 @@
 	"version": "0.1.0",
 	"private": true,
 	"homepage": "/authentication",
+	"type": "module",
 	"scripts": {
-		"start": "vite",
-		"build": "vite build",
+		"dev": "vp dev",
+		"build": "vp build",
+		"preview": "vp preview",
+		"check": "vp check",
+		"lint": "vp lint",
+		"fmt": "vp fmt",
+		"test": "vp test",
 		"docker": "node ../../deploy/build/build.js",
-		"refresh-clients": "ts-node ./scripts/generate-api.ts"
+		"refresh-clients": "node ./scripts/generate-api.ts"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
@@ -35,12 +41,17 @@
 		"reflect-metadata": "^0.1.13"
 	},
 	"devDependencies": {
-		"@elyspio/vite-eslint-config": "2.0.2",
-		"@types/node": "^20.4.1",
+		"@elyspio/vite-eslint-config": "^8.0.0-rc.0",
+		"@types/node": "^26.6.2",
 		"@types/react": "^18.2.14",
 		"@types/react-dom": "^18.2.6",
 		"sass": "^1.63.6",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.1.6"
-	}
+		"typescript": "^7.0.2",
+		"vite": "catalog:",
+		"vite-plus": "catalog:"
+	},
+	"engines": {
+		"node": ">=26.0.0"
+	},
+	"packageManager": "pnpm@12.5.1"
 }
