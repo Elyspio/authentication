@@ -9,14 +9,14 @@ const config = getDefaultConfig({ basePath: import.meta.dirname, port: 3001, use
 // The shared config runs the React Compiler through Babel, which cannot parse the legacy decorators
 // used by the inversify services: swap that pass for one that enables the `decorators-legacy` syntax.
 const isBabelPlugin = (plugin: Awaited<PluginOption>) => !!plugin && "name" in plugin && plugin.name === "@rolldown/plugin-babel";
-const plugins = (await Promise.all(config.plugins)).filter((plugin) => !isBabelPlugin(plugin));
+const plugins: PluginOption[] = (await Promise.all(config.plugins)).filter((plugin) => !isBabelPlugin(plugin));
 plugins.push(
 	babel({
 		presets: [reactCompilerPreset()],
 		// Babel merges parser plugins per override: restate the TypeScript/JSX ones next to decorators-legacy.
 		overrides: [
-			{ test: /\.ts(?:$|\?)/, parserOpts: { plugins: ["typescript", "decorators-legacy"] } },
-			{ test: /\.tsx(?:$|\?)/, parserOpts: { plugins: ["typescript", "jsx", "decorators-legacy"] } },
+			{ include: /\.ts(?:$|\?)/, parserOpts: { plugins: ["typescript", "decorators-legacy"] } },
+			{ include: /\.tsx(?:$|\?)/, parserOpts: { plugins: ["typescript", "jsx", "decorators-legacy"] } },
 		],
 	})
 );

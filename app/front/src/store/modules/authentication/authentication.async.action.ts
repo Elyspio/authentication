@@ -9,7 +9,7 @@ import { TokenService } from "@services/token.service";
 import { setUserFromToken } from "./authentication.action";
 import { changeLocation } from "@services/router.service";
 import { AxiosError } from "axios";
-import * as HttpStatusCode from "http-status";
+import { status as HttpStatusCode } from "http-status";
 import { goBack } from "redux-first-history";
 
 const createAsyncThunk = createAsyncActionGenerator("authentication");
