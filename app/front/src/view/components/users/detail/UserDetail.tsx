@@ -28,9 +28,10 @@ export function UserDetail() {
 	const updateRemoteUser = useCallback((user: User) => dispatch(updateUser(user)), [dispatch]);
 
 	const delUser = useCallback(() => {
-		dispatch(deleteUserRemote(user.id));
+		if (!user) return;
+		void dispatch(deleteUserRemote(user.id));
 		dispatch(changeLocation("dashboard"));
-	}, [dispatch, user?.id]);
+	}, [dispatch, user]);
 
 	const toggleDisabled = useCallback(
 		() =>
@@ -42,7 +43,7 @@ export function UserDetail() {
 	);
 
 	useEffect(() => {
-		dispatch(getUser(id!));
+		void dispatch(getUser(id!));
 	}, [id, dispatch]);
 
 	const isConnectedUser = useMemo(() => logged?.id === user?.id, [logged, user]);
@@ -50,7 +51,7 @@ export function UserDetail() {
 	const { setOpen, open, setClose } = useModal(false);
 
 	const updatePassword = useCallback(() => {
-		dispatch(changePassword());
+		void dispatch(changePassword());
 		setClose();
 	}, [dispatch, setClose]);
 

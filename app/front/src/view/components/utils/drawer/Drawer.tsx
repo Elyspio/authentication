@@ -135,7 +135,7 @@ export function Drawer(props: Props) {
 					}),
 				}}
 			>
-				<div onClick={handleDrawerClose} className={"drawer-btn"}>
+				<div className={"drawer-btn"}>
 					<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen} size="medium">
 						{open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton>

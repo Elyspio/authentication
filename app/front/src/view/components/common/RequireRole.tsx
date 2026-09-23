@@ -16,7 +16,7 @@ export function RequireRole({ missing }: RequireLoginProps) {
 	const dispatch = useAppDispatch();
 
 	const logoutCb = useCallback(() => {
-		dispatch(logout());
+		void dispatch(logout());
 	}, [dispatch]);
 
 	const { palette } = useTheme();

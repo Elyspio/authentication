@@ -5,8 +5,8 @@ import { deleteUser, updateLocalUser } from "@modules/users/users.action";
 
 const createAsyncThunk = createAsyncActionGenerator("workflows");
 export const initApp = createAsyncThunk("initApp", async (_, { dispatch, extra }) => {
-	dispatch(checkIfUserExist());
-	dispatch(silentLogin());
+	void dispatch(checkIfUserExist());
+	void dispatch(silentLogin());
 
 	const updateSocketService = getService(UpdateSocketService, extra);
 

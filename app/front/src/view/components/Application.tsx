@@ -78,7 +78,7 @@ function Application() {
 	}, [logged, isAdmin, dispatch, theme, themeIcon, init, route]);
 
 	useEffect(() => {
-		dispatch(initApp());
+		void dispatch(initApp());
 	}, [dispatch]);
 
 	const drawer = withDrawer({

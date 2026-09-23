@@ -29,7 +29,7 @@ export const register = createAsyncThunk("register", async (_, { extra, getState
 
 		// Auto login if the user is not logged (first user)
 		if (!user) {
-			dispatch(login());
+			void dispatch(login());
 		}
 	} catch (e) {
 		const err = e as AxiosError;

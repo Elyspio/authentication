@@ -9,7 +9,7 @@ const config = getDefaultConfig({ basePath: import.meta.dirname, port: 3001, use
 // The shared config runs the React Compiler through Babel, which cannot parse the legacy decorators
 // used by the inversify services: swap that pass for one that enables the `decorators-legacy` syntax.
 const isBabelPlugin = (plugin: Awaited<PluginOption>) => !!plugin && "name" in plugin && plugin.name === "@rolldown/plugin-babel";
-const plugins: PluginOption[] = (await Promise.all(config.plugins)).filter((plugin) => !isBabelPlugin(plugin));
+const plugins: PluginOption[] = (await Promise.all(config.plugins.map((plugin) => Promise.resolve(plugin)))).filter((plugin) => !isBabelPlugin(plugin));
 plugins.push(
 	babel({
 		presets: [reactCompilerPreset()],

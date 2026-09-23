@@ -39,7 +39,7 @@ export function Users() {
 	const { isAdmin } = usePermissions();
 
 	useEffect(() => {
-		if (isAdmin && users.length === 0) dispatch(getAllUsers());
+		if (isAdmin && users.length === 0) void dispatch(getAllUsers());
 	}, [isAdmin, dispatch, users]);
 
 	const editUser = useCallback((id: User["id"]) => dispatch(getEditUserLocation(id)), [dispatch]);

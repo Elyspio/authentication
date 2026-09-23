@@ -27,9 +27,9 @@ function Actions(props: { elements: WithDrawerProps["actions"] }) {
 				m: 0.5,
 			}}
 		>
-			{props.elements.map((action) => (
-				<ActionComponent key={action.key ?? action.description.children?.toString()} {...action.component}>
-					<ActionDescription children={action.description.children} />
+			{props.elements.map((action, index) => (
+				<ActionComponent key={action.key ?? (typeof action.description.children === "string" ? action.description.children : index)} {...action.component}>
+					<ActionDescription>{action.description.children}</ActionDescription>
 				</ActionComponent>
 			))}
 		</Stack>
