@@ -16,16 +16,37 @@ export const ActionComponent = ({ children, icon, onClick, className, divider }:
 	} = useTheme();
 
 	return !divider ? (
-		<Stack className={`Action ${className ?? ""}`} onClick={onClick} direction={"row"} alignItems={"center"}>
+		<Stack
+			className={`Action ${className ?? ""}`}
+			onClick={onClick}
+			direction={"row"}
+			sx={{
+				alignItems: "center",
+			}}
+		>
 			<div className={"icon"}>
 				<IconButton size="medium">{icon}</IconButton>
 			</div>
 			<div className={"description"}>{children}</div>
 		</Stack>
 	) : (
-		<Stack direction={"row"} width={"100%"} alignItems={"center"} pt={1}>
+		<Stack
+			direction={"row"}
+			sx={{
+				width: "100%",
+				alignItems: "center",
+				pt: 1,
+			}}
+		>
 			<Divider sx={{ flex: 1 }} color={primary.main}></Divider>
-			<Typography variant={"overline"} fontSize={14} textAlign={"center"} sx={{ flex: 1 }}>
+			<Typography
+				variant={"overline"}
+				sx={{
+					fontSize: 14,
+					textAlign: "center",
+					flex: 1,
+				}}
+			>
 				{divider}
 			</Typography>
 			<Divider sx={{ flex: 1 }} color={primary.main}></Divider>

@@ -11,7 +11,13 @@ export function Dashboard() {
 	if (!isAdmin) return <RequireRole missing={AuthenticationRoles.Admin} />;
 
 	return (
-		<Stack className={"maxHeightWidth"} alignItems={"center"} justifyContent={"center"}>
+		<Stack
+			className={"maxHeightWidth"}
+			sx={{
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
 			<Users />
 		</Stack>
 	);

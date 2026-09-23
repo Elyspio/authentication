@@ -38,21 +38,49 @@ export function AuthForm({ validate, label, buttonLabel, disableUsername }: Auth
 	);
 
 	return (
-		<Stack height={"100%"} alignItems={"center"} justifyContent={"center"}>
+		<Stack
+			sx={{
+				height: "100%",
+				alignItems: "center",
+				justifyContent: "center",
+			}}
+		>
 			<Paper>
 				<form onSubmit={onSubmit}>
-					<Stack mx={4} my={2} spacing={2} minWidth={300} alignItems={"center"}>
-						<Typography variant={"overline"} fontSize={"110%"}>
+					<Stack
+						spacing={2}
+						sx={{
+							mx: 4,
+							my: 2,
+							minWidth: 300,
+							alignItems: "center",
+						}}
+					>
+						<Typography
+							variant={"overline"}
+							sx={{
+								fontSize: "110%",
+							}}
+						>
 							{label}
 						</Typography>
-						<Box pb={2} width={"100%"}>
+						<Box
+							sx={{
+								pb: 2,
+								width: "100%",
+							}}
+						>
 							<Divider flexItem color={secondary.main}></Divider>
 						</Box>
 
 						<TextField disabled={disableUsername} type={"text"} onChange={setOnChange("username")} fullWidth label={"Username"} defaultValue={username} />
 						<TextField type={"password"} onChange={setOnChange("password")} fullWidth label={"Password"} defaultValue={password} />
 
-						<Box pt={1}>
+						<Box
+							sx={{
+								pt: 1,
+							}}
+						>
 							<Button type={"submit"} disabled={!username || !password} variant={"contained"} color={"secondary"} sx={{ borderRadius: 2, width: 130 }}>
 								{buttonLabel ?? label}
 							</Button>

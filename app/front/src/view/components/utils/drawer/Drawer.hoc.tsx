@@ -20,7 +20,13 @@ export type WithDrawerProps = {
 
 function Actions(props: { elements: WithDrawerProps["actions"] }) {
 	return (
-		<Stack className={"Actions"} spacing={0.5} m={0.5}>
+		<Stack
+			className={"Actions"}
+			spacing={0.5}
+			sx={{
+				m: 0.5,
+			}}
+		>
 			{props.elements.map((action) => (
 				<ActionComponent key={action.key ?? action.description.children?.toString()} {...action.component}>
 					<ActionDescription children={action.description.children} />
@@ -36,15 +42,21 @@ export function withDrawer({ component, title, actions }: WithDrawerProps) {
 	return (
 		<Box className={"Drawer-hoc"}>
 			<Paper elevation={1} color={"red"}>
-				<Grid className={"header"} alignItems={"center"} justifyContent={"center"} container>
-					<Grid item>
+				<Grid
+					className={"header"}
+					container
+					sx={{
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+				>
+					<Grid>
 						<Typography variant={"h4"} align={"center"} onClick={goToHome} sx={{ cursor: "pointer" }}>
 							{title}
 						</Typography>
 					</Grid>
 				</Grid>
 			</Paper>
-
 			<Drawer position={"right"} actionsComponent={<Actions elements={actions} />}>
 				<div className="content">{component}</div>
 			</Drawer>

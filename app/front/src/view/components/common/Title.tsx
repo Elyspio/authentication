@@ -8,7 +8,13 @@ type TitleProps = {
 
 export function Title({ children, color = "primary" }: TitleProps) {
 	return (
-		<Typography fontSize={"120%"} color={color} variant={"overline"}>
+		<Typography
+			color={color}
+			variant={"overline"}
+			sx={{
+				fontSize: "120%",
+			}}
+		>
 			{children}
 		</Typography>
 	);

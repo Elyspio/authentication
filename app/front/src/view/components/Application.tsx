@@ -97,7 +97,12 @@ function Application() {
 	});
 
 	return (
-		<Box className={"Application"} bgcolor={"background.default"}>
+		<Box
+			className={"Application"}
+			sx={{
+				bgcolor: "background.default",
+			}}
+		>
 			{drawer}
 		</Box>
 	);
