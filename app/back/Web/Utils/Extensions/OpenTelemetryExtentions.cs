@@ -1,5 +1,6 @@
 ﻿using Authentication.Api.Abstractions.Technical;
 using Authentication.Api.Web.Utils.Helpers;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
@@ -26,7 +27,7 @@ public static class OpenTelemetryExtentions
 					// Configure adapters
 					.AddAspNetCoreInstrumentation()
 					.AddHttpClientInstrumentation()
-					.AddMongoDBInstrumentation(); // Adds MongoDB OTel support
+					.AddSource(DiagnosticsActivityEventSubscriber.ActivitySourceName); // MongoDB driver activities
 			}).WithMetrics(metricBuilder =>
 			{
 				metricBuilder

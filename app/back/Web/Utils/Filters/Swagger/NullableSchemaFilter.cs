@@ -1,5 +1,5 @@
 ﻿using Authentication.Api.Web.Utils.Helpers;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -13,8 +13,10 @@ public class NullableSchemaFilter : ISchemaFilter
 {
 	private readonly NullabilityInfoContext _nullabilityContext = new();
 
-	public void Apply(OpenApiSchema schema, SchemaFilterContext context)
+	public void Apply(IOpenApiSchema schema, SchemaFilterContext context)
 	{
+		if (schema is not OpenApiSchema { Properties: not null } concreteSchema) return;
+
 		var members = RemoveIgnoredProperties(context.Type.GetProperties());
 
 		var duplicatedMembers = members.Where(info => members.Count(i => i.Name == info.Name) > 1);
@@ -26,7 +28,7 @@ public class NullableSchemaFilter : ISchemaFilter
 		var typesInfos = members.ToDictionary(prop => (property: prop.Name, runtime: TypeHelper.GetPropertyName(prop)), m => _nullabilityContext.Create(m));
 
 
-		var notNullableProperties = schema
+		var notNullableProperties = concreteSchema
 			.Properties
 			.Where(x =>
 			{
@@ -36,7 +38,7 @@ public class NullableSchemaFilter : ISchemaFilter
 			.Select(x => x.Key)
 			.ToHashSet();
 
-		schema.Required = notNullableProperties;
+		concreteSchema.Required = notNullableProperties;
 	}
 
 

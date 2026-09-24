@@ -1,4 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Authentication.Api.Web.Utils.Filters.Swagger;
@@ -15,7 +15,7 @@ public class SwaggerRemoveVersionFilter : IOperationFilter
 	/// <param name="context"></param>
 	public void Apply(OpenApiOperation operation, OperationFilterContext context)
 	{
-		operation.Parameters ??= new List<OpenApiParameter>();
+		operation.Parameters ??= new List<IOpenApiParameter>();
 
 		var apiVersionParameter = operation.Parameters.FirstOrDefault(p => p.Name == "api-version");
 		if (apiVersionParameter != default) operation.Parameters.Remove(apiVersionParameter);
