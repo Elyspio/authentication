@@ -1,7 +1,7 @@
 ﻿using Authentication.Api.Web.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
@@ -22,19 +22,23 @@ public class SwaggerSetNullableOperationFilter : IOperationFilter
 
 		foreach (var param in context.ApiDescription.ParameterDescriptions.Where(p => p.Source == BindingSource.Query))
 		{
-			var operationParam = operation.Parameters.First(p => p.Name == param.Name);
+			var operationParam = operation.Parameters!.First(p => p.Name == param.Name);
 			var parameterInfo = param.ParameterInfo();
 			if (parameterInfo == default) continue;
 
 			var nullabilityInfo = contextParams[param.Name];
-			operationParam.Schema.Nullable = nullabilityInfo.WriteState == NullabilityState.Nullable || parameterInfo.HasDefaultValue;
+			var nullable = nullabilityInfo.WriteState == NullabilityState.Nullable || parameterInfo.HasDefaultValue;
+			if (operationParam.Schema is OpenApiSchema { Type: not null } schema)
+				schema.Type = nullable ? schema.Type | JsonSchemaType.Null : schema.Type & ~JsonSchemaType.Null;
+
 			param.IsRequired = nullabilityInfo.WriteState == NullabilityState.NotNull && !parameterInfo.HasDefaultValue;
-			operationParam.Required = param.IsRequired;
+			if (operationParam is OpenApiParameter concreteParam) concreteParam.Required = param.IsRequired;
 		}
 
 
 		var bodyParam = context.ApiDescription.ParameterDescriptions.FirstOrDefault(p => p.Source == BindingSource.Body);
-		if (bodyParam != default) operation.RequestBody.Required = bodyParam.IsRequired && !bodyParam.ParameterInfo().HasDefaultValue;
+		if (bodyParam != default && operation.RequestBody is OpenApiRequestBody requestBody)
+			requestBody.Required = bodyParam.IsRequired && !bodyParam.ParameterInfo().HasDefaultValue;
 	}
 
 	/// <summary>

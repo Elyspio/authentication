@@ -1,5 +1,4 @@
-import { ActionCreatorWithPayload, AsyncThunkPayloadCreator, createAction as _createAction, createAsyncThunk as _createAsyncThunk } from "@reduxjs/toolkit";
-import { AsyncThunkFulfilledActionCreator, AsyncThunkPendingActionCreator, AsyncThunkRejectedActionCreator } from "@reduxjs/toolkit/dist/createAsyncThunk";
+import { ActionCreatorWithPayload, AsyncThunk, AsyncThunkPayloadCreator, createAction as _createAction, createAsyncThunk as _createAsyncThunk } from "@reduxjs/toolkit";
 import { ExtraArgument, StoreState } from "@store";
 
 type Constructor<T> = new (...args: any[]) => T;
@@ -8,7 +7,7 @@ export function getService<T>(service: Constructor<T> | symbol, extra: ExtraArgu
 	return extra.container.get(service);
 }
 
-type ActionCreator = AsyncThunkPendingActionCreator<any, any> | AsyncThunkRejectedActionCreator<any, any> | AsyncThunkFulfilledActionCreator<any, any>;
+type ActionCreator = AsyncThunk<any, any, any>["pending" | "rejected" | "fulfilled"];
 
 export function throwIfRejected(action: ReturnType<ActionCreator>) {
 	if (action.meta.requestStatus === "rejected") throw new Error((action as any).error.message);

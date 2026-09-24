@@ -6,10 +6,10 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import "./Drawer.scss";
 import clsx from "clsx";
+import ListItemButton from "@mui/material/ListItemButton";
 
 const PREFIX = "Drawer";
 
@@ -86,10 +86,10 @@ const getActions = (actions: Action[]) => {
 	const actionComponents = (comp.length > 0 ? comp : [actions]).map((actions, i) => (
 		<List className={"toolbar"} key={i}>
 			{actions.map((action, i) => (
-				<ListItem button key={i} onClick={(e) => action.onClick && action.onClick(e)}>
+				<ListItemButton key={i} onClick={(e) => action.onClick && action.onClick(e)}>
 					<ListItemIcon>{action.icon}</ListItemIcon>
 					{action.text}
-				</ListItem>
+				</ListItemButton>
 			))}
 		</List>
 	));
@@ -135,7 +135,7 @@ export function Drawer(props: Props) {
 					}),
 				}}
 			>
-				<div onClick={handleDrawerClose} className={"drawer-btn"}>
+				<div className={"drawer-btn"}>
 					<IconButton onClick={open ? handleDrawerClose : handleDrawerOpen} size="medium">
 						{open ? <ChevronRightIcon /> : <ChevronLeftIcon />}
 					</IconButton>

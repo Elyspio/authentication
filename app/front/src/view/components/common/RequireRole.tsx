@@ -16,7 +16,7 @@ export function RequireRole({ missing }: RequireLoginProps) {
 	const dispatch = useAppDispatch();
 
 	const logoutCb = useCallback(() => {
-		dispatch(logout());
+		void dispatch(logout());
 	}, [dispatch]);
 
 	const { palette } = useTheme();
@@ -29,7 +29,13 @@ export function RequireRole({ missing }: RequireLoginProps) {
 
 	return (
 		<Paper>
-			<Stack spacing={2} m={2} p={4}>
+			<Stack
+				spacing={2}
+				sx={{
+					m: 2,
+					p: 4,
+				}}
+			>
 				<Title>Missing Permissions</Title>
 
 				<Stack spacing={1}>
@@ -37,11 +43,23 @@ export function RequireRole({ missing }: RequireLoginProps) {
 						<>
 							<Typography variant={"body1"}>
 								You are connected as{" "}
-								<Typography component={"span"} color={"secondary"} fontSize={"medium"}>
+								<Typography
+									component={"span"}
+									color={"secondary"}
+									sx={{
+										fontSize: "medium",
+									}}
+								>
 									{logged.id}
 								</Typography>{" "}
 								but you are missing the{" "}
-								<Typography component={"span"} color={palette.warning.main} fontSize={"medium"}>
+								<Typography
+									component={"span"}
+									color={palette.warning.main}
+									sx={{
+										fontSize: "medium",
+									}}
+								>
 									{missing}
 								</Typography>{" "}
 								role

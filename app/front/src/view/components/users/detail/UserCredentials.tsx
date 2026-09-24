@@ -46,24 +46,32 @@ export function UserCredentials({ data, update }: UserCredentialsProps) {
 			<Typography variant={"overline"} color={"secondary"}>
 				Credentials
 			</Typography>
-
 			<div>
 				<Accordion>
 					<AccordionSummary>Github</AccordionSummary>
 					<AccordionDetails>
-						<Stack spacing={2} m={1}>
+						<Stack
+							spacing={2}
+							sx={{
+								m: 1,
+							}}
+						>
 							<TextField onBlur={updateGithub("user")} color={"secondary"} label={"Username"} defaultValue={data.credentials.github?.user} />
 							<TextField onBlur={updateGithub("token")} type={"password"} color={"secondary"} label={"PAT"} defaultValue={data.credentials.github?.token} />
 						</Stack>
 					</AccordionDetails>
 				</Accordion>
 			</div>
-
 			<div>
 				<Accordion>
 					<AccordionSummary>Docker</AccordionSummary>
 					<AccordionDetails>
-						<Stack spacing={2} m={1}>
+						<Stack
+							spacing={2}
+							sx={{
+								m: 1,
+							}}
+						>
 							<TextField onBlur={updateDocker("username")} color={"secondary"} label={"Username"} defaultValue={data.credentials.docker?.username} />
 							<TextField onBlur={updateDocker("password")} type={"password"} color={"secondary"} label={"PAT"} defaultValue={data.credentials.docker?.password} />
 						</Stack>

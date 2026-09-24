@@ -9,7 +9,7 @@ import { TokenService } from "@services/token.service";
 import { setUserFromToken } from "./authentication.action";
 import { changeLocation } from "@services/router.service";
 import { AxiosError } from "axios";
-import * as HttpStatusCode from "http-status";
+import { status as HttpStatusCode } from "http-status";
 import { goBack } from "redux-first-history";
 
 const createAsyncThunk = createAsyncActionGenerator("authentication");
@@ -29,7 +29,7 @@ export const register = createAsyncThunk("register", async (_, { extra, getState
 
 		// Auto login if the user is not logged (first user)
 		if (!user) {
-			dispatch(login());
+			void dispatch(login());
 		}
 	} catch (e) {
 		const err = e as AxiosError;

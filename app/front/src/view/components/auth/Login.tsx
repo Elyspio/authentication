@@ -7,7 +7,7 @@ export function Login() {
 	const dispatch = useAppDispatch();
 
 	const validate = useCallback(() => {
-		dispatch(login());
+		void dispatch(login());
 	}, [dispatch]);
 
 	return <AuthForm label={"Login"} validate={validate} />;

@@ -70,25 +70,33 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 			<Typography variant={"overline"} color={"secondary"}>
 				Authorizations
 			</Typography>
-
 			<Stack direction={"row"} spacing={4}>
-				<Box width={"100%"}>
+				<Box
+					sx={{
+						width: "100%",
+					}}
+				>
 					<Accordion>
 						<AccordionSummary>Authentication</AccordionSummary>
 						<AccordionDetails>
-							<Stack spacing={2} m={1}>
+							<Stack
+								spacing={2}
+								sx={{
+									m: 1,
+								}}
+							>
 								<Autocomplete
 									renderInput={(params) => <TextField {...params} label={"Roles"} />}
 									multiple
 									options={authRoles}
 									defaultValue={data.authorizations.authentication.roles}
 									onChange={updateAuthenticationRoles}
-									renderTags={(value, getTagProps) => {
+									renderValue={(value, getItemProps) => {
 										const values = [...value].sort();
 										return (
 											<Stack direction={"row"} spacing={1}>
 												{values.map((v, i) => {
-													const props = getTagProps({ index: i });
+													const props = getItemProps({ index: i });
 													return <Chip key={v} label={v} onDelete={!isAuthenticationOptionDisabled(v) ? props.onDelete : undefined} />;
 												})}
 											</Stack>
@@ -101,23 +109,32 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 					</Accordion>
 				</Box>
 
-				<Box width={"100%"}>
+				<Box
+					sx={{
+						width: "100%",
+					}}
+				>
 					<Accordion>
 						<AccordionSummary>Videyo</AccordionSummary>
 						<AccordionDetails>
-							<Stack spacing={2} m={1}>
+							<Stack
+								spacing={2}
+								sx={{
+									m: 1,
+								}}
+							>
 								<Autocomplete
 									renderInput={(params) => <TextField {...params} label={"Roles"} />}
 									multiple
 									options={videyoRoles}
 									defaultValue={data.authorizations.videyo?.roles ?? []}
 									onChange={updateVideyoRoles}
-									renderTags={(value, getTagProps) => {
+									renderValue={(value, getItemProps) => {
 										const values = [...value].sort();
 										return (
 											<Stack direction={"row"} spacing={1}>
 												{values.map((v, i) => {
-													const props = getTagProps({ index: i });
+													const props = getItemProps({ index: i });
 													return <Chip key={v} label={v} onDelete={props.onDelete} />;
 												})}
 											</Stack>
@@ -129,23 +146,32 @@ export function UserAuthorizations({ data, update }: UserCredentialsProps) {
 					</Accordion>
 				</Box>
 
-				<Box width={"100%"}>
+				<Box
+					sx={{
+						width: "100%",
+					}}
+				>
 					<Accordion>
 						<AccordionSummary>Sous Marin Jaune</AccordionSummary>
 						<AccordionDetails>
-							<Stack spacing={2} m={1}>
+							<Stack
+								spacing={2}
+								sx={{
+									m: 1,
+								}}
+							>
 								<Autocomplete
 									renderInput={(params) => <TextField {...params} label={"Roles"} />}
 									multiple
 									options={sousMarinJauneRoles}
 									defaultValue={data.authorizations.sousMarinJaune?.roles ?? []}
 									onChange={updateSousMarinJauneRoles}
-									renderTags={(value, getTagProps) => {
+									renderValue={(value, getItemProps) => {
 										const values = [...value].sort();
 										return (
 											<Stack direction={"row"} spacing={1}>
 												{values.map((v, i) => {
-													const props = getTagProps({ index: i });
+													const props = getItemProps({ index: i });
 													return <Chip key={v} label={v} onDelete={props.onDelete} />;
 												})}
 											</Stack>

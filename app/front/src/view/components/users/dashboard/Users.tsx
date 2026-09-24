@@ -39,7 +39,7 @@ export function Users() {
 	const { isAdmin } = usePermissions();
 
 	useEffect(() => {
-		if (isAdmin && users.length === 0) dispatch(getAllUsers());
+		if (isAdmin && users.length === 0) void dispatch(getAllUsers());
 	}, [isAdmin, dispatch, users]);
 
 	const editUser = useCallback((id: User["id"]) => dispatch(getEditUserLocation(id)), [dispatch]);
@@ -71,7 +71,7 @@ export function Users() {
 				headerName: "Activated",
 				width: 100,
 				type: "boolean",
-				valueGetter: (params) => !params.value,
+				valueGetter: (value: boolean) => !value,
 			},
 			{
 				field: "createdAt",
@@ -122,7 +122,14 @@ export function Users() {
 					const row: Row = params.row;
 
 					return (
-						<Stack direction={"row"} spacing={1} justifyContent={"space-evenly"} width={"100%"}>
+						<Stack
+							direction={"row"}
+							spacing={1}
+							sx={{
+								justifyContent: "space-evenly",
+								width: "100%",
+							}}
+						>
 							{row.disabled ? (
 								<Tooltip title={"Activate"} onClick={toggleDisabled(row.id)} arrow placement={"right"}>
 									<IconButton>
@@ -154,8 +161,19 @@ export function Users() {
 
 	return (
 		<Paper>
-			<Stack spacing={4} px={3} p={2}>
-				<Typography variant={"h6"} fontSize={"120%"}>
+			<Stack
+				spacing={4}
+				sx={{
+					px: 3,
+					p: 2,
+				}}
+			>
+				<Typography
+					variant={"h6"}
+					sx={{
+						fontSize: "120%",
+					}}
+				>
 					Users
 				</Typography>
 				<DataGrid

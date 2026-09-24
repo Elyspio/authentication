@@ -12,7 +12,7 @@ export function Register() {
 	const isInit = useAppSelector((s) => s.authentication.init);
 
 	const validate = useCallback(() => {
-		dispatch(register());
+		void dispatch(register());
 	}, [dispatch]);
 
 	const { isAdmin } = usePermissions();

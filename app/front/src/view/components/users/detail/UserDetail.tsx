@@ -28,9 +28,10 @@ export function UserDetail() {
 	const updateRemoteUser = useCallback((user: User) => dispatch(updateUser(user)), [dispatch]);
 
 	const delUser = useCallback(() => {
-		dispatch(deleteUserRemote(user.id));
+		if (!user) return;
+		void dispatch(deleteUserRemote(user.id));
 		dispatch(changeLocation("dashboard"));
-	}, [dispatch, user?.id]);
+	}, [dispatch, user]);
 
 	const toggleDisabled = useCallback(
 		() =>
@@ -42,7 +43,7 @@ export function UserDetail() {
 	);
 
 	useEffect(() => {
-		dispatch(getUser(id!));
+		void dispatch(getUser(id!));
 	}, [id, dispatch]);
 
 	const isConnectedUser = useMemo(() => logged?.id === user?.id, [logged, user]);
@@ -50,7 +51,7 @@ export function UserDetail() {
 	const { setOpen, open, setClose } = useModal(false);
 
 	const updatePassword = useCallback(() => {
-		dispatch(changePassword());
+		void dispatch(changePassword());
 		setClose();
 	}, [dispatch, setClose]);
 
@@ -65,8 +66,20 @@ export function UserDetail() {
 
 	return (
 		<Paper>
-			<Stack p={2} m={1}>
-				<Stack direction={"row"} spacing={3} height={40} alignItems={"center"}>
+			<Stack
+				sx={{
+					p: 2,
+					m: 1,
+				}}
+			>
+				<Stack
+					direction={"row"}
+					spacing={3}
+					sx={{
+						height: 40,
+						alignItems: "center",
+					}}
+				>
 					<Title>{user.username}'s infos</Title>
 
 					<Tooltip title={isConnectedUser ? "You can't delete yourself" : ""} placement={"right-end"}>
@@ -81,8 +94,22 @@ export function UserDetail() {
 						Change password
 					</Button>
 				</Stack>
-				<Stack m={2} p={2} borderRadius={3} spacing={4}>
-					<Stack bgcolor={"background.default"} spacing={2} p={1} px={0}>
+				<Stack
+					spacing={4}
+					sx={{
+						m: 2,
+						p: 2,
+						borderRadius: 3,
+					}}
+				>
+					<Stack
+						spacing={2}
+						sx={{
+							bgcolor: "background.default",
+							p: 1,
+							px: 0,
+						}}
+					>
 						<FormControlLabel
 							onClick={toggleDisabled}
 							sx={{ width: 155 }}
@@ -97,7 +124,6 @@ export function UserDetail() {
 					<UserCredentials data={user} update={updateRemoteUser} />
 				</Stack>
 			</Stack>
-
 			<Dialog open={open} onClose={setClose}>
 				<AuthForm label={`Change ${user.username} password`} validate={updatePassword} buttonLabel={"Change"} disableUsername />
 			</Dialog>

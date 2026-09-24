@@ -13,6 +13,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace Authentication.Api.Core.Services;
 
@@ -27,24 +28,24 @@ public class TokenService(IOptions<AppConfig> configuration, ILogger<TokenServic
 	private SecurityKey? _publicKey;
 
 
-	static TokenService()
+	/// <summary>
+	///     Serialization of the user stored in the "data" claim (camelCase, enums as strings), as the front-end expects.
+	///     Microsoft.IdentityModel 7+ serializes payloads with System.Text.Json and no longer exposes a serializer hook,
+	///     so the claim is pre-serialized with these settings and embedded as raw JSON.
+	/// </summary>
+	private static readonly JsonSerializerSettings JwtDataSerializerSettings = new()
 	{
-		var jsonSerializerSettings = new JsonSerializerSettings
+		Converters = new List<JsonConverter>
 		{
-			Converters = new List<JsonConverter>
-			{
-				new StringEnumConverter()
-			},
-			ContractResolver = new DefaultContractResolver
-			{
-				NamingStrategy = new CamelCaseNamingStrategy()
-			},
-			NullValueHandling = NullValueHandling.Ignore,
-			MissingMemberHandling = MissingMemberHandling.Ignore
-		};
-
-		JsonExtensions.Serializer = o => JsonConvert.SerializeObject(o, Formatting.None, jsonSerializerSettings);
-	}
+			new StringEnumConverter()
+		},
+		ContractResolver = new DefaultContractResolver
+		{
+			NamingStrategy = new CamelCaseNamingStrategy()
+		},
+		NullValueHandling = NullValueHandling.Ignore,
+		MissingMemberHandling = MissingMemberHandling.Ignore
+	};
 
 
 	public string GenerateJwt(User user)
@@ -62,7 +63,7 @@ public class TokenService(IOptions<AppConfig> configuration, ILogger<TokenServic
 			Payload =
 			{
 				{
-					"data", user
+					"data", System.Text.Json.JsonSerializer.Deserialize<JsonElement>(JsonConvert.SerializeObject(user, Formatting.None, JwtDataSerializerSettings))
 				}
 			}
 		};

@@ -31,7 +31,7 @@ export const updateUser = createAsyncThunk("update", async (user: User, { extra,
 	} = getState() as StoreState;
 
 	if (user.id === loggedUser?.id) {
-		dispatch(refreshToken());
+		void dispatch(refreshToken());
 	}
 });
 
