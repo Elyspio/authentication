@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
 ARG SLN_PATH=app/back/Authentication.Api.slnx
 ARG MAIN_CSPROJ_PATH=app/back/Web/
