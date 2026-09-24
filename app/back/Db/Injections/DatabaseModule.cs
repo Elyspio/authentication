@@ -12,7 +12,7 @@ public class DatabaseModule : IDotnetModule
 		var baseNamespace = nsp[..nsp.LastIndexOf(".")];
 		services.Scan(scan => scan
 			.FromAssemblyOf<DatabaseModule>()
-			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Repositories"))
+			.AddClasses(classes => classes.InNamespaces(baseNamespace + ".Repositories"), publicOnly: false)
 			.AsImplementedInterfaces()
 			.WithSingletonLifetime()
 		);
